@@ -1,4 +1,9 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { DataProvider } from './context/DataContext';
+import { AuthProvider } from './context/AuthContext';
+import PortfolioLayout from './components/PortfolioLayout';
+import AdminRoute from './components/AdminRoute';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -9,15 +14,16 @@ import Footer from './components/Footer';
 
 function App() {
   return (
-    <div className="min-h-screen bg-white">
-      <Navigation />
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Contact />
-      <Footer />
-    </div>
+    <AuthProvider>
+      <DataProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<PortfolioLayout />} />
+            <Route path="/admin/*" element={<AdminRoute />} />
+          </Routes>
+        </Router>
+      </DataProvider>
+    </AuthProvider>
   );
 }
 

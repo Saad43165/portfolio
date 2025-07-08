@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useData } from '../context/DataContext';
 import { Code, Palette, Database, Globe, Smartphone, Zap } from 'lucide-react';
 
 const Skills = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [animatedBars, setAnimatedBars] = useState(false);
+  const { skills } = useData();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -24,41 +26,41 @@ const Skills = () => {
     return () => observer.disconnect();
   }, []);
 
-  const skillCategories = [
-    {
-      title: 'Frontend Development',
-      icon: Code,
-      color: 'blue',
-      skills: [
-        { name: 'React/Next.js', level: 90 },
-        { name: 'TypeScript', level: 85 },
-        { name: 'Tailwind CSS', level: 95 },
-        { name: 'JavaScript', level: 88 },
-      ]
-    },
-    {
-      title: 'Backend Development',
-      icon: Database,
-      color: 'purple',
-      skills: [
-        { name: 'Node.js', level: 80 },
-        { name: 'Python', level: 75 },
-        { name: 'PostgreSQL', level: 85 },
-        { name: 'MongoDB', level: 70 },
-      ]
-    },
-    {
-      title: 'Tools & Others',
-      icon: Zap,
-      color: 'green',
-      skills: [
-        { name: 'Git/GitHub', level: 90 },
-        { name: 'AWS', level: 75 },
-        { name: 'Docker', level: 65 },
-        { name: 'Figma', level: 80 },
-      ]
+  // Group skills by category
+  const skillCategories = skills.reduce((acc, skill) => {
+    const category = skill.category;
+    if (!acc[category]) {
+      acc[category] = [];
     }
-  ];
+    acc[category].push(skill);
+    return acc;
+  }, {} as Record<string, typeof skills>);
+
+  const getCategoryIcon = (category: string) => {
+    switch (category.toLowerCase()) {
+      case 'frontend development':
+      case 'frontend':
+        return Code;
+      case 'backend development':
+      case 'backend':
+      case 'database':
+        return Database;
+      case 'mobile development':
+      case 'mobile':
+        return Smartphone;
+      case 'design':
+        return Palette;
+      case 'devops':
+        return Globe;
+      default:
+        return Zap;
+    }
+  };
+
+  const getCategoryColor = (index: number) => {
+    const colors = ['blue', 'purple', 'green', 'orange', 'pink', 'indigo'];
+    return colors[index % colors.length];
+  };
 
   const getColorClasses = (color: string) => {
     const colors = {
@@ -101,12 +103,14 @@ const Skills = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {skillCategories.map((category, categoryIndex) => {
-              const colorClasses = getColorClasses(category.color);
+            {Object.entries(skillCategories).map(([categoryName, categorySkills], categoryIndex) => {
+              const CategoryIcon = getCategoryIcon(categoryName);
+              const color = getCategoryColor(categoryIndex);
+              const colorClasses = getColorClasses(color);
               
               return (
                 <div
-                  key={category.title}
+                  key={categoryName}
                   className={`bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 transform hover:scale-105 border border-gray-100 ${
                     isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                   }`}
@@ -114,14 +118,14 @@ const Skills = () => {
                 >
                   <div className="flex items-center mb-6">
                     <div className={`p-3 ${colorClasses.bg} rounded-lg mr-4`}>
-                      <category.icon size={24} className={colorClasses.text} />
+                      <CategoryIcon size={24} className={colorClasses.text} />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900">{category.title}</h3>
+                    <h3 className="text-xl font-bold text-gray-900">{categoryName}</h3>
                   </div>
 
                   <div className="space-y-4">
-                    {category.skills.map((skill, skillIndex) => (
-                      <div key={skill.name} className="space-y-2">
+                    {categorySkills.map((skill, skillIndex) => (
+                      <div key={skill.id} className="space-y-2">
                         <div className="flex justify-between items-center">
                           <span className="text-sm font-medium text-gray-700">{skill.name}</span>
                           <span className="text-sm font-bold text-gray-900">{skill.level}%</span>
@@ -143,28 +147,36 @@ const Skills = () => {
             })}
           </div>
 
-          {/* Additional Skills Pills */}
-          <div className={`mt-16 text-center transition-all duration-1000 delay-1000 ${
+          {skills.length > 0 && (
+            <div className={`mt-16 text-center transition-all duration-1000 delay-1000 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
-            <h3 className="text-2xl font-bold text-gray-900 mb-8">Also experienced with</h3>
-            <div className="flex flex-wrap justify-center gap-3">
-              {[
-                'GraphQL', 'Redis', 'Kubernetes', 'Jenkins', 'Webpack', 'Sass',
-                'Jest', 'Cypress', 'Storybook', 'Firebase', 'Stripe', 'OAuth'
-              ].map((tech, index) => (
-                <span
-                  key={tech}
-                  className={`px-4 py-2 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 rounded-full text-sm font-medium hover:from-blue-100 hover:to-purple-100 hover:text-blue-700 transition-all duration-300 transform hover:scale-105 ${
-                    isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                  }`}
-                  style={{ transitionDelay: `${1200 + index * 50}ms` }}
-                >
-                  {tech}
-                </span>
-              ))}
+              <a
+                href="/admin"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+              >
+                Manage Skills
+              </a>
             </div>
-          </div>
+          )}
+          
+          {skills.length === 0 && (
+            <div className="text-center py-12">
+              <div className="w-24 h-24 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                <Code size={32} className="text-gray-400" />
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No skills added yet</h3>
+              <p className="text-gray-600 mb-4">
+                Skills will appear here once they are added through the admin panel.
+              </p>
+              <a
+                href="/admin"
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+              >
+                Add Skills
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </section>

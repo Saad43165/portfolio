@@ -16,10 +16,10 @@ const Footer = () => {
           {/* Brand Section */}
           <div className="space-y-4">
             <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              John Smith
+              Saad Ikram
             </h3>
             <p className="text-gray-400 leading-relaxed">
-              Full Stack Developer passionate about creating beautiful and functional web experiences.
+              Computer Science Student passionate about creating innovative and functional digital solutions.
             </p>
             <div className="flex space-x-4">
               {['GitHub', 'LinkedIn', 'Twitter'].map((platform) => (
@@ -55,9 +55,9 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="text-lg font-semibold">Get in Touch</h4>
             <div className="space-y-2 text-gray-400">
-              <p>john@example.com</p>
-              <p>+1 (555) 123-4567</p>
-              <p>San Francisco, CA</p>
+              <p>saadnaz43165@gmail.com</p>
+              <p>03414279749</p>
+              <p>Haripur, Pakistan</p>
             </div>
           </div>
         </div>
@@ -65,7 +65,7 @@ const Footer = () => {
         <div className="border-t border-gray-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm flex items-center">
-              © 2024 John Smith. Made with <Heart size={16} className="mx-1 text-red-500" /> and React
+              © 2024 Saad Ikram. Made with <Heart size={16} className="mx-1 text-red-500" /> and React
             </p>
             <div className="flex items-center space-x-4 mt-4 md:mt-0">
               <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors duration-200">

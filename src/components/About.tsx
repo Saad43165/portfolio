@@ -23,10 +23,10 @@ const About = () => {
   }, []);
 
   const stats = [
-    { icon: Award, value: '50+', label: 'Projects Completed' },
-    { icon: Coffee, value: '1000+', label: 'Cups of Coffee' },
-    { icon: Users, value: '25+', label: 'Happy Clients' },
-    { icon: Calendar, value: '3+', label: 'Years Experience' },
+    { icon: Award, value: '10+', label: 'Projects Completed' },
+    { icon: Coffee, value: '500+', label: 'Cups of Coffee' },
+    { icon: Users, value: '5+', label: 'Team Projects' },
+    { icon: Calendar, value: '2+', label: 'Years Learning' },
   ];
 
   return (
@@ -48,24 +48,23 @@ const About = () => {
               isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
             }`}>
               <h3 className="text-3xl font-bold text-gray-900 mb-6">
-                I'm a passionate developer who loves creating digital experiences
+                I'm a passionate Computer Science student who loves creating digital experiences
               </h3>
               
               <p className="text-lg text-gray-600 leading-relaxed">
-                With over 3 years of experience in web development, I specialize in creating 
-                modern, responsive, and user-friendly applications. My journey started with a 
-                curiosity about how websites work, and it has evolved into a passion for crafting 
-                beautiful digital experiences.
+                Currently pursuing my degree in Computer Science at Pak Austria Fachhochschule Institute of Applied Sciences and Technology, Haripur. 
+                I specialize in creating modern, responsive, and user-friendly applications. My journey started with a 
+                curiosity about how technology works, and it has evolved into a passion for crafting innovative digital solutions.
               </p>
 
               <p className="text-lg text-gray-600 leading-relaxed">
-                I believe in writing clean, maintainable code and staying up-to-date with the 
-                latest technologies. Whether it's a simple landing page or a complex web application, 
-                I approach each project with dedication and attention to detail.
+                I believe in writing clean, maintainable code and staying up-to-date with the latest technologies. 
+                Whether it's a simple web application or a complex system, I approach each project with dedication, 
+                creativity, and attention to detail.
               </p>
 
               <div className="flex flex-wrap gap-3 mt-8">
-                {['React', 'TypeScript', 'Node.js', 'Python', 'PostgreSQL', 'AWS'].map((tech) => (
+                {['Computer Science', 'Web Development', 'Software Engineering', 'Problem Solving', 'Team Collaboration', 'Continuous Learning'].map((tech) => (
                   <span
                     key={tech}
                     className="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors duration-200"
@@ -84,7 +83,7 @@ const About = () => {
               <div className="relative mb-8">
                 <div className="w-80 h-80 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-1 shadow-2xl">
                   <div className="w-full h-full bg-gray-200 rounded-2xl flex items-center justify-center">
-                    <span className="text-6xl font-bold text-gray-600">JS</span>
+                    <span className="text-6xl font-bold text-gray-600">SI</span>
                   </div>
                 </div>
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 opacity-20 animate-pulse"></div>

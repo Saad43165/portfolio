@@ -7,8 +7,8 @@ const Hero = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   
   const titles = [
-    'Full Stack Developer',
-    'UI/UX Designer',
+    'Computer Science Student',
+    'Web Developer',
     'Problem Solver',
     'Tech Enthusiast'
   ];
@@ -54,7 +54,7 @@ const Hero = () => {
           <div className="relative inline-block">
             <div className="w-32 h-32 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-full p-1 shadow-xl">
               <div className="w-full h-full bg-gray-200 rounded-full flex items-center justify-center">
-                <span className="text-4xl font-bold text-gray-600">JS</span>
+                <span className="text-4xl font-bold text-gray-600">SI</span>
               </div>
             </div>
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 opacity-20 animate-pulse"></div>
@@ -66,7 +66,7 @@ const Hero = () => {
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-6">
             Hi, I'm{' '}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              John Smith
+              Saad Ikram
             </span>
           </h1>
           
@@ -80,8 +80,8 @@ const Hero = () => {
           </div>
 
           <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-            Passionate about creating beautiful, functional, and user-friendly digital experiences. 
-            I specialize in modern web technologies and love bringing ideas to life through code.
+            Computer Science student at Pak Austria Fachhochschule Institute of Applied Sciences and Technology, Haripur. 
+            Passionate about creating innovative digital solutions and bringing ideas to life through code.
           </p>
 
           {/* CTA Buttons */}
