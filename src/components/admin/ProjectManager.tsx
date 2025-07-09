@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
 import { Project } from '../../types';
-import { Plus, Edit, Trash2, Eye, Github, ExternalLink, Calendar, Tag } from 'lucide-react';
+import { Plus, Edit, Trash2, Github, ExternalLink, Calendar, Tag, FolderOpen } from 'lucide-react';
 import ProjectForm from './ProjectForm';
 
 const ProjectManager = () => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
 import { Experience } from '../../types';
-import { X, Briefcase, Plus } from 'lucide-react';
+import { X } from 'lucide-react';
 
 interface ExperienceFormProps {
   experience?: Experience | null;

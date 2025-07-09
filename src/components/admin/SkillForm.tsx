@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
 import { Skill } from '../../types';
-import { X, Code, Star } from 'lucide-react';
+import { X, Code } from 'lucide-react';
 
 interface SkillFormProps {
   skill?: Skill | null;

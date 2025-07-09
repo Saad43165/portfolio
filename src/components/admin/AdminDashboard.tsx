@@ -10,9 +10,6 @@ import {
   Briefcase, 
   Settings, 
   LogOut,
-  Plus,
-  BarChart3,
-  Users,
   Eye
 } from 'lucide-react';
 import ProjectManager from './ProjectManager';

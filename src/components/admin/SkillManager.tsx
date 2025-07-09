@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
 import { Skill } from '../../types';
-import { Plus, Edit, Trash2, Code, Star } from 'lucide-react';
+import { Plus, Edit, Trash2, Code } from 'lucide-react';
 import SkillForm from './SkillForm';
 
 const SkillManager = () => {

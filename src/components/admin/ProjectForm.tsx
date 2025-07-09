@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useData } from '../../context/DataContext';
 import { Project } from '../../types';
-import { X, Upload, Link, Calendar, Tag, FileText, Video, Github, ExternalLink } from 'lucide-react';
+import { X, Upload, Video, Github, ExternalLink } from 'lucide-react';
 
 interface ProjectFormProps {
   project?: Project | null;

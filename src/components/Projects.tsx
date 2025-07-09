@@ -4,7 +4,6 @@ import { ExternalLink, Github, Zap, Shield, Smartphone, Globe } from 'lucide-rea
 
 const Projects = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const { projects } = useData();
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -69,8 +68,6 @@ const Projects = () => {
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                 }`}
                 style={{ transitionDelay: `${index * 150}ms` }}
-                onMouseEnter={() => setHoveredCard(index)}
-                onMouseLeave={() => setHoveredCard(null)}
               >
                 {/* Project Image */}
                 <div className="relative h-48 overflow-hidden">
