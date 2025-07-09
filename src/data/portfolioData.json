@@ -1,0 +1,175 @@
+{
+  "projects": [
+    {
+      "id": "project-1",
+      "title": "E-Commerce Platform",
+      "description": "A full-stack e-commerce platform built with React, Node.js, and MongoDB. Features include user authentication, product catalog, shopping cart, and payment integration.",
+      "longDescription": "This comprehensive e-commerce platform demonstrates modern web development practices with a focus on user experience and scalability. Built using the MERN stack, it includes advanced features like real-time inventory management, order tracking, and admin dashboard.",
+      "image": "https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "technologies": ["React", "Node.js", "MongoDB", "Express", "Stripe", "JWT"],
+      "features": ["User Authentication", "Product Management", "Shopping Cart", "Payment Integration", "Order Tracking", "Admin Dashboard"],
+      "githubUrl": "https://github.com/saadikram/ecommerce-platform",
+      "liveUrl": "https://ecommerce-demo.netlify.app",
+      "category": "Full Stack",
+      "status": "completed",
+      "startDate": "2024-01-15",
+      "endDate": "2024-03-20",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "project-2",
+      "title": "Task Management App",
+      "description": "A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.",
+      "longDescription": "This task management application showcases real-time collaboration features using WebSocket technology. Users can create projects, assign tasks, track progress, and communicate with team members in real-time.",
+      "image": "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "technologies": ["React", "TypeScript", "Socket.io", "Node.js", "PostgreSQL"],
+      "features": ["Real-time Updates", "Drag & Drop", "Team Collaboration", "Progress Tracking", "File Sharing"],
+      "githubUrl": "https://github.com/saadikram/task-manager",
+      "liveUrl": "https://taskmanager-demo.netlify.app",
+      "category": "Web App",
+      "status": "completed",
+      "startDate": "2024-02-01",
+      "endDate": "2024-04-15",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "project-3",
+      "title": "Weather Dashboard",
+      "description": "A responsive weather dashboard that provides current weather conditions, forecasts, and interactive maps using weather APIs.",
+      "longDescription": "This weather dashboard integrates multiple weather APIs to provide comprehensive weather information. Features include location-based weather, interactive maps, weather alerts, and historical data visualization.",
+      "image": "https://images.pexels.com/photos/1118873/pexels-photo-1118873.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "technologies": ["React", "Chart.js", "Weather API", "Geolocation", "CSS3"],
+      "features": ["Current Weather", "7-Day Forecast", "Interactive Maps", "Weather Alerts", "Location Search"],
+      "githubUrl": "https://github.com/saadikram/weather-dashboard",
+      "liveUrl": "https://weather-dashboard-demo.netlify.app",
+      "category": "Frontend",
+      "status": "completed",
+      "startDate": "2024-03-01",
+      "endDate": "2024-03-25",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "skills": [
+    {
+      "id": "skill-1",
+      "name": "React",
+      "level": 85,
+      "category": "Frontend Development",
+      "description": "Experienced in building modern web applications with React, including hooks, context API, and state management.",
+      "yearsOfExperience": 2,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "skill-2",
+      "name": "JavaScript",
+      "level": 90,
+      "category": "Frontend Development",
+      "description": "Strong foundation in JavaScript ES6+, including async/await, destructuring, and modern JavaScript features.",
+      "yearsOfExperience": 2.5,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "skill-3",
+      "name": "Node.js",
+      "level": 75,
+      "category": "Backend Development",
+      "description": "Experience building RESTful APIs and server-side applications with Node.js and Express.",
+      "yearsOfExperience": 1.5,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "skill-4",
+      "name": "MongoDB",
+      "level": 70,
+      "category": "Database",
+      "description": "Proficient in NoSQL database design, queries, and integration with Node.js applications.",
+      "yearsOfExperience": 1,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "skill-5",
+      "name": "TypeScript",
+      "level": 80,
+      "category": "Frontend Development",
+      "description": "Strong typing skills with TypeScript for building scalable and maintainable applications.",
+      "yearsOfExperience": 1.5,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "skill-6",
+      "name": "Tailwind CSS",
+      "level": 85,
+      "category": "Frontend Development",
+      "description": "Expert in utility-first CSS framework for rapid UI development and responsive design.",
+      "yearsOfExperience": 2,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "experiences": [
+    {
+      "id": "exp-1",
+      "title": "Frontend Developer Intern",
+      "company": "Tech Solutions Inc.",
+      "location": "Remote",
+      "startDate": "2023-06-01",
+      "endDate": "2023-08-31",
+      "description": "Worked on developing responsive web applications using React and TypeScript. Collaborated with the design team to implement pixel-perfect UI components and improved application performance by 30%.",
+      "technologies": ["React", "TypeScript", "Tailwind CSS", "Git", "Figma"],
+      "achievements": [
+        "Improved application loading speed by 30%",
+        "Implemented responsive design for mobile devices",
+        "Collaborated with cross-functional teams",
+        "Delivered 5 major features on time"
+      ],
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "exp-2",
+      "title": "Web Development Freelancer",
+      "company": "Self-Employed",
+      "location": "Haripur, Pakistan",
+      "startDate": "2023-09-01",
+      "endDate": "",
+      "description": "Providing web development services to local businesses and startups. Specializing in modern web applications using React, Node.js, and cloud deployment.",
+      "technologies": ["React", "Node.js", "MongoDB", "AWS", "Netlify"],
+      "achievements": [
+        "Completed 8+ client projects successfully",
+        "Maintained 100% client satisfaction rate",
+        "Reduced client website loading times by average 40%",
+        "Implemented SEO best practices for better search rankings"
+      ],
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "education": [
+    {
+      "id": "edu-1",
+      "degree": "Bachelor of Computer Science",
+      "institution": "Pak Austria Fachhochschule Institute of Applied Sciences and Technology",
+      "location": "Haripur, Pakistan",
+      "startDate": "2022-09-01",
+      "endDate": "",
+      "gpa": "3.7/4.0",
+      "description": "Currently pursuing a comprehensive Computer Science degree with focus on software engineering, web development, and data structures. Active participant in coding competitions and tech societies.",
+      "achievements": [
+        "Dean's List for academic excellence",
+        "Winner of University Coding Competition 2023",
+        "President of Computer Science Society",
+        "Completed advanced courses in Data Structures and Algorithms"
+      ],
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
+  ]
+}
