@@ -1,5 +1,4 @@
 import React from 'react';
-import { useEffect } from 'react';
 import { useData } from '../context/DataContext';
 import Navigation from './Navigation';
 import Hero from './Hero';
@@ -10,12 +9,18 @@ import Contact from './Contact';
 import Footer from './Footer';
 
 const PortfolioLayout = () => {
-  const { refreshData } = useData();
+  const { isLoading } = useData();
 
-  // Refresh data when portfolio loads to ensure latest data is displayed
-  useEffect(() => {
-    refreshData();
-  }, [refreshData]);
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading portfolio...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">

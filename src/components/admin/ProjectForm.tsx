@@ -100,22 +100,13 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Ensure all required fields are filled
-    if (!formData.title.trim() || !formData.description.trim() || !formData.category.trim() || !formData.githubUrl.trim() || !formData.startDate) {
-      alert('Please fill in all required fields');
-      return;
-    }
-    
     if (project) {
       updateProject(project.id, formData);
     } else {
       addProject(formData);
     }
     
-    // Small delay to ensure data is saved
-    setTimeout(() => {
-      onClose();
-    }, 100);
+    onClose();
   };
 
   return (

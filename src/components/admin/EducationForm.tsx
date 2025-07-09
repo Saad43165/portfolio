@@ -57,12 +57,6 @@ const EducationForm: React.FC<EducationFormProps> = ({ education, onClose }) => 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Ensure all required fields are filled
-    if (!formData.degree.trim() || !formData.institution.trim() || !formData.location.trim() || !formData.startDate) {
-      alert('Please fill in all required fields');
-      return;
-    }
-    
     const submitData = {
       ...formData,
       endDate: isCurrentlyStudying ? '' : formData.endDate
@@ -74,10 +68,7 @@ const EducationForm: React.FC<EducationFormProps> = ({ education, onClose }) => 
       addEducation(submitData);
     }
     
-    // Small delay to ensure data is saved
-    setTimeout(() => {
-      onClose();
-    }, 100);
+    onClose();
   };
 
   const degreeTypes = [

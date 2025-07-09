@@ -18,7 +18,7 @@ interface DataContextType {
   addEducation: (education: Omit<Education, 'id' | 'createdAt' | 'updatedAt'>) => void;
   updateEducation: (id: string, education: Partial<Education>) => void;
   deleteEducation: (id: string) => void;
-  refreshData: () => void;
+  isLoading: boolean;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -36,9 +36,9 @@ interface DataProviderProps {
 }
 
 // Default sample data to demonstrate the portfolio
-const defaultProjects: Project[] = [
+const getDefaultProjects = (): Project[] => [
   {
-    id: 'sample-1',
+    id: 'sample-project-1',
     title: 'E-Commerce Platform',
     description: 'A full-stack e-commerce platform built with React, Node.js, and MongoDB. Features include user authentication, product catalog, shopping cart, and payment integration.',
     longDescription: 'This comprehensive e-commerce platform demonstrates modern web development practices with a focus on user experience and scalability. Built using the MERN stack, it includes advanced features like real-time inventory management, order tracking, and admin dashboard.',
@@ -48,14 +48,14 @@ const defaultProjects: Project[] = [
     githubUrl: 'https://github.com/saadikram/ecommerce-platform',
     liveUrl: 'https://ecommerce-demo.netlify.app',
     category: 'Full Stack',
-    status: 'completed',
+    status: 'completed' as const,
     startDate: '2024-01-15',
     endDate: '2024-03-20',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
   {
-    id: 'sample-2',
+    id: 'sample-project-2',
     title: 'Task Management App',
     description: 'A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.',
     longDescription: 'This task management application showcases real-time collaboration features using WebSocket technology. Users can create projects, assign tasks, track progress, and communicate with team members in real-time.',
@@ -65,14 +65,14 @@ const defaultProjects: Project[] = [
     githubUrl: 'https://github.com/saadikram/task-manager',
     liveUrl: 'https://taskmanager-demo.netlify.app',
     category: 'Web App',
-    status: 'completed',
+    status: 'completed' as const,
     startDate: '2024-02-01',
     endDate: '2024-04-15',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
   {
-    id: 'sample-3',
+    id: 'sample-project-3',
     title: 'Weather Dashboard',
     description: 'A responsive weather dashboard that provides current weather conditions, forecasts, and interactive maps using weather APIs.',
     longDescription: 'This weather dashboard integrates multiple weather APIs to provide comprehensive weather information. Features include location-based weather, interactive maps, weather alerts, and historical data visualization.',
@@ -82,7 +82,7 @@ const defaultProjects: Project[] = [
     githubUrl: 'https://github.com/saadikram/weather-dashboard',
     liveUrl: 'https://weather-dashboard-demo.netlify.app',
     category: 'Frontend',
-    status: 'completed',
+    status: 'completed' as const,
     startDate: '2024-03-01',
     endDate: '2024-03-25',
     createdAt: new Date().toISOString(),
@@ -90,9 +90,9 @@ const defaultProjects: Project[] = [
   }
 ];
 
-const defaultSkills: Skill[] = [
+const getDefaultSkills = (): Skill[] => [
   {
-    id: 'skill-1',
+    id: 'sample-skill-1',
     name: 'React',
     level: 85,
     category: 'Frontend Development',
@@ -102,7 +102,7 @@ const defaultSkills: Skill[] = [
     updatedAt: new Date().toISOString(),
   },
   {
-    id: 'skill-2',
+    id: 'sample-skill-2',
     name: 'JavaScript',
     level: 90,
     category: 'Frontend Development',
@@ -112,7 +112,7 @@ const defaultSkills: Skill[] = [
     updatedAt: new Date().toISOString(),
   },
   {
-    id: 'skill-3',
+    id: 'sample-skill-3',
     name: 'Node.js',
     level: 75,
     category: 'Backend Development',
@@ -122,7 +122,7 @@ const defaultSkills: Skill[] = [
     updatedAt: new Date().toISOString(),
   },
   {
-    id: 'skill-4',
+    id: 'sample-skill-4',
     name: 'MongoDB',
     level: 70,
     category: 'Database',
@@ -132,7 +132,7 @@ const defaultSkills: Skill[] = [
     updatedAt: new Date().toISOString(),
   },
   {
-    id: 'skill-5',
+    id: 'sample-skill-5',
     name: 'TypeScript',
     level: 80,
     category: 'Frontend Development',
@@ -142,7 +142,7 @@ const defaultSkills: Skill[] = [
     updatedAt: new Date().toISOString(),
   },
   {
-    id: 'skill-6',
+    id: 'sample-skill-6',
     name: 'Tailwind CSS',
     level: 85,
     category: 'Frontend Development',
@@ -153,9 +153,9 @@ const defaultSkills: Skill[] = [
   }
 ];
 
-const defaultExperiences: Experience[] = [
+const getDefaultExperiences = (): Experience[] => [
   {
-    id: 'exp-1',
+    id: 'sample-exp-1',
     title: 'Frontend Developer Intern',
     company: 'Tech Solutions Inc.',
     location: 'Remote',
@@ -171,12 +171,30 @@ const defaultExperiences: Experience[] = [
     ],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'sample-exp-2',
+    title: 'Web Development Freelancer',
+    company: 'Self-Employed',
+    location: 'Haripur, Pakistan',
+    startDate: '2023-09-01',
+    endDate: '',
+    description: 'Providing web development services to local businesses and startups. Specializing in modern web applications using React, Node.js, and cloud deployment.',
+    technologies: ['React', 'Node.js', 'MongoDB', 'AWS', 'Netlify'],
+    achievements: [
+      'Completed 8+ client projects successfully',
+      'Maintained 100% client satisfaction rate',
+      'Reduced client website loading times by average 40%',
+      'Implemented SEO best practices for better search rankings'
+    ],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   }
 ];
 
-const defaultEducation: Education[] = [
+const getDefaultEducation = (): Education[] => [
   {
-    id: 'edu-1',
+    id: 'sample-edu-1',
     degree: 'Bachelor of Computer Science',
     institution: 'Pak Austria Fachhochschule Institute of Applied Sciences and Technology',
     location: 'Haripur, Pakistan',
@@ -200,91 +218,85 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [education, setEducation] = useState<Education[]>([]);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Initialize data from localStorage or use defaults
-  const initializeData = () => {
-    try {
-      const savedProjects = localStorage.getItem('portfolio_projects');
-      const savedSkills = localStorage.getItem('portfolio_skills');
-      const savedExperiences = localStorage.getItem('portfolio_experiences');
-      const savedEducation = localStorage.getItem('portfolio_education');
-
-      // Use saved data if available, otherwise use defaults
-      setProjects(savedProjects ? JSON.parse(savedProjects) : defaultProjects);
-      setSkills(savedSkills ? JSON.parse(savedSkills) : defaultSkills);
-      setExperiences(savedExperiences ? JSON.parse(savedExperiences) : defaultExperiences);
-      setEducation(savedEducation ? JSON.parse(savedEducation) : defaultEducation);
-
-      // If no saved data exists, save the defaults
-      if (!savedProjects) localStorage.setItem('portfolio_projects', JSON.stringify(defaultProjects));
-      if (!savedSkills) localStorage.setItem('portfolio_skills', JSON.stringify(defaultSkills));
-      if (!savedExperiences) localStorage.setItem('portfolio_experiences', JSON.stringify(defaultExperiences));
-      if (!savedEducation) localStorage.setItem('portfolio_education', JSON.stringify(defaultEducation));
-
-      setIsInitialized(true);
-    } catch (error) {
-      console.error('Error initializing data:', error);
-      // Fallback to defaults if localStorage is corrupted
-      setProjects(defaultProjects);
-      setSkills(defaultSkills);
-      setExperiences(defaultExperiences);
-      setEducation(defaultEducation);
-      setIsInitialized(true);
-    }
-  };
-
-  // Load data on mount
+  // Initialize data on mount
   useEffect(() => {
+    const initializeData = () => {
+      try {
+        // Get data from localStorage or use defaults
+        const savedProjects = localStorage.getItem('portfolio_projects');
+        const savedSkills = localStorage.getItem('portfolio_skills');
+        const savedExperiences = localStorage.getItem('portfolio_experiences');
+        const savedEducation = localStorage.getItem('portfolio_education');
+
+        // Parse saved data or use defaults
+        const projectsData = savedProjects ? JSON.parse(savedProjects) : getDefaultProjects();
+        const skillsData = savedSkills ? JSON.parse(savedSkills) : getDefaultSkills();
+        const experiencesData = savedExperiences ? JSON.parse(savedExperiences) : getDefaultExperiences();
+        const educationData = savedEducation ? JSON.parse(savedEducation) : getDefaultEducation();
+
+        // Set state
+        setProjects(projectsData);
+        setSkills(skillsData);
+        setExperiences(experiencesData);
+        setEducation(educationData);
+
+        // Save defaults to localStorage if not already saved
+        if (!savedProjects) {
+          localStorage.setItem('portfolio_projects', JSON.stringify(projectsData));
+        }
+        if (!savedSkills) {
+          localStorage.setItem('portfolio_skills', JSON.stringify(skillsData));
+        }
+        if (!savedExperiences) {
+          localStorage.setItem('portfolio_experiences', JSON.stringify(experiencesData));
+        }
+        if (!savedEducation) {
+          localStorage.setItem('portfolio_education', JSON.stringify(educationData));
+        }
+
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error initializing data:', error);
+        // Fallback to defaults
+        setProjects(getDefaultProjects());
+        setSkills(getDefaultSkills());
+        setExperiences(getDefaultExperiences());
+        setEducation(getDefaultEducation());
+        setIsLoading(false);
+      }
+    };
+
     initializeData();
   }, []);
 
-  // Save to localStorage whenever data changes (only after initialization)
+  // Save to localStorage whenever data changes
   useEffect(() => {
-    if (isInitialized) {
-      try {
-        localStorage.setItem('portfolio_projects', JSON.stringify(projects));
-      } catch (error) {
-        console.error('Error saving projects:', error);
-      }
+    if (!isLoading) {
+      localStorage.setItem('portfolio_projects', JSON.stringify(projects));
     }
-  }, [projects, isInitialized]);
+  }, [projects, isLoading]);
 
   useEffect(() => {
-    if (isInitialized) {
-      try {
-        localStorage.setItem('portfolio_skills', JSON.stringify(skills));
-      } catch (error) {
-        console.error('Error saving skills:', error);
-      }
+    if (!isLoading) {
+      localStorage.setItem('portfolio_skills', JSON.stringify(skills));
     }
-  }, [skills, isInitialized]);
+  }, [skills, isLoading]);
 
   useEffect(() => {
-    if (isInitialized) {
-      try {
-        localStorage.setItem('portfolio_experiences', JSON.stringify(experiences));
-      } catch (error) {
-        console.error('Error saving experiences:', error);
-      }
+    if (!isLoading) {
+      localStorage.setItem('portfolio_experiences', JSON.stringify(experiences));
     }
-  }, [experiences, isInitialized]);
+  }, [experiences, isLoading]);
 
   useEffect(() => {
-    if (isInitialized) {
-      try {
-        localStorage.setItem('portfolio_education', JSON.stringify(education));
-      } catch (error) {
-        console.error('Error saving education:', error);
-      }
+    if (!isLoading) {
+      localStorage.setItem('portfolio_education', JSON.stringify(education));
     }
-  }, [education, isInitialized]);
+  }, [education, isLoading]);
 
   const generateId = () => Date.now().toString() + Math.random().toString(36).substr(2, 9);
-
-  const refreshData = () => {
-    initializeData();
-  };
 
   const addProject = (projectData: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) => {
     const newProject: Project = {
@@ -293,28 +305,19 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    setProjects(prev => {
-      const updated = [...prev, newProject];
-      return updated;
-    });
+    setProjects(prev => [...prev, newProject]);
   };
 
   const updateProject = (id: string, projectData: Partial<Project>) => {
-    setProjects(prev => {
-      const updated = prev.map(project => 
-        project.id === id 
-          ? { ...project, ...projectData, updatedAt: new Date().toISOString() }
-          : project
-      );
-      return updated;
-    });
+    setProjects(prev => prev.map(project => 
+      project.id === id 
+        ? { ...project, ...projectData, updatedAt: new Date().toISOString() }
+        : project
+    ));
   };
 
   const deleteProject = (id: string) => {
-    setProjects(prev => {
-      const updated = prev.filter(project => project.id !== id);
-      return updated;
-    });
+    setProjects(prev => prev.filter(project => project.id !== id));
   };
 
   const addSkill = (skillData: Omit<Skill, 'id' | 'createdAt' | 'updatedAt'>) => {
@@ -324,28 +327,19 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    setSkills(prev => {
-      const updated = [...prev, newSkill];
-      return updated;
-    });
+    setSkills(prev => [...prev, newSkill]);
   };
 
   const updateSkill = (id: string, skillData: Partial<Skill>) => {
-    setSkills(prev => {
-      const updated = prev.map(skill => 
-        skill.id === id 
-          ? { ...skill, ...skillData, updatedAt: new Date().toISOString() }
-          : skill
-      );
-      return updated;
-    });
+    setSkills(prev => prev.map(skill => 
+      skill.id === id 
+        ? { ...skill, ...skillData, updatedAt: new Date().toISOString() }
+        : skill
+    ));
   };
 
   const deleteSkill = (id: string) => {
-    setSkills(prev => {
-      const updated = prev.filter(skill => skill.id !== id);
-      return updated;
-    });
+    setSkills(prev => prev.filter(skill => skill.id !== id));
   };
 
   const addExperience = (experienceData: Omit<Experience, 'id' | 'createdAt' | 'updatedAt'>) => {
@@ -355,28 +349,19 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    setExperiences(prev => {
-      const updated = [...prev, newExperience];
-      return updated;
-    });
+    setExperiences(prev => [...prev, newExperience]);
   };
 
   const updateExperience = (id: string, experienceData: Partial<Experience>) => {
-    setExperiences(prev => {
-      const updated = prev.map(experience => 
-        experience.id === id 
-          ? { ...experience, ...experienceData, updatedAt: new Date().toISOString() }
-          : experience
-      );
-      return updated;
-    });
+    setExperiences(prev => prev.map(experience => 
+      experience.id === id 
+        ? { ...experience, ...experienceData, updatedAt: new Date().toISOString() }
+        : experience
+    ));
   };
 
   const deleteExperience = (id: string) => {
-    setExperiences(prev => {
-      const updated = prev.filter(experience => experience.id !== id);
-      return updated;
-    });
+    setExperiences(prev => prev.filter(experience => experience.id !== id));
   };
 
   const addEducation = (educationData: Omit<Education, 'id' | 'createdAt' | 'updatedAt'>) => {
@@ -386,28 +371,19 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    setEducation(prev => {
-      const updated = [...prev, newEducation];
-      return updated;
-    });
+    setEducation(prev => [...prev, newEducation]);
   };
 
   const updateEducation = (id: string, educationData: Partial<Education>) => {
-    setEducation(prev => {
-      const updated = prev.map(edu => 
-        edu.id === id 
-          ? { ...edu, ...educationData, updatedAt: new Date().toISOString() }
-          : edu
-      );
-      return updated;
-    });
+    setEducation(prev => prev.map(edu => 
+      edu.id === id 
+        ? { ...edu, ...educationData, updatedAt: new Date().toISOString() }
+        : edu
+    ));
   };
 
   const deleteEducation = (id: string) => {
-    setEducation(prev => {
-      const updated = prev.filter(edu => edu.id !== id);
-      return updated;
-    });
+    setEducation(prev => prev.filter(edu => edu.id !== id));
   };
 
   return (
@@ -428,7 +404,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       addEducation,
       updateEducation,
       deleteEducation,
-      refreshData,
+      isLoading,
     }}>
       {children}
     </DataContext.Provider>

@@ -30,22 +30,13 @@ const SkillForm: React.FC<SkillFormProps> = ({ skill, onClose }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Ensure all required fields are filled
-    if (!formData.name.trim() || !formData.category.trim()) {
-      alert('Please fill in all required fields');
-      return;
-    }
-    
     if (skill) {
       updateSkill(skill.id, formData);
     } else {
       addSkill(formData);
     }
     
-    // Small delay to ensure data is saved
-    setTimeout(() => {
-      onClose();
-    }, 100);
+    onClose();
   };
 
   const getLevelText = (level: number) => {
