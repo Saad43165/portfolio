@@ -37,6 +37,8 @@ const Navigation = () => {
     { name: 'Home', href: '#home', icon: Home },
     { name: 'About', href: '#about', icon: User },
     { name: 'Skills', href: '#skills', icon: Code },
+    { name: 'Experience', href: '#experience', icon: Briefcase },
+    { name: 'Education', href: '#education', icon: User }, // New Education item
     { name: 'Projects', href: '#projects', icon: Briefcase },
     { name: 'Contact', href: '#contact', icon: Mail },
   ];

@@ -32,7 +32,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose }) => {
   const [newTechnology, setNewTechnology] = useState('');
   const [newFeature, setNewFeature] = useState('');
   const [imagePreview, setImagePreview] = useState(project?.image || '');
-  const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [, setVideoFile] = useState<File | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;

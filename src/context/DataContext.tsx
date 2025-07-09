@@ -37,11 +37,43 @@ interface DataProviderProps {
 }
 
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
-  const [projects, setProjects] = useState<Project[]>(portfolioData.projects as Project[]);
-  const [skills, setSkills] = useState<Skill[]>(portfolioData.skills as Skill[]);
-  const [experiences, setExperiences] = useState<Experience[]>(portfolioData.experiences as Experience[]);
-  const [education, setEducation] = useState<Education[]>(portfolioData.education as Education[]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [projects, setProjects] = useState<Project[]>(() => {
+    const saved = localStorage.getItem('portfolioProjects');
+    return saved ? JSON.parse(saved) : portfolioData.projects;
+  });
+  const [skills, setSkills] = useState<Skill[]>(() => {
+    const saved = localStorage.getItem('portfolioSkills');
+    return saved ? JSON.parse(saved) : portfolioData.skills;
+  });
+  const [experiences, setExperiences] = useState<Experience[]>(() => {
+    const saved = localStorage.getItem('portfolioExperiences');
+    return saved ? JSON.parse(saved) : portfolioData.experiences;
+  });
+  const [education, setEducation] = useState<Education[]>(() => {
+    const saved = localStorage.getItem('portfolioEducation');
+    return saved ? JSON.parse(saved) : portfolioData.education;
+  });
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('portfolioProjects', JSON.stringify(projects));
+  }, [projects]);
+
+  useEffect(() => {
+    localStorage.setItem('portfolioSkills', JSON.stringify(skills));
+  }, [skills]);
+
+  useEffect(() => {
+    localStorage.setItem('portfolioExperiences', JSON.stringify(experiences));
+  }, [experiences]);
+
+  useEffect(() => {
+    localStorage.setItem('portfolioEducation', JSON.stringify(education));
+  }, [education]);
 
   const generateId = () => Date.now().toString() + Math.random().toString(36).substr(2, 9);
 

@@ -1,5 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Mail, MapPin, Phone, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import {
+  Mail,
+  MapPin,
+  Phone,
+  Send,
+  CheckCircle,
+  AlertCircle,
+} from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -39,34 +47,32 @@ const Contact = () => {
     setIsSubmitting(true);
     setFormStatus('idle');
 
-    // Basic validation
-    if (!formData.name.trim()) {
+    if (!formData.name.trim() || !formData.email.trim() || formData.message.length < 10) {
       setFormStatus('error');
       setIsSubmitting(false);
       return;
     }
 
-    if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    try {
+      await emailjs.send(
+        'service_ltxmaof',
+        'template_c5cgcqd',
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+        },
+        '9zVe-12Cv7X-mbwHq'
+      );
+
+      setFormStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error('EmailJS Error:', error);
       setFormStatus('error');
-      setIsSubmitting(false);
-      return;
     }
 
-    if (!formData.message.trim() || formData.message.length < 10) {
-      setFormStatus('error');
-      setIsSubmitting(false);
-      return;
-    }
-
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    setFormStatus('success');
     setIsSubmitting(false);
-    setFormData({ name: '', email: '', message: '' });
-
-    // Reset success message after 5 seconds
-    setTimeout(() => setFormStatus('idle'), 5000);
   };
 
   const contactInfo = [
@@ -85,7 +91,7 @@ const Contact = () => {
     {
       icon: MapPin,
       label: 'Location',
-      value: 'Haripur, Pakistan',
+      value: 'Chakwal, Pakistan',
       href: '#'
     }
   ];
@@ -142,23 +148,7 @@ const Contact = () => {
                 ))}
               </div>
 
-              {/* Social Links */}
-              <div className={`pt-8 transition-all duration-1000 delay-700 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-              }`}>
-                <h4 className="text-lg font-semibold text-gray-900 mb-4">Follow me on</h4>
-                <div className="flex space-x-4">
-                  {['GitHub', 'LinkedIn', 'Twitter'].map((platform) => (
-                    <a
-                      key={platform}
-                      href="#"
-                      className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-blue-100 hover:text-blue-600 transition-colors duration-200"
-                    >
-                      {platform}
-                    </a>
-                  ))}
-                </div>
-              </div>
+              
             </div>
 
             {/* Contact Form */}
@@ -210,11 +200,10 @@ const Contact = () => {
                     required
                     rows={6}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 resize-none"
-                    placeholder="Tell me about your project..."
+                    placeholder="Details..."
                   />
                 </div>
 
-                {/* Form Status Messages */}
                 {formStatus === 'success' && (
                   <div className="p-4 bg-green-50 border border-green-200 rounded-lg flex items-center space-x-3 text-green-800">
                     <CheckCircle size={20} />

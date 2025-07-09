@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
-import { Project } from '../../types';
+import { Project, ProjectStatus } from '../../types';
 import { Plus, Edit, Trash2, Github, ExternalLink, Calendar, Tag, FolderOpen } from 'lucide-react';
 import ProjectForm from './ProjectForm';
 
@@ -29,7 +29,7 @@ const ProjectManager = () => {
     setEditingProject(null);
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: ProjectStatus) => {
     switch (status) {
       case 'completed':
         return 'bg-green-100 text-green-800';

@@ -142,7 +142,7 @@ const Projects = () => {
 
                   {/* Features */}
                   <div className="space-y-2 mb-6">
-                    {project.features.slice(0, 2).map((feature, featureIndex) => (
+                    {project.features.slice(0, 2).map((feature,) => (
                       <div key={feature} className="flex items-center text-sm text-gray-600">
                         <div className="w-2 h-2 bg-blue-600 rounded-full mr-2"></div>
                         {feature}
@@ -178,13 +178,7 @@ const Projects = () => {
             <div className={`text-center mt-12 transition-all duration-1000 delay-1000 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
-              <a
-                href="/admin"
-                className="group bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 inline-flex items-center space-x-2"
-              >
-                <span className="group-hover:mr-2 transition-all duration-300">Manage Projects</span>
-                <ExternalLink size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
-              </a>
+             
             </div>
           )}
           
@@ -197,12 +191,7 @@ const Projects = () => {
               <p className="text-gray-600 mb-4">
                 Projects will appear here once they are added through the admin panel.
               </p>
-              <a
-                href="/admin"
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
-              >
-                Add Projects
-              </a>
+             
             </div>
           )}
         </div>

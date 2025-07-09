@@ -1,92 +1,97 @@
 import React from 'react';
-import { Heart, ArrowUp } from 'lucide-react';
+import { Github, Linkedin, Instagram, ChevronUp } from 'lucide-react';
+import { Link } from 'react-scroll';
 
 const Footer = () => {
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
+  const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 text-white py-12 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          {/* Brand Section */}
-          <div className="space-y-4">
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Saad Ikram
-            </h3>
-            <p className="text-gray-400 leading-relaxed">
-              Computer Science Student passionate about creating innovative and functional digital solutions.
-            </p>
-            <div className="flex space-x-4">
-              {['GitHub', 'LinkedIn', 'Twitter'].map((platform) => (
-                <a
-                  key={platform}
-                  href="#"
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
-                >
-                  {platform}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div className="space-y-4">
-            <h4 className="text-lg font-semibold">Quick Links</h4>
-            <ul className="space-y-2">
-              {['Home', 'About', 'Skills', 'Projects', 'Contact'].map((item) => (
-                <li key={item}>
-                  <a
-                    href={`#${item.toLowerCase()}`}
-                    className="text-gray-400 hover:text-white transition-colors duration-200"
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div className="space-y-4">
-            <h4 className="text-lg font-semibold">Get in Touch</h4>
-            <div className="space-y-2 text-gray-400">
-              <p>saadnaz43165@gmail.com</p>
-              <p>03414279749</p>
-              <p>Haripur, Pakistan</p>
-            </div>
-          </div>
+    <footer className="bg-gradient-to-b from-gray-900 via-gray-950 to-black text-white pt-16 pb-8 px-6">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left">
+        {/* Left: Profile */}
+        <div className="space-y-4">
+          <h3 className="text-3xl font-extrabold tracking-tight">Saad Ikram</h3>
+          <p className="text-gray-400 leading-relaxed">
+            Passionate Flutter Developer, deeply focused on performance, UI/UX, and problem solving.
+          </p>
         </div>
 
-        <div className="border-t border-gray-800 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm flex items-center">
-              © 2024 Saad Ikram. Made with <Heart size={16} className="mx-1 text-red-500" /> and React
-            </p>
-            <div className="flex items-center space-x-4 mt-4 md:mt-0">
-              <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors duration-200">
-                Privacy Policy
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors duration-200">
-                Terms of Service
-              </a>
-            </div>
+       {/* Middle: Quick Links */}
+<div className="space-y-4">
+  <h4 className="text-xl font-semibold">Quick Links</h4>
+  <ul className="space-y-2 text-gray-400">
+    {[
+      { label: 'Home', to: 'home' },
+      { label: 'About', to: 'about' },
+      { label: 'Skills', to: 'skills' },
+      { label: 'Experience', to: 'experience' },
+      { label: 'Education', to: 'education' },
+      { label: 'Projects', to: 'projects' },
+      { label: 'Contact', to: 'contact' }
+    ].map((link) => (
+      <li key={link.to}>
+        <a
+          href={`#${link.to}`}
+          className="hover:text-white transition-colors duration-200 cursor-pointer"
+        >
+          {link.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+
+        {/* Right: Social Icons */}
+        <div className="space-y-4">
+          <h4 className="text-xl font-semibold">Connect with Me</h4>
+          <div className="flex justify-center md:justify-start gap-4">
+            <a
+              href="https://github.com/Saad43165"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              className="hover:scale-110 text-gray-400 hover:text-white transition-transform duration-300"
+            >
+              <Github size={22} />
+            </a>
+            <a
+              href="https://linkedin.com/in/saadikram"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className="hover:scale-110 text-gray-400 hover:text-white transition-transform duration-300"
+            >
+              <Linkedin size={22} />
+            </a>
+            <a
+              href="https://www.instagram.com/the__bluesss"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="hover:scale-110 text-gray-400 hover:text-white transition-transform duration-300"
+            >
+              <Instagram size={22} />
+            </a>
           </div>
         </div>
       </div>
 
-      {/* Back to Top Button */}
-      <button
-        onClick={scrollToTop}
-        className="fixed bottom-8 right-8 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 z-50"
-        aria-label="Back to top"
-      >
-        <ArrowUp size={20} />
-      </button>
+      {/* Bottom Section */}
+      <div className="mt-12 flex flex-col sm:flex-row justify-between items-center gap-4 text-gray-500 text-sm border-t border-gray-800 pt-6">
+        <p>© {year} Saad Ikram. All rights reserved.</p>
+
+        {/* Back to top button */}
+        <Link
+          to="hero"
+          smooth={true}
+          duration={500}
+          className="flex items-center space-x-1 hover:text-white transition-colors cursor-pointer"
+        >
+          <ChevronUp size={18} />
+          <span>Back to Top</span>
+        </Link>
+      </div>
     </footer>
   );
 };

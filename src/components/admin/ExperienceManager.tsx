@@ -78,7 +78,7 @@ const ExperienceManager = () => {
       <div className="space-y-6">
         {experiences
           .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime())
-          .map((experience, index) => (
+          .map((experience) => (
             <div key={experience.id} className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-start space-x-4">

@@ -1,30 +1,31 @@
+export type ProjectStatus = 'in-progress' | 'completed' | 'planned';
+
 export interface Project {
   id: string;
   title: string;
   description: string;
-  longDescription?: string;
+  longDescription: string;
   image: string;
-  videoUrl?: string;
   technologies: string[];
   features: string[];
   githubUrl: string;
-  liveUrl?: string;
+  liveUrl: string;
   category: string;
-  status: 'completed' | 'in-progress' | 'planned';
+  status: ProjectStatus;
   startDate: string;
-  endDate?: string;
+  endDate: string;
   createdAt: string;
   updatedAt: string;
+  videoUrl?: string;
 }
 
 export interface Skill {
   id: string;
   name: string;
-  level: number;
+  level: number; // 0-100
   category: string;
-  icon?: string;
-  description?: string;
-  yearsOfExperience?: number;
+  description: string;
+  yearsOfExperience: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -35,7 +36,7 @@ export interface Experience {
   company: string;
   location: string;
   startDate: string;
-  endDate?: string;
+  endDate: string;
   description: string;
   technologies: string[];
   achievements: string[];
@@ -49,17 +50,35 @@ export interface Education {
   institution: string;
   location: string;
   startDate: string;
-  endDate?: string;
-  gpa?: string;
-  description?: string;
+  endDate: string;
+  gpa: string;
+  description: string;
   achievements: string[];
   createdAt: string;
   updatedAt: string;
 }
 
+// Optional: Interface for "About Me" if it becomes more complex
+export interface About {
+  id?: string; // Optional if tied to a specific record
+  content: string; // Current string data
+  createdAt?: string; // Optional for tracking
+  updatedAt?: string; // Optional for tracking
+  // Add more fields as needed (e.g., bio, contact, imageUrl)
+}
 export interface AdminUser {
   id: string;
   username: string;
   email: string;
-  role: 'admin' | 'user';
+  role: 'admin' | 'editor' | 'viewer'; // Adjust roles as needed
 }
+export interface AboutData {
+  heading: string;
+  paragraphs: string[];
+  highlights: string[];
+  stats: { label: string; value: string }[];
+  projectsCompleted: number;
+  teamProjects: number;
+  learningYears: number;
+}
+

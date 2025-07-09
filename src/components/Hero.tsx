@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ChevronDown, Github, Linkedin, Mail, Download } from 'lucide-react';
+import { ChevronDown, Github, Linkedin, Download } from 'lucide-react';
 
 const Hero = () => {
   const [displayText, setDisplayText] = useState('');
@@ -7,10 +7,11 @@ const Hero = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   
   const titles = [
-    'Computer Science Student',
-    'Web Developer',
-    'Problem Solver',
-    'Tech Enthusiast'
+    'Software Engineering Student',
+    'Android Developer',
+    'Flutter Developer',
+    'Java Developer',
+    'Full Stack Developer'
   ];
 
   useEffect(() => {
@@ -50,16 +51,25 @@ const Hero = () => {
 
       <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
         {/* Profile Image */}
-        <div className="mb-8 animate-fadeInUp">
-          <div className="relative inline-block">
-            <div className="w-32 h-32 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-full p-1 shadow-xl">
-              <div className="w-full h-full bg-gray-200 rounded-full flex items-center justify-center">
-                <span className="text-4xl font-bold text-gray-600">SI</span>
-              </div>
-            </div>
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 opacity-20 animate-pulse"></div>
-          </div>
-        </div>
+      <div className="mb-8 animate-fadeInUp">
+  <div className="relative inline-block">
+    {/* Gradient Border */}
+    <div className="w-32 h-32 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-full p-1 shadow-xl">
+      <div className="w-full h-full bg-gray-200 rounded-full overflow-hidden">
+        <img
+          src="/image.png" // ✅ Ensure this path is correct and image is inside public/
+          alt="Profile"
+          className="w-full h-full object-cover"
+        />
+      </div>
+    </div>
+
+    {/* Glowing background - no animation now */}
+    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 opacity-20"></div>
+  </div>
+</div>
+
+
 
         {/* Main Content */}
         <div className="animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
@@ -80,40 +90,69 @@ const Hero = () => {
           </div>
 
           <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-            Computer Science student at Pak Austria Fachhochschule Institute of Applied Sciences and Technology, Haripur. 
+            Software Engineering student at Pak Austria Fachhochschule Institute of Applied Sciences and Technology, Haripur. 
             Passionate about creating innovative digital solutions and bringing ideas to life through code.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <button className="group bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2">
-              <span>View My Work</span>
-              <ChevronDown size={20} className="group-hover:translate-y-1 transition-transform duration-300" />
-            </button>
+            <a href="#projects">
+    <button className="group bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2">
+      <span>View My Work</span>
+      <ChevronDown size={20} className="group-hover:translate-y-1 transition-transform duration-300" />
+    </button>
+  </a>
             
-            <button className="group bg-white text-gray-800 px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-gray-200 hover:border-blue-300 flex items-center justify-center space-x-2">
-              <Download size={20} className="group-hover:translate-y-1 transition-transform duration-300" />
-              <span>Download CV</span>
-            </button>
+<a
+  href="/Saad_Ikram_Resume.pdf"
+  download="Saad_Ikram_Resume.pdf"
+  className="group bg-white text-gray-800 px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-gray-200 hover:border-blue-300 flex items-center justify-center space-x-2"
+>
+  <Download size={20} className="group-hover:translate-y-1 transition-transform duration-300" />
+  <span>Download Resume</span>
+</a>
+
           </div>
 
-          {/* Social Links */}
-          <div className="flex justify-center space-x-6">
-            {[
-              { Icon: Github, href: '#', label: 'GitHub' },
-              { Icon: Linkedin, href: '#', label: 'LinkedIn' },
-              { Icon: Mail, href: '#contact', label: 'Email' },
-            ].map(({ Icon, href, label }) => (
-              <a
-                key={label}
-                href={href}
-                className="group p-3 bg-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 text-gray-600 hover:text-blue-600"
-                aria-label={label}
-              >
-                <Icon size={24} className="group-hover:scale-110 transition-transform duration-300" />
-              </a>
-            ))}
-          </div>
+         {/* Social Links */}
+<div className="flex justify-center space-x-6">
+  {[
+    {
+      Icon: Github,
+      href: 'https://github.com/Saad43165',
+      label: 'GitHub',
+    },
+    {
+      Icon: Linkedin,
+      href: 'https://linkedin.com/in/saadikram',
+      label: 'LinkedIn',
+    },
+  
+    {
+      Icon: () => (
+        <img
+          src="/instagram.svg" // ✅ Place an Instagram SVG or icon in public/ folder
+          alt="Instagram"
+          className="w-6 h-6"
+        />
+      ),
+      href: 'https://www.instagram.com/the__bluesss',
+      label: 'Instagram',
+    },
+  ].map(({ Icon, href, label }) => (
+    <a
+      key={label}
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group p-3 bg-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 text-gray-600 hover:text-blue-600"
+      aria-label={label}
+    >
+      <Icon />
+    </a>
+  ))}
+</div>
+
         </div>
       </div>
 

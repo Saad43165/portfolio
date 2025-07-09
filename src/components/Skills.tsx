@@ -151,12 +151,7 @@ const Skills = () => {
             <div className={`mt-16 text-center transition-all duration-1000 delay-1000 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
-              <a
-                href="/admin"
-                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-              >
-                Manage Skills
-              </a>
+              
             </div>
           )}
           
@@ -169,12 +164,7 @@ const Skills = () => {
               <p className="text-gray-600 mb-4">
                 Skills will appear here once they are added through the admin panel.
               </p>
-              <a
-                href="/admin"
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
-              >
-                Add Skills
-              </a>
+              
             </div>
           )}
         </div>
