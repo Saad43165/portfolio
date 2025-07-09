@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from '../../context/DataContext';
+import { useEffect } from 'react';
 import { 
   LayoutDashboard, 
   FolderOpen, 
@@ -24,7 +25,12 @@ type TabType = 'overview' | 'projects' | 'skills' | 'experience' | 'education' |
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
   const { user, logout } = useAuth();
-  const { projects, skills, experiences, education } = useData();
+  const { projects, skills, experiences, education, refreshData } = useData();
+
+  // Refresh data when component mounts to ensure latest data is displayed
+  useEffect(() => {
+    refreshData();
+  }, [refreshData]);
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
@@ -54,6 +60,10 @@ const AdminDashboard = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                onClick={() => {
+                  // Ensure data is saved before viewing portfolio
+                  refreshData();
+                }}
               >
                 <Eye size={16} />
                 <span>View Portfolio</span>

@@ -75,6 +75,12 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ experience, onClose }) 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Ensure all required fields are filled
+    if (!formData.title.trim() || !formData.company.trim() || !formData.location.trim() || !formData.startDate || !formData.description.trim()) {
+      alert('Please fill in all required fields');
+      return;
+    }
+    
     const submitData = {
       ...formData,
       endDate: isCurrentRole ? '' : formData.endDate
@@ -86,7 +92,10 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ experience, onClose }) 
       addExperience(submitData);
     }
     
-    onClose();
+    // Small delay to ensure data is saved
+    setTimeout(() => {
+      onClose();
+    }, 100);
   };
 
   return (
