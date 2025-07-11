@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useData } from '../context/DataContext';
 import { Code, Palette, Database, Globe, Smartphone, Zap } from 'lucide-react';
 

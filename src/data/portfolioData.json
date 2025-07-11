@@ -162,10 +162,22 @@
       "endDate": "",
       "gpa": "2.64/4.0",
       "description": "Currently pursuing a comprehensive Computer Science degree with focus on software engineering, web development, and data structures. Active participant in coding competitions and tech societies.",
-      "achievements": [
-             ],
+      "achievements": [],
       "createdAt": "2024-01-01T00:00:00.000Z",
       "updatedAt": "2024-01-01T00:00:00.000Z"
     }
-  ]
+  ],
+  "about": {
+    "heading": "I'm a passionate Software Engineering student who loves creating digital experiences",
+    "paragraphs": [
+      "Currently pursuing my degree in Software Engineering at Pak Austria Fachhochschule Institute of Applied Sciences and Technology, Haripur. I specialize in creating modern, responsive, and user-friendly applications.",
+      "I believe in writing clean, maintainable code and staying up-to-date with the latest technologies. Whether it's a simple web application or a complex system, I approach each project with dedication, creativity, and attention to detail."
+    ],
+    "highlights": ["Computer Science", "Web Development", "Software Engineering", "Problem Solving"],
+    "stats": [
+      { "label": "Projects Completed", "value": "10+" },
+      { "label": "Team Projects", "value": "5+" },
+      { "label": "Years Learning", "value": "2+" }
+    ]
+  }
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ChevronDown, Github, Linkedin, Download } from 'lucide-react';
+import { ChevronDown, Github, Linkedin, Download, Instagram } from 'lucide-react';
 
 const Hero = () => {
   const [displayText, setDisplayText] = useState('');
@@ -127,18 +127,13 @@ const Hero = () => {
       href: 'https://linkedin.com/in/saadikram',
       label: 'LinkedIn',
     },
-  
     {
-      Icon: () => (
-        <img
-          src="/instagram.svg" // ✅ Place an Instagram SVG or icon in public/ folder
-          alt="Instagram"
-          className="w-6 h-6"
-        />
-      ),
+      Icon: Instagram,
       href: 'https://www.instagram.com/the__bluesss',
-      label: 'Instagram',
+      label: 'LinkedIn',
     },
+  
+   
   ].map(({ Icon, href, label }) => (
     <a
       key={label}

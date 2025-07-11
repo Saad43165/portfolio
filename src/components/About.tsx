@@ -1,10 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useContext, useState } from 'react';
 import { Award, Users, Calendar } from 'lucide-react';
-import { aboutData } from '../data/about';
+import { motion, Variants } from 'framer-motion';
+import { useData } from '../context/DataContext';
+import { ThemeContext } from './PortfolioLayout';
 
 const About = () => {
+  const theme = useContext(ThemeContext);
+  const { aboutData } = useData();
   const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -23,111 +27,147 @@ const About = () => {
     return () => observer.disconnect();
   }, []);
 
-  const stats = [
-    {
-      icon: Award,
-      value: `${aboutData.projectsCompleted}+`,
-      label: 'Projects Completed',
+  const stats = aboutData.stats.map((stat, index) => ({
+    Icon: [Award, Users, Calendar][index % 3], // Capitalized to indicate it's a component
+    value: stat.value,
+    label: stat.label,
+  }));
+
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2 },
     },
-    {
-      icon: Users,
-      value: `${aboutData.teamProjects}+`,
-      label: 'Team Projects',
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: 'easeOut' },
     },
-    {
-      icon: Calendar,
-      value: `${aboutData.learningYears}+`,
-      label: 'Years Learning',
-    },
-  ];
+  };
 
   return (
-    <section id="about" ref={sectionRef} className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          className={`transition-all duration-1000 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
-        >
-          <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-              About <span className="text-blue-600">Me</span>
-            </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full"></div>
-          </div>
+    <motion.section
+      id="about"
+      ref={sectionRef}
+      className={`py-20 transition-colors duration-300 ${theme === 'light' ? 'bg-gray-50' : 'bg-gray-800'}`}
+      initial="hidden"
+      animate={isVisible ? 'visible' : 'hidden'}
+      variants={containerVariants}
+      aria-labelledby="about-heading"
+    >
+      <div className="container">
+        <motion.div className="text-center mb-16" variants={itemVariants}>
+          <h2
+            id="about-heading"
+            className={`text-4xl sm:text-5xl font-bold mb-4 transition-colors duration-300 ${
+              theme === 'light' ? 'text-gray-900' : 'text-white'
+            }`}
+          >
+            About <span className="gradient-text">Me</span>
+          </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full"></div>
+        </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left Column - Text Content */}
-            <div
-              className={`space-y-6 transition-all duration-1000 delay-200 ${
-                isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <motion.div className="space-y-6" variants={itemVariants}>
+            <h3
+              className={`text-3xl font-bold transition-colors duration-300 ${
+                theme === 'light' ? 'text-gray-900' : 'text-white'
               }`}
             >
-              <h3 className="text-3xl font-bold text-gray-900 mb-6">
-                {aboutData.heading}
-              </h3>
-
-              {aboutData.paragraphs.map((para, i) => (
-                <p key={i} className="text-lg text-gray-600 leading-relaxed">
-                  {para}
-                </p>
+              {aboutData.heading}
+            </h3>
+            {aboutData.paragraphs.map((para, i) => (
+              <p
+                key={i}
+                className={`text-lg leading-relaxed transition-colors duration-300 ${
+                  theme === 'light' ? 'text-gray-600' : 'text-gray-300'
+                } line-clamp-3`}
+              >
+                {para}
+              </p>
+            ))}
+            <div className="flex flex-wrap gap-3 mt-8">
+              {aboutData.highlights.map((highlight) => (
+                <span
+                  key={highlight}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 hover-glow ${
+                    theme === 'light'
+                      ? 'bg-blue-100 text-blue-800 hover:bg-blue-200'
+                      : 'bg-blue-900 text-blue-200 hover:bg-blue-800'
+                  }`}
+                >
+                  {highlight}
+                </span>
               ))}
+            </div>
+          </motion.div>
 
-              <div className="flex flex-wrap gap-3 mt-8">
-                {aboutData.highlights.map((highlight) => (
-                  <span
-                    key={highlight}
-                    className="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors duration-200"
-                  >
-                    {highlight}
-                  </span>
-                ))}
+          <motion.div variants={itemVariants}>
+            <div className="relative mb-8 w-80 h-80 mx-auto">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-[2px] shadow-2xl hover-glow"></div>
+              <div
+                className={`relative w-full h-full rounded-2xl overflow-hidden transition-colors duration-300 ${
+                  theme === 'light' ? 'bg-white' : 'bg-gray-700'
+                }`}
+              >
+                <img
+                  src="/saad_pic.JPG"
+                  alt="Profile picture of Saad Ikram"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
               </div>
             </div>
 
-            {/* Right Column - Image and Stats */}
-            <div
-              className={`transition-all duration-1000 delay-400 ${
-                isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'
-              }`}
-            >
-              {/* Profile Image */}
-              <div className="relative mb-8 w-80 h-80 mx-auto">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-[2px] shadow-2xl"></div>
-                <div className="relative w-full h-full rounded-2xl bg-white overflow-hidden">
-                  <img
-                    src="/saad_pic.JPG"
-                    alt="Profile"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-
-              {/* Stats Grid */}
-              <div className="grid grid-cols-2 gap-4">
-                {stats.map((stat, index) => (
-                  <div
-                    key={stat.label}
-                    className={`bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-all duration-300 transform hover:scale-105 ${
-                      isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                    }`}
-                    style={{ transitionDelay: `${600 + index * 100}ms` }}
-                  >
-                    <div className="flex justify-center mb-3">
-                      <div className="p-3 bg-blue-100 rounded-full">
-                        <stat.icon size={24} className="text-blue-600" />
-                      </div>
+            <div className="grid grid-cols-2 gap-4">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={stat.label}
+                  className={`p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-all duration-300 transform hover:scale-105 ${
+                    theme === 'light' ? 'bg-white' : 'bg-gray-700'
+                  }`}
+                  variants={itemVariants}
+                  style={{ transitionDelay: `${0.2 + index * 0.1}s` }}
+                >
+                  <div className="flex justify-center mb-3">
+                    <div
+                      className={`p-3 rounded-full ${
+                        theme === 'light' ? 'bg-blue-100' : 'bg-blue-900'
+                      }`}
+                    >
+                      <stat.Icon
+                        size={24}
+                        className={theme === 'light' ? 'text-blue-600' : 'text-blue-400'}
+                      />
                     </div>
-                    <div className="text-2xl font-bold text-gray-900 mb-2">{stat.value}</div>
-                    <div className="text-sm text-gray-600">{stat.label}</div>
                   </div>
-                ))}
-              </div>
+                  <div
+                    className={`text-2xl font-bold mb-2 transition-colors duration-300 ${
+                      theme === 'light' ? 'text-gray-900' : 'text-white'
+                    }`}
+                  >
+                    {stat.value}
+                  </div>
+                  <div
+                    className={`text-sm transition-colors duration-300 ${
+                      theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                    }`}
+                  >
+                    {stat.label}
+                  </div>
+                </motion.div>
+              ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

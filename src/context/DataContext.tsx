@@ -1,12 +1,20 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Project, Skill, Experience, Education } from '../types';
 import portfolioData from '../data/portfolioData.json';
+
+interface AboutData {
+  heading: string;
+  paragraphs: string[];
+  highlights: string[];
+  stats: { label: string; value: string }[];
+}
 
 interface DataContextType {
   projects: Project[];
   skills: Skill[];
   experiences: Experience[];
   education: Education[];
+  aboutData: AboutData;
   addProject: (project: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) => void;
   updateProject: (id: string, project: Partial<Project>) => void;
   deleteProject: (id: string) => void;
@@ -19,10 +27,31 @@ interface DataContextType {
   addEducation: (education: Omit<Education, 'id' | 'createdAt' | 'updatedAt'>) => void;
   updateEducation: (id: string, education: Partial<Education>) => void;
   deleteEducation: (id: string) => void;
+  updateAboutData: (about: Partial<AboutData>) => void;
+  resetAboutData: () => void;
   isLoading: boolean;
 }
 
-const DataContext = createContext<DataContextType | undefined>(undefined);
+const defaultAbout: AboutData = {
+  heading: "I'm a passionate Software Engineering student who loves creating digital experiences",
+  paragraphs: [
+    "Currently pursuing my degree in Software Engineering at Pak Austria Fachhochschule Institute of Applied Sciences and Technology, Haripur. I specialize in creating modern, responsive, and user-friendly applications.",
+    "I believe in writing clean, maintainable code and staying up-to-date with the latest technologies. Whether it's a simple web application or a complex system, I approach each project with dedication, creativity, and attention to detail.",
+  ],
+  highlights: ['Computer Science', 'Web Development', 'Software Engineering', 'Problem Solving'],
+  stats: [
+    { label: 'Projects Completed', value: '10+' },
+    { label: 'Team Projects', value: '5+' },
+    { label: 'Years Learning', value: '2+' },
+  ],
+};
+
+const defaultProjects: Project[] = [];
+const defaultSkills: Skill[] = [];
+const defaultExperiences: Experience[] = [];
+const defaultEducation: Education[] = [];
+
+export const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const useData = () => {
   const context = useContext(DataContext);
@@ -39,20 +68,49 @@ interface DataProviderProps {
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [projects, setProjects] = useState<Project[]>(() => {
-    const saved = localStorage.getItem('portfolioProjects');
-    return saved ? JSON.parse(saved) : portfolioData.projects;
+    try {
+      const saved = localStorage.getItem('portfolioProjects');
+      return saved ? JSON.parse(saved) : portfolioData?.projects ?? defaultProjects;
+    } catch (error) {
+      console.error('Error loading portfolioProjects from localStorage:', error);
+      return portfolioData?.projects ?? defaultProjects;
+    }
   });
   const [skills, setSkills] = useState<Skill[]>(() => {
-    const saved = localStorage.getItem('portfolioSkills');
-    return saved ? JSON.parse(saved) : portfolioData.skills;
+    try {
+      const saved = localStorage.getItem('portfolioSkills');
+      return saved ? JSON.parse(saved) : portfolioData?.skills ?? defaultSkills;
+    } catch (error) {
+      console.error('Error loading portfolioSkills from localStorage:', error);
+      return portfolioData?.skills ?? defaultSkills;
+    }
   });
   const [experiences, setExperiences] = useState<Experience[]>(() => {
-    const saved = localStorage.getItem('portfolioExperiences');
-    return saved ? JSON.parse(saved) : portfolioData.experiences;
+    try {
+      const saved = localStorage.getItem('portfolioExperiences');
+      return saved ? JSON.parse(saved) : portfolioData?.experiences ?? defaultExperiences;
+    } catch (error) {
+      console.error('Error loading portfolioExperiences from localStorage:', error);
+      return portfolioData?.experiences ?? defaultExperiences;
+    }
   });
   const [education, setEducation] = useState<Education[]>(() => {
-    const saved = localStorage.getItem('portfolioEducation');
-    return saved ? JSON.parse(saved) : portfolioData.education;
+    try {
+      const saved = localStorage.getItem('portfolioEducation');
+      return saved ? JSON.parse(saved) : portfolioData?.education ?? defaultEducation;
+    } catch (error) {
+      console.error('Error loading portfolioEducation from localStorage:', error);
+      return portfolioData?.education ?? defaultEducation;
+    }
+  });
+  const [aboutData, setAboutData] = useState<AboutData>(() => {
+    try {
+      const saved = localStorage.getItem('portfolioAbout');
+      return saved ? JSON.parse(saved) : portfolioData?.about ?? defaultAbout;
+    } catch (error) {
+      console.error('Error loading portfolioAbout from localStorage:', error);
+      return portfolioData?.about ?? defaultAbout;
+    }
   });
 
   useEffect(() => {
@@ -60,20 +118,44 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('portfolioProjects', JSON.stringify(projects));
+    try {
+      localStorage.setItem('portfolioProjects', JSON.stringify(projects));
+    } catch (error) {
+      console.error('Error saving portfolioProjects to localStorage:', error);
+    }
   }, [projects]);
 
   useEffect(() => {
-    localStorage.setItem('portfolioSkills', JSON.stringify(skills));
+    try {
+      localStorage.setItem('portfolioSkills', JSON.stringify(skills));
+    } catch (error) {
+      console.error('Error saving portfolioSkills to localStorage:', error);
+    }
   }, [skills]);
 
   useEffect(() => {
-    localStorage.setItem('portfolioExperiences', JSON.stringify(experiences));
+    try {
+      localStorage.setItem('portfolioExperiences', JSON.stringify(experiences));
+    } catch (error) {
+      console.error('Error saving portfolioExperiences to localStorage:', error);
+    }
   }, [experiences]);
 
   useEffect(() => {
-    localStorage.setItem('portfolioEducation', JSON.stringify(education));
+    try {
+      localStorage.setItem('portfolioEducation', JSON.stringify(education));
+    } catch (error) {
+      console.error('Error saving portfolioEducation to localStorage:', error);
+    }
   }, [education]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('portfolioAbout', JSON.stringify(aboutData));
+    } catch (error) {
+      console.error('Error saving portfolioAbout to localStorage:', error);
+    }
+  }, [aboutData]);
 
   const generateId = () => Date.now().toString() + Math.random().toString(36).substr(2, 9);
 
@@ -84,19 +166,21 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    setProjects(prev => [...prev, newProject]);
+    setProjects((prev) => [...prev, newProject]);
   };
 
   const updateProject = (id: string, projectData: Partial<Project>) => {
-    setProjects(prev => prev.map(project => 
-      project.id === id 
-        ? { ...project, ...projectData, updatedAt: new Date().toISOString() }
-        : project
-    ));
+    setProjects((prev) =>
+      prev.map((project) =>
+        project.id === id
+          ? { ...project, ...projectData, updatedAt: new Date().toISOString() }
+          : project
+      )
+    );
   };
 
   const deleteProject = (id: string) => {
-    setProjects(prev => prev.filter(project => project.id !== id));
+    setProjects((prev) => prev.filter((project) => project.id !== id));
   };
 
   const addSkill = (skillData: Omit<Skill, 'id' | 'createdAt' | 'updatedAt'>) => {
@@ -106,19 +190,21 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    setSkills(prev => [...prev, newSkill]);
+    setSkills((prev) => [...prev, newSkill]);
   };
 
   const updateSkill = (id: string, skillData: Partial<Skill>) => {
-    setSkills(prev => prev.map(skill => 
-      skill.id === id 
-        ? { ...skill, ...skillData, updatedAt: new Date().toISOString() }
-        : skill
-    ));
+    setSkills((prev) =>
+      prev.map((skill) =>
+        skill.id === id
+          ? { ...skill, ...skillData, updatedAt: new Date().toISOString() }
+          : skill
+      )
+    );
   };
 
   const deleteSkill = (id: string) => {
-    setSkills(prev => prev.filter(skill => skill.id !== id));
+    setSkills((prev) => prev.filter((skill) => skill.id !== id));
   };
 
   const addExperience = (experienceData: Omit<Experience, 'id' | 'createdAt' | 'updatedAt'>) => {
@@ -128,19 +214,21 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    setExperiences(prev => [...prev, newExperience]);
+    setExperiences((prev) => [...prev, newExperience]);
   };
 
   const updateExperience = (id: string, experienceData: Partial<Experience>) => {
-    setExperiences(prev => prev.map(experience => 
-      experience.id === id 
-        ? { ...experience, ...experienceData, updatedAt: new Date().toISOString() }
-        : experience
-    ));
+    setExperiences((prev) =>
+      prev.map((experience) =>
+        experience.id === id
+          ? { ...experience, ...experienceData, updatedAt: new Date().toISOString() }
+          : experience
+      )
+    );
   };
 
   const deleteExperience = (id: string) => {
-    setExperiences(prev => prev.filter(experience => experience.id !== id));
+    setExperiences((prev) => prev.filter((experience) => experience.id !== id));
   };
 
   const addEducation = (educationData: Omit<Education, 'id' | 'createdAt' | 'updatedAt'>) => {
@@ -150,41 +238,56 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    setEducation(prev => [...prev, newEducation]);
+    setEducation((prev) => [...prev, newEducation]);
   };
 
   const updateEducation = (id: string, educationData: Partial<Education>) => {
-    setEducation(prev => prev.map(edu => 
-      edu.id === id 
-        ? { ...edu, ...educationData, updatedAt: new Date().toISOString() }
-        : edu
-    ));
+    setEducation((prev) =>
+      prev.map((edu) =>
+        edu.id === id
+          ? { ...edu, ...educationData, updatedAt: new Date().toISOString() }
+          : edu
+      )
+    );
   };
 
   const deleteEducation = (id: string) => {
-    setEducation(prev => prev.filter(edu => edu.id !== id));
+    setEducation((prev) => prev.filter((edu) => edu.id !== id));
+  };
+
+  const updateAboutData = (about: Partial<AboutData>) => {
+    setAboutData((prev) => ({ ...prev, ...about }));
+  };
+
+  const resetAboutData = () => {
+    setAboutData(defaultAbout);
   };
 
   return (
-    <DataContext.Provider value={{
-      projects,
-      skills,
-      experiences,
-      education,
-      addProject,
-      updateProject,
-      deleteProject,
-      addSkill,
-      updateSkill,
-      deleteSkill,
-      addExperience,
-      updateExperience,
-      deleteExperience,
-      addEducation,
-      updateEducation,
-      deleteEducation,
-      isLoading,
-    }}>
+    <DataContext.Provider
+      value={{
+        projects,
+        skills,
+        experiences,
+        education,
+        aboutData,
+        addProject,
+        updateProject,
+        deleteProject,
+        addSkill,
+        updateSkill,
+        deleteSkill,
+        addExperience,
+        updateExperience,
+        deleteExperience,
+        addEducation,
+        updateEducation,
+        deleteEducation,
+        updateAboutData,
+        resetAboutData,
+        isLoading,
+      }}
+    >
       {children}
     </DataContext.Provider>
   );
