@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { useData } from '../../context/DataContext';
-import { useAuth } from '../../context/AuthContext';
+import { useData } from '../../../context/DataContext';
+import { useAuth } from '../../../context/AuthContext';
 import {
   FolderOpen,
   Code,
@@ -21,10 +21,10 @@ import {
   ExternalLink,
   X,
 } from 'lucide-react';
-import ViewDetailsManager from './ViewDetailsManager';
+import ViewDetailsManager from '../ViewDetailsManager';
 import AnalyticsManager from './AnalyticsManager';
 import SetGoalsManager from './SetGoalsManager';
-import ViewAllManager from './ViewAllManager';
+import ViewAllManager from '../ViewAllManager';
 
 interface ActivityItem {
   id: string;

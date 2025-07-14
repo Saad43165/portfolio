@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useData } from '../../context/DataContext';
-import { Experience } from '../../types';
+import { useData } from '../../../context/DataContext';
+import { Experience } from '../../../types';
 import { Plus, Edit, Trash2, Briefcase, Calendar, MapPin } from 'lucide-react';
-import ExperienceForm from './ExperienceForm';
+import ExperienceForm from '../Forms/ExperienceForm';
 
 const ExperienceManager = () => {
   const { experiences, deleteExperience } = useData();

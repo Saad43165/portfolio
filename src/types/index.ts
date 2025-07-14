@@ -4,20 +4,21 @@ export interface Project {
   id: string;
   title: string;
   description: string;
-  longDescription: string;
-  image: string;
+  longDescription?: string;
+  image?: string;
+  videoUrl?: string;
   technologies: string[];
   features: string[];
   githubUrl: string;
-  liveUrl: string;
+  liveUrl?: string;
   category: string;
-  status: ProjectStatus;
+  status: 'planned' | 'in-progress' | 'completed';
   startDate: string;
-  endDate: string | '';
-  createdAt: string;
-  updatedAt: string;
-  videoUrl?: string;
+  endDate?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
+
 
 export interface Skill {
   id: string;

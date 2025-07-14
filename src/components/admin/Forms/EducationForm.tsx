@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useData } from '../../context/DataContext';
-import { Education } from '../../types';
+import { useData } from '../../../context/DataContext';
+
+import {Education} from '../../../types';
 import { X, GraduationCap } from 'lucide-react';
 
 interface EducationFormProps {

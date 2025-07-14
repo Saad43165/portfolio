@@ -1,6 +1,28 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Project, Skill, Experience, Education, AboutData } from '../types';
-import portfolioData from '../data/portfolioData.json';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from 'react';
+import {
+  Project,
+  Skill,
+  Experience,
+  Education,
+  AboutData,
+} from '../types';
+import { db } from '../components/firebase';
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  getDoc,
+  setDoc,
+} from 'firebase/firestore';
 
 interface DataContextType {
   projects: Project[];
@@ -28,8 +50,8 @@ interface DataContextType {
 const defaultAbout: AboutData = {
   heading: "I'm a passionate Software Engineering student who loves creating digital experiences",
   paragraphs: [
-    "Currently pursuing my degree in Software Engineering at Pak Austria Fachhochschule Institute of Applied Sciences and Technology, Haripur. I specialize in creating modern, responsive, and user-friendly applications.",
-    "I believe in writing clean, maintainable code and staying up-to-date with the latest technologies. Whether it's a simple web application or a complex system, I approach each project with dedication, creativity, and attention to detail.",
+    'Currently pursuing my degree in Software Engineering...',
+    'I believe in writing clean, maintainable code...',
   ],
   highlights: ['Computer Science', 'Web Development', 'Software Engineering', 'Problem Solving'],
   stats: [
@@ -39,18 +61,10 @@ const defaultAbout: AboutData = {
   ],
 };
 
-const defaultProjects: Project[] = [];
-const defaultSkills: Skill[] = [];
-const defaultExperiences: Experience[] = [];
-const defaultEducation: Education[] = [];
-
-export const DataContext = createContext<DataContextType | undefined>(undefined);
-
+const DataContext = createContext<DataContextType | undefined>(undefined);
 export const useData = () => {
   const context = useContext(DataContext);
-  if (!context) {
-    throw new Error('useData must be used within a DataProvider');
-  }
+  if (!context) throw new Error('useData must be used within a DataProvider');
   return context;
 };
 
@@ -59,231 +73,132 @@ interface DataProviderProps {
 }
 
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [skills, setSkills] = useState<Skill[]>([]);
+  const [experiences, setExperiences] = useState<Experience[]>([]);
+  const [education, setEducation] = useState<Education[]>([]);
+  const [aboutData, setAboutData] = useState<AboutData>(defaultAbout);
   const [isLoading, setIsLoading] = useState(true);
-  const [projects, setProjects] = useState<Project[]>(() => {
-    try {
-      const saved = localStorage.getItem('portfolioProjects');
-      return saved ? JSON.parse(saved) : portfolioData?.projects ?? defaultProjects;
-    } catch (error) {
-      console.error('Error loading portfolioProjects from localStorage:', error);
-      return portfolioData?.projects ?? defaultProjects;
-    }
-  });
-  const [skills, setSkills] = useState<Skill[]>(() => {
-    try {
-      const saved = localStorage.getItem('portfolioSkills');
-      return saved ? JSON.parse(saved) : portfolioData?.skills ?? defaultSkills;
-    } catch (error) {
-      console.error('Error loading portfolioSkills from localStorage:', error);
-      return portfolioData?.skills ?? defaultSkills;
-    }
-  });
-  const [experiences, setExperiences] = useState<Experience[]>(() => {
-    try {
-      const saved = localStorage.getItem('portfolioExperiences');
-      return saved ? JSON.parse(saved) : portfolioData?.experiences ?? defaultExperiences;
-    } catch (error) {
-      console.error('Error loading portfolioExperiences from localStorage:', error);
-      return portfolioData?.experiences ?? defaultExperiences;
-    }
-  });
-  const [education, setEducation] = useState<Education[]>(() => {
-    try {
-      const saved = localStorage.getItem('portfolioEducation');
-      return saved ? JSON.parse(saved) : portfolioData?.education ?? defaultEducation;
-    } catch (error) {
-      console.error('Error loading portfolioEducation from localStorage:', error);
-      return portfolioData?.education ?? defaultEducation;
-    }
-  });
-  const [aboutData, setAboutData] = useState<AboutData>(() => {
-    try {
-      const saved = localStorage.getItem('portfolioAbout');
-      return saved ? JSON.parse(saved) : portfolioData?.about ?? defaultAbout;
-    } catch (error) {
-      console.error('Error loading portfolioAbout from localStorage:', error);
-      return portfolioData?.about ?? defaultAbout;
-    }
-  });
 
-  useEffect(() => {
-    setIsLoading(false);
-  }, []);
+  // Utility
+  const timestamp = () => new Date().toISOString();
 
-  useEffect(() => {
+  // FETCH ALL DATA
+ useEffect(() => {
+  const fetchAll = async () => {
     try {
-      localStorage.setItem('portfolioProjects', JSON.stringify(projects));
-    } catch (error) {
-      console.error('Error saving portfolioProjects to localStorage:', error);
-    }
-  }, [projects]);
+      const fetchCollection = async <T,>(name: string): Promise<T[]> => {
+        const snap = await getDocs(collection(db, name));
+        return snap.docs.map(docSnap => ({ id: docSnap.id, ...docSnap.data() } as T));
+      };
 
-  useEffect(() => {
-    try {
-      localStorage.setItem('portfolioSkills', JSON.stringify(skills));
-    } catch (error) {
-      console.error('Error saving portfolioSkills to localStorage:', error);
-    }
-  }, [skills]);
+      const [fetchedProjects, fetchedSkills, fetchedExperiences, fetchedEducation] =
+        await Promise.all([
+          fetchCollection<Project>('projects'),
+          fetchCollection<Skill>('skills'),
+          fetchCollection<Experience>('experiences'),
+          fetchCollection<Education>('education'),
+        ]);
 
-  useEffect(() => {
-    try {
-      localStorage.setItem('portfolioExperiences', JSON.stringify(experiences));
-    } catch (error) {
-      console.error('Error saving portfolioExperiences to localStorage:', error);
-    }
-  }, [experiences]);
+      setProjects(fetchedProjects);
+      setSkills(fetchedSkills);
+      setExperiences(fetchedExperiences);
+      setEducation(fetchedEducation);
 
-  useEffect(() => {
-    try {
-      localStorage.setItem('portfolioEducation', JSON.stringify(education));
-    } catch (error) {
-      console.error('Error saving portfolioEducation to localStorage:', error);
-    }
-  }, [education]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('portfolioAbout', JSON.stringify(aboutData));
-    } catch (error) {
-      console.error('Error saving portfolioAbout to localStorage:', error);
-    }
-  }, [aboutData]);
-
-  const generateId = () => Date.now().toString() + Math.random().toString(36).substr(2, 9);
-
-  const validateExperience = (data: Omit<Experience, 'id' | 'createdAt' | 'updatedAt'>) => {
-    const requiredFields = ['title', 'company', 'location', 'startDate', 'description'];
-    for (const field of requiredFields) {
-      if (!data[field as keyof typeof data]) {
-        throw new Error(`Missing required field: ${field}`);
+      const aboutSnap = await getDoc(doc(db, 'about', 'aboutData'));
+      if (aboutSnap.exists()) {
+        setAboutData(aboutSnap.data() as AboutData);
       }
+    } catch (err) {
+      console.error('Error loading data:', err);
+    } finally {
+      setIsLoading(false);
     }
-    return data;
   };
 
-  const addProject = (projectData: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) => {
-    const newProject: Project = {
-      ...projectData,
-      id: generateId(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    setProjects((prev) => [...prev, newProject]);
+  fetchAll();
+}, []);
+
+
+  // --------- CRUD HELPERS ----------
+ const addDocTo = async <T extends { id?: string }>(
+  col: string,
+  data: Omit<T, 'id' | 'createdAt' | 'updatedAt'>,
+  setter: React.Dispatch<React.SetStateAction<T[]>>
+): Promise<void> => {
+  const payload: T = {
+    ...(data as T),
+    createdAt: timestamp(),
+    updatedAt: timestamp(),
+  };
+  const ref = await addDoc(collection(db, col), payload);
+  setter((prev) => [...prev, { ...payload, id: ref.id }]);
+};
+
+const updateDocIn = async <T extends { id: string }>(
+  col: string,
+  id: string,
+  data: Partial<T>,
+  setter: React.Dispatch<React.SetStateAction<T[]>>
+): Promise<void> => {
+  const ref = doc(db, col, id);
+  const updatedAtTime = timestamp();
+  await updateDoc(ref, { ...data, updatedAt: updatedAtTime });
+
+  setter((prev) =>
+    prev.map((item) =>
+      item.id === id ? { ...item, ...data, updatedAt: updatedAtTime } : item
+    )
+  );
+};
+
+const deleteDocFrom = async <T extends { id: string }>(
+  col: string,
+  id: string,
+  setter: React.Dispatch<React.SetStateAction<T[]>>
+): Promise<void> => {
+  await deleteDoc(doc(db, col, id));
+  setter((prev) => prev.filter((item) => item.id !== id));
+};
+
+  // --------- PROJECT ----------
+  const addProject = (data: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) =>
+    addDocTo<Project>('projects', data, setProjects);
+  const updateProject = (id: string, data: Partial<Project>) =>
+    updateDocIn<Project>('projects', id, data, setProjects);
+  const deleteProject = (id: string) => deleteDocFrom<Project>('projects', id, setProjects);
+
+  // --------- SKILL ----------
+  const addSkill = (data: Omit<Skill, 'id' | 'createdAt' | 'updatedAt'>) =>
+    addDocTo<Skill>('skills', data, setSkills);
+  const updateSkill = (id: string, data: Partial<Skill>) =>
+    updateDocIn<Skill>('skills', id, data, setSkills);
+  const deleteSkill = (id: string) => deleteDocFrom<Skill>('skills', id, setSkills);
+
+  // --------- EXPERIENCE ----------
+  const addExperience = (data: Omit<Experience, 'id' | 'createdAt' | 'updatedAt'>) =>
+    addDocTo<Experience>('experiences', data, setExperiences);
+  const updateExperience = (id: string, data: Partial<Experience>) =>
+    updateDocIn<Experience>('experiences', id, data, setExperiences);
+  const deleteExperience = (id: string) => deleteDocFrom<Experience>('experiences', id, setExperiences);
+
+  // --------- EDUCATION ----------
+  const addEducation = (data: Omit<Education, 'id' | 'createdAt' | 'updatedAt'>) =>
+    addDocTo<Education>('education', data, setEducation);
+  const updateEducation = (id: string, data: Partial<Education>) =>
+    updateDocIn<Education>('education', id, data, setEducation);
+  const deleteEducation = (id: string) => deleteDocFrom<Education>('education', id, setEducation);
+
+  // --------- ABOUT DATA ----------
+  const updateAboutData = async (data: Partial<AboutData>) => {
+    const ref = doc(db, 'about', 'aboutData');
+    await setDoc(ref, { ...aboutData, ...data }, { merge: true });
+    setAboutData(prev => ({ ...prev, ...data }));
   };
 
-  const updateProject = (id: string, projectData: Partial<Project>) => {
-    setProjects((prev) =>
-      prev.map((project) =>
-        project.id === id
-          ? { ...project, ...projectData, updatedAt: new Date().toISOString() }
-          : project
-      )
-    );
-  };
-
-  const deleteProject = (id: string) => {
-    setProjects((prev) => prev.filter((project) => project.id !== id));
-  };
-
-  const addSkill = (skillData: Omit<Skill, 'id' | 'createdAt' | 'updatedAt'>) => {
-    const newSkill: Skill = {
-      ...skillData,
-      id: generateId(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    setSkills((prev) => [...prev, newSkill]);
-  };
-
-  const updateSkill = (id: string, skillData: Partial<Skill>) => {
-    setSkills((prev) =>
-      prev.map((skill) =>
-        skill.id === id
-          ? { ...skill, ...skillData, updatedAt: new Date().toISOString() }
-          : skill
-      )
-    );
-  };
-
-  const deleteSkill = (id: string) => {
-    setSkills((prev) => prev.filter((skill) => skill.id !== id));
-  };
-
-  const addExperience = (experienceData: Omit<Experience, 'id' | 'createdAt' | 'updatedAt'>) => {
-    const validatedData = validateExperience(experienceData);
-    const newExperience: Experience = {
-      ...validatedData,
-      id: generateId(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      endDate: validatedData.endDate || '', // Ensure endDate is string or ''
-      technologies: validatedData.technologies || [],
-      achievements: validatedData.achievements || [],
-    };
-    setExperiences((prev) => [...prev, newExperience]);
-  };
-
-  const updateExperience = (id: string, experienceData: Partial<Experience>) => {
-    setExperiences((prev) =>
-      prev.map((experience) =>
-        experience.id === id
-          ? {
-              ...experience,
-              ...experienceData,
-              updatedAt: new Date().toISOString(),
-              endDate: experienceData.endDate !== undefined ? experienceData.endDate : experience.endDate,
-              technologies: experienceData.technologies || experience.technologies,
-              achievements: experienceData.achievements || experience.achievements,
-            }
-          : experience
-      )
-    );
-  };
-
-  const deleteExperience = (id: string) => {
-    setExperiences((prev) => prev.filter((experience) => experience.id !== id));
-  };
-
-  const addEducation = (educationData: Omit<Education, 'id' | 'createdAt' | 'updatedAt'>) => {
-    const newEducation: Education = {
-      ...educationData,
-      id: generateId(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      endDate: educationData.endDate || '',
-      gpa: educationData.gpa || '',
-      achievements: educationData.achievements || [],
-    };
-    setEducation((prev) => [...prev, newEducation]);
-  };
-
-  const updateEducation = (id: string, educationData: Partial<Education>) => {
-    setEducation((prev) =>
-      prev.map((edu) =>
-        edu.id === id
-          ? {
-              ...edu,
-              ...educationData,
-              updatedAt: new Date().toISOString(),
-              endDate: educationData.endDate !== undefined ? educationData.endDate : edu.endDate,
-              gpa: educationData.gpa !== undefined ? educationData.gpa : edu.gpa,
-              achievements: educationData.achievements || edu.achievements,
-            }
-          : edu
-      )
-    );
-  };
-
-  const deleteEducation = (id: string) => {
-    setEducation((prev) => prev.filter((edu) => edu.id !== id));
-  };
-
-  const updateAboutData = (about: Partial<AboutData>) => {
-    setAboutData((prev) => ({ ...prev, ...about }));
-  };
-
-  const resetAboutData = () => {
+  const resetAboutData = async () => {
+    const ref = doc(db, 'about', 'aboutData');
+    await setDoc(ref, defaultAbout);
     setAboutData(defaultAbout);
   };
 

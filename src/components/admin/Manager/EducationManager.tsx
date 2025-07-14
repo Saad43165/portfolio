@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useData } from '../../context/DataContext';
-import { Education } from '../../types';
+import { useData } from '../../../context/DataContext';
+import { Education } from '../../../types';
 import { Plus, Edit, Trash2, GraduationCap, Calendar, MapPin, Award } from 'lucide-react';
-import EducationForm from './EducationForm';
+import EducationForm from '../Forms/EducationForm';
 
 const EducationManager = () => {
   const { education, deleteEducation } = useData();

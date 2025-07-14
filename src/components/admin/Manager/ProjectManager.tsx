@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useData } from '../../context/DataContext';
-import { Project, ProjectStatus } from '../../types';
+import { useData } from '../../../context/DataContext';
+import { Project, ProjectStatus } from '../../../types';
 import { Plus, Edit, Trash2, Github, ExternalLink, Calendar, Tag, FolderOpen, Video, X } from 'lucide-react';
-import ProjectForm from './ProjectForm';
+import ProjectForm from '../Forms/ProjectForm';
 
 const ProjectManager = () => {
   const { projects, deleteProject } = useData();

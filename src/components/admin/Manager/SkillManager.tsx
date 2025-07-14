@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useData } from '../../context/DataContext';
-import { Skill } from '../../types';
+import { useData } from '../../../context/DataContext';
+import { Skill } from '../../../types';
 import { Plus, Edit, Trash2, Code } from 'lucide-react';
-import SkillForm from './SkillForm';
+import SkillForm from '../Forms/SkillForm';
 
 const SkillManager = () => {
   const { skills, deleteSkill } = useData();

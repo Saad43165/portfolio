@@ -66,7 +66,7 @@ const SettingsScreen: React.FC = () => {
   // Calculate last updated timestamp for portfolio statistics
   const getLastUpdated = () => {
     const timestamps = [
-      ...projects.map(p => new Date(p.updatedAt).getTime()),
+      // ...projects.map(p => new Date(p.updatedAt).getTime()),
       ...skills.map(s => new Date(s.updatedAt).getTime()),
       ...experiences.map(e => new Date(e.updatedAt).getTime()),
       ...education.map(e => new Date(e.updatedAt).getTime()),

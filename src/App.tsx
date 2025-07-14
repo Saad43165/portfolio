@@ -1,4 +1,3 @@
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { DataProvider } from './context/DataContext';
@@ -12,7 +11,7 @@ function App() {
       <DataProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<PortfolioLayout />} />
+            <Route path="/" element={< PortfolioLayout/>} />
             <Route path="/admin/*" element={<AdminRoute />} />
           </Routes>
         </Router>

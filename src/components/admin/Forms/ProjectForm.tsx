@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
-import { useData } from '../../context/DataContext';
-import { Project } from '../../types';
+
+import {Project} from '../../../types';
 import { X, Upload, Video, Github, ExternalLink } from 'lucide-react';
+import { addProjectToFirestore,updateProjectInFirestore } from '../../firebasehelpers';
 
 interface ProjectFormProps {
   project?: Project | null;
@@ -9,7 +10,6 @@ interface ProjectFormProps {
 }
 
 const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose }) => {
-  const { addProject, updateProject } = useData();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
@@ -107,20 +107,23 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose }) => {
     return data;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const validatedData = validateFormData(formData);
-      if (project) {
-        updateProject(project.id, validatedData);
-      } else {
-        addProject(validatedData);
-      }
-      onClose();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save project');
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  try {
+    const validatedData = validateFormData(formData);
+
+    if (project) {
+      await updateProjectInFirestore(project.id, validatedData);
+    } else {
+      await addProjectToFirestore(validatedData);
     }
-  };
+
+    onClose();
+  } catch (err) {
+    setError(err instanceof Error ? err.message : 'Failed to save project');
+  }
+};
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">

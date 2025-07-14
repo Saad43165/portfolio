@@ -1,6 +1,12 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { AdminUser } from '../types';
-
+import {
+  signInWithEmailAndPassword,
+  signOut as firebaseSignOut,
+  User as FirebaseUser,
+} from 'firebase/auth';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { auth, db } from '../../src/components/firebase';
 interface AuthContextType {
   user: AdminUser | null;
   isAuthenticated: boolean;
@@ -23,12 +29,13 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+
+
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<AdminUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check for saved authentication
     const savedUser = localStorage.getItem('portfolio_admin_user');
     if (savedUser) {
       setUser(JSON.parse(savedUser));
@@ -38,39 +45,50 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (username: string, password: string): Promise<boolean> => {
     setIsLoading(true);
-    
-    // Simple authentication - in production, this would be a real API call
-    if (username === 'admin' && password === 'admin123') {
+    try {
+      const res = await signInWithEmailAndPassword(auth, username, password);
+      const fbUser: FirebaseUser = res.user;
+
       const adminUser: AdminUser = {
-        id: '1',
-        username: 'admin',
-        email: 'saadnaz43165@gmail.com',
-        role: 'admin'
+        id: fbUser.uid,
+        username: fbUser.displayName || fbUser.email?.split('@')[0] || 'admin',
+        email: fbUser.email || '',
+        role: 'admin',
       };
-      
+
+      // Store admin details in Firestore if not already stored
+      const docRef = doc(db, 'admin', fbUser.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        await setDoc(docRef, {
+          name: adminUser.username,
+          email: adminUser.email,
+          createdAt: new Date().toISOString(),
+        });
+      }
+
       setUser(adminUser);
       localStorage.setItem('portfolio_admin_user', JSON.stringify(adminUser));
-      setIsLoading(false);
       return true;
+    } catch (err) {
+      console.error('Login failed:', err);
+      return false;
+    } finally {
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
-    return false;
   };
 
   const logout = () => {
+    firebaseSignOut(auth);
     setUser(null);
     localStorage.removeItem('portfolio_admin_user');
   };
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      isAuthenticated: !!user,
-      login,
-      logout,
-      isLoading,
-    }}>
+    <AuthContext.Provider
+      value={{ user, isAuthenticated: !!user, login, logout, isLoading }}
+    >
       {children}
     </AuthContext.Provider>
   );

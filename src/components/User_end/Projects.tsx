@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useData } from '../../context/DataContext';
-
 import { ExternalLink, Github, Zap, Shield, Smartphone, Globe, X } from 'lucide-react';
 
 const Projects = () => {

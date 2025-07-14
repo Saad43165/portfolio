@@ -1,7 +1,8 @@
 
 import React, { useState } from 'react';
-import { useData } from '../../context/DataContext';
-import { Experience } from '../../types';
+import { useData } from '../../../context/DataContext';
+
+import {Experience} from '../../../types';
 import { X, Briefcase } from 'lucide-react';
 
 interface ExperienceFormProps {

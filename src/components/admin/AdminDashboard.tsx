@@ -16,13 +16,13 @@ import {
   Search,
 } from 'lucide-react';
 
-import ProjectManager from './ProjectManager';
-import SkillManager from './SkillManager';
-import ExperienceManager from './ExperienceManager';
-import EducationManager from './EducationManager';
-import AboutManager from './AboutManager';
+import ProjectManager from './Manager/ProjectManager';
+import SkillManager from './Manager/SkillManager';
+import ExperienceManager from './Manager/ExperienceManager';
+import EducationManager from './Manager/EducationManager';
+import AboutManager from './Manager/AboutManager';
 import SettingsScreen from './SettingsManager';
-import OverviewManager from './OverviewManager';
+import OverviewManager from './Manager/OverviewManager';
 
 type TabType =
   | 'overview'
