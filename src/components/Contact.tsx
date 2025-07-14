@@ -103,6 +103,9 @@ const Contact = () => {
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}>
           <div className="text-center mb-16">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-4 mx-auto">
+              <Mail size={32} className="text-white" />
+            </div>
             <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
               Get In <span className="text-blue-600">Touch</span>
             </h2>
@@ -147,8 +150,6 @@ const Contact = () => {
                   </a>
                 ))}
               </div>
-
-              
             </div>
 
             {/* Contact Form */}

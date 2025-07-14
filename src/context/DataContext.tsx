@@ -1,13 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Project, Skill, Experience, Education } from '../types';
+import { Project, Skill, Experience, Education, AboutData } from '../types';
 import portfolioData from '../data/portfolioData.json';
-
-interface AboutData {
-  heading: string;
-  paragraphs: string[];
-  highlights: string[];
-  stats: { label: string; value: string }[];
-}
 
 interface DataContextType {
   projects: Project[];
@@ -159,6 +152,16 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
 
   const generateId = () => Date.now().toString() + Math.random().toString(36).substr(2, 9);
 
+  const validateExperience = (data: Omit<Experience, 'id' | 'createdAt' | 'updatedAt'>) => {
+    const requiredFields = ['title', 'company', 'location', 'startDate', 'description'];
+    for (const field of requiredFields) {
+      if (!data[field as keyof typeof data]) {
+        throw new Error(`Missing required field: ${field}`);
+      }
+    }
+    return data;
+  };
+
   const addProject = (projectData: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) => {
     const newProject: Project = {
       ...projectData,
@@ -208,11 +211,15 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   };
 
   const addExperience = (experienceData: Omit<Experience, 'id' | 'createdAt' | 'updatedAt'>) => {
+    const validatedData = validateExperience(experienceData);
     const newExperience: Experience = {
-      ...experienceData,
+      ...validatedData,
       id: generateId(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      endDate: validatedData.endDate || '', // Ensure endDate is string or ''
+      technologies: validatedData.technologies || [],
+      achievements: validatedData.achievements || [],
     };
     setExperiences((prev) => [...prev, newExperience]);
   };
@@ -221,7 +228,14 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     setExperiences((prev) =>
       prev.map((experience) =>
         experience.id === id
-          ? { ...experience, ...experienceData, updatedAt: new Date().toISOString() }
+          ? {
+              ...experience,
+              ...experienceData,
+              updatedAt: new Date().toISOString(),
+              endDate: experienceData.endDate !== undefined ? experienceData.endDate : experience.endDate,
+              technologies: experienceData.technologies || experience.technologies,
+              achievements: experienceData.achievements || experience.achievements,
+            }
           : experience
       )
     );
@@ -237,6 +251,9 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       id: generateId(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      endDate: educationData.endDate || '',
+      gpa: educationData.gpa || '',
+      achievements: educationData.achievements || [],
     };
     setEducation((prev) => [...prev, newEducation]);
   };
@@ -245,7 +262,14 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     setEducation((prev) =>
       prev.map((edu) =>
         edu.id === id
-          ? { ...edu, ...educationData, updatedAt: new Date().toISOString() }
+          ? {
+              ...edu,
+              ...educationData,
+              updatedAt: new Date().toISOString(),
+              endDate: educationData.endDate !== undefined ? educationData.endDate : edu.endDate,
+              gpa: educationData.gpa !== undefined ? educationData.gpa : edu.gpa,
+              achievements: educationData.achievements || edu.achievements,
+            }
           : edu
       )
     );

@@ -13,7 +13,7 @@ export interface Project {
   category: string;
   status: ProjectStatus;
   startDate: string;
-  endDate: string;
+  endDate: string | '';
   createdAt: string;
   updatedAt: string;
   videoUrl?: string;
@@ -31,12 +31,13 @@ export interface Skill {
 }
 
 export interface Experience {
+  position: string;
   id: string;
-  title: string;
+  title: string; // Changed from 'position' to align with ExperienceForm
   company: string;
   location: string;
   startDate: string;
-  endDate: string;
+  endDate: string | '';
   description: string;
   technologies: string[];
   achievements: string[];
@@ -50,8 +51,8 @@ export interface Education {
   institution: string;
   location: string;
   startDate: string;
-  endDate: string;
-  gpa: string;
+  endDate: string | '';
+  gpa: string | '';
   description: string;
   achievements: string[];
   createdAt: string;

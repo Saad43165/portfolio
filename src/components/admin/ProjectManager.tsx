@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
 import { Project, ProjectStatus } from '../../types';
-import { Plus, Edit, Trash2, Github, ExternalLink, Calendar, Tag, FolderOpen } from 'lucide-react';
+import { Plus, Edit, Trash2, Github, ExternalLink, Calendar, Tag, FolderOpen, Video, X } from 'lucide-react';
 import ProjectForm from './ProjectForm';
 
 const ProjectManager = () => {
@@ -9,6 +9,8 @@ const ProjectManager = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [filter, setFilter] = useState<string>('all');
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
+  const [selectedVideoUrl, setSelectedVideoUrl] = useState<string | null>(null);
 
   const categories = ['all', ...Array.from(new Set(projects.map(p => p.category)))];
   const filteredProjects = filter === 'all' ? projects : projects.filter(p => p.category === filter);
@@ -40,6 +42,16 @@ const ProjectManager = () => {
       default:
         return 'bg-gray-100 text-gray-800';
     }
+  };
+
+  const handleViewVideo = (videoUrl: string) => {
+    setSelectedVideoUrl(videoUrl);
+    setVideoModalOpen(true);
+  };
+
+  const handleCloseVideoModal = () => {
+    setVideoModalOpen(false);
+    setSelectedVideoUrl(null);
   };
 
   if (showForm) {
@@ -177,6 +189,14 @@ const ProjectManager = () => {
                       <ExternalLink size={16} />
                     </a>
                   )}
+                  {project.videoUrl && (
+                    <button
+                      onClick={() => handleViewVideo(project.videoUrl!)}
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                    >
+                      <Video size={16} />
+                    </button>
+                  )}
                 </div>
 
                 <div className="flex items-center space-x-2">
@@ -217,6 +237,39 @@ const ProjectManager = () => {
           >
             Add Your First Project
           </button>
+        </div>
+      )}
+
+      {/* Video Modal */}
+      {videoModalOpen && selectedVideoUrl && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-900">Project Video</h2>
+              <button
+                onClick={handleCloseVideoModal}
+                className="p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+              >
+                <X size={24} />
+              </button>
+            </div>
+            <div className="mt-4">
+              <video 
+                src={selectedVideoUrl}
+                className="w-full rounded-lg"
+                controls
+                autoPlay
+              />
+            </div>
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={handleCloseVideoModal}
+                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200"
+              >
+                Close
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

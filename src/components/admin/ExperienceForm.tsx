@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
 import { Experience } from '../../types';
-import { X } from 'lucide-react';
+import { X, Briefcase } from 'lucide-react';
 
 interface ExperienceFormProps {
   experience?: Experience | null;
@@ -77,7 +78,8 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ experience, onClose }) 
     
     const submitData = {
       ...formData,
-      endDate: isCurrentRole ? '' : formData.endDate
+      endDate: isCurrentRole ? '' : formData.endDate,
+      position: formData.title // Map 'title' to 'position' as required by Experience type
     };
     
     if (experience) {
@@ -91,23 +93,24 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ experience, onClose }) 
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-2xl font-bold text-gray-900">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <h2 className="text-2xl font-semibold text-gray-900">
             {experience ? 'Edit Experience' : 'Add New Experience'}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+            className="p-2 text-gray-500 hover:text-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg"
+            aria-label="Close form"
           >
-            <X size={24} />
+            <X size={20} />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-900 mb-2">
                 Job Title *
               </label>
               <input
@@ -116,13 +119,14 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ experience, onClose }) 
                 value={formData.title}
                 onChange={handleInputChange}
                 placeholder="e.g., Software Engineer, Frontend Developer"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                 required
+                aria-required="true"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-900 mb-2">
                 Company *
               </label>
               <input
@@ -131,14 +135,15 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ experience, onClose }) 
                 value={formData.company}
                 onChange={handleInputChange}
                 placeholder="e.g., Google, Microsoft, Startup Inc."
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                 required
+                aria-required="true"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-900 mb-2">
               Location *
             </label>
             <input
@@ -147,14 +152,15 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ experience, onClose }) 
               value={formData.location}
               onChange={handleInputChange}
               placeholder="e.g., San Francisco, CA or Remote"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
               required
+              aria-required="true"
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-900 mb-2">
                 Start Date *
               </label>
               <input
@@ -162,13 +168,14 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ experience, onClose }) 
                 name="startDate"
                 value={formData.startDate}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                 required
+                aria-required="true"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-900 mb-2">
                 End Date
               </label>
               <div className="space-y-2">
@@ -178,7 +185,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ experience, onClose }) 
                   value={formData.endDate}
                   onChange={handleInputChange}
                   disabled={isCurrentRole}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 disabled:bg-gray-100 disabled:cursor-not-allowed"
                 />
                 <label className="flex items-center space-x-2">
                   <input
@@ -187,14 +194,14 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ experience, onClose }) 
                     onChange={handleCurrentRoleChange}
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <span className="text-sm text-gray-700">I currently work here</span>
+                  <span className="text-sm text-gray-900">I currently work here</span>
                 </label>
               </div>
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-900 mb-2">
               Job Description *
             </label>
             <textarea
@@ -203,14 +210,15 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ experience, onClose }) 
               onChange={handleInputChange}
               rows={4}
               placeholder="Describe your role, responsibilities, and what you accomplished in this position..."
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
               required
+              aria-required="true"
             />
           </div>
 
           {/* Technologies */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-900 mb-2">
               Technologies Used
             </label>
             <div className="space-y-2">
@@ -220,13 +228,14 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ experience, onClose }) 
                   value={newTechnology}
                   onChange={(e) => setNewTechnology(e.target.value)}
                   placeholder="Add technology"
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="flex-1 px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                   onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTechnology())}
                 />
                 <button
                   type="button"
                   onClick={addTechnology}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 font-medium"
+                  aria-label="Add technology"
                 >
                   Add
                 </button>
@@ -235,13 +244,14 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ experience, onClose }) 
                 {formData.technologies.map((tech) => (
                   <span
                     key={tech}
-                    className="inline-flex items-center space-x-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+                    className="inline-flex items-center space-x-1 px-3 py-1 bg-blue-50 text-blue-800 rounded-lg border border-blue-200"
                   >
                     <span>{tech}</span>
                     <button
                       type="button"
                       onClick={() => removeTechnology(tech)}
-                      className="text-blue-600 hover:text-blue-800"
+                      className="text-blue-600 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+                      aria-label={`Remove technology: ${tech}`}
                     >
                       <X size={14} />
                     </button>
@@ -253,7 +263,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ experience, onClose }) 
 
           {/* Achievements */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-900 mb-2">
               Key Achievements
             </label>
             <div className="space-y-2">
@@ -263,13 +273,14 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ experience, onClose }) 
                   value={newAchievement}
                   onChange={(e) => setNewAchievement(e.target.value)}
                   placeholder="Add achievement"
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="flex-1 px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                   onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addAchievement())}
                 />
                 <button
                   type="button"
                   onClick={addAchievement}
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 font-medium"
+                  aria-label="Add achievement"
                 >
                   Add
                 </button>
@@ -278,13 +289,14 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ experience, onClose }) 
                 {formData.achievements.map((achievement) => (
                   <div
                     key={achievement}
-                    className="flex items-center justify-between p-2 bg-green-50 rounded-lg"
+                    className="flex items-center justify-between p-2 bg-blue-50 rounded-lg border border-blue-200"
                   >
-                    <span className="text-green-800 text-sm">{achievement}</span>
+                    <span className="text-blue-800 text-sm">{achievement}</span>
                     <button
                       type="button"
                       onClick={() => removeAchievement(achievement)}
-                      className="text-green-600 hover:text-green-800"
+                      className="text-blue-600 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+                      aria-label={`Remove achievement: ${achievement}`}
                     >
                       <X size={16} />
                     </button>
@@ -294,18 +306,68 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ experience, onClose }) 
             </div>
           </div>
 
+          {/* Preview */}
+          <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+            <h3 className="text-sm font-medium text-gray-900 mb-3">Preview</h3>
+            <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+              <div className="flex items-start space-x-3">
+                <div className="p-2 bg-blue-50 rounded-lg">
+                  <Briefcase size={20} className="text-blue-600" />
+                </div>
+                <div>
+                  <h4 className="text-lg font-semibold text-gray-900">{formData.title || 'Job Title'}</h4>
+                  <p className="text-blue-600 font-medium">{formData.company || 'Company'}</p>
+                  <p className="text-sm text-gray-600">{formData.location || 'Location'}</p>
+                </div>
+              </div>
+              
+              {formData.description && (
+                <p className="text-gray-900 text-sm mt-3">{formData.description}</p>
+              )}
+              
+              {formData.technologies.length > 0 && (
+                <div className="mt-3">
+                  <h5 className="text-sm font-medium text-gray-900 mb-1">Technologies:</h5>
+                  <div className="flex flex-wrap gap-2">
+                    {formData.technologies.map((tech, index) => (
+                      <span key={index} className="px-2 py-1 bg-blue-50 text-blue-800 rounded-lg text-sm border border-blue-200">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {formData.achievements.length > 0 && (
+                <div className="mt-3">
+                  <h5 className="text-sm font-medium text-gray-900 mb-1">Achievements:</h5>
+                  <ul className="space-y-1">
+                    {formData.achievements.map((achievement, index) => (
+                      <li key={index} className="flex items-start space-x-2 text-sm text-gray-900">
+                        <div className="w-1 h-1 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                        <span>{achievement}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+
           {/* Form Actions */}
-          <div className="flex items-center justify-end space-x-4 pt-6 border-t">
+          <div className="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200"
+              className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 font-medium"
+              aria-label="Cancel"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 font-medium"
+              aria-label={experience ? 'Update experience' : 'Add experience'}
             >
               {experience ? 'Update Experience' : 'Add Experience'}
             </button>
@@ -315,5 +377,4 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ experience, onClose }) 
     </div>
   );
 };
-
 export default ExperienceForm;
