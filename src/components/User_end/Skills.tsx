@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useData } from '../context/DataContext';
+import { useData } from '../../context/DataContext';
+
 import { Code, Palette, Database, Globe, Smartphone, Zap, Clock } from 'lucide-react';
 
 const Skills = () => {

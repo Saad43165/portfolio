@@ -1,6 +1,6 @@
 import React from 'react';
-import { useData } from '../context/DataContext';
 import { GraduationCap } from 'lucide-react';
+import { useData } from '../../context/DataContext';
 
 const Education = () => {
   const { education } = useData();

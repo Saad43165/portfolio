@@ -3,8 +3,8 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { DataProvider } from './context/DataContext';
 import { AuthProvider } from './context/AuthContext';
-import PortfolioLayout from './components/PortfolioLayout';
-import AdminRoute from './components/AdminRoute';
+import PortfolioLayout from './components/User_end/PortfolioLayout';
+import AdminRoute from './components/User_end/AdminRoute';
 
 function App() {
   return (

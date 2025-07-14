@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { FileText } from 'lucide-react';
 import { motion } from 'framer-motion';
 import AboutForm from './AboutForm';
-import { ThemeContext } from '../PortfolioLayout';
+import { ThemeContext } from '../User_end/PortfolioLayout';
 
 const AboutManager = () => {
   const theme = useContext(ThemeContext);

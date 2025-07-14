@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useContext, useState } from 'react';
 import { Award, Users, Calendar, User } from 'lucide-react';
 import { motion, Variants } from 'framer-motion';
-import { useData } from '../context/DataContext';
+import { useData } from '../../context/DataContext';
 import { ThemeContext } from './PortfolioLayout';
 
 const About = () => {

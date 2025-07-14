@@ -1,5 +1,7 @@
 import React from 'react';
-import { useData } from '../context/DataContext';
+
+import { useData } from '../../context/DataContext';
+
 import { Briefcase, ChevronRight } from 'lucide-react';
 
 const Experience = () => {
