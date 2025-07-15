@@ -4,6 +4,7 @@ import { DataProvider } from './context/DataContext';
 import { AuthProvider } from './context/AuthContext';
 //import PortfolioLayout from './components/User_end/PortfolioLayout';
 import AdminRoute from './components/User_end/AdminRoute';
+import PortfolioLayout from './components/User_end/PortfolioLayout';
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
       <DataProvider>
         <Router>
           <Routes>
-            <Route path="/" element={< AdminRoute/>} />
+            <Route path="/" element={< PortfolioLayout/>} />
             <Route path="/admin/*" element={<AdminRoute />} />
           </Routes>
         </Router>
