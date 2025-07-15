@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { DataProvider } from './context/DataContext';
 import { AuthProvider } from './context/AuthContext';
-import PortfolioLayout from './components/User_end/PortfolioLayout';
+//import PortfolioLayout from './components/User_end/PortfolioLayout';
 import AdminRoute from './components/User_end/AdminRoute';
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
       <DataProvider>
         <Router>
           <Routes>
-            <Route path="/" element={< PortfolioLayout/>} />
+            <Route path="/" element={< AdminRoute/>} />
             <Route path="/admin/*" element={<AdminRoute />} />
           </Routes>
         </Router>

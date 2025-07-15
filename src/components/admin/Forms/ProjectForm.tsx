@@ -1,8 +1,12 @@
 import React, { useState, useRef } from 'react';
+import axios from 'axios'; // <-- ADD THIS LINE AT THE TOP
+
+const CLOUD_NAME = 'dywzuwr6z'; // <-- REPLACE with your Cloudinary cloud name
+const UPLOAD_PRESET = 'unsigned_preset'; // <-- REPLACE with your unsigned upload preset name
 
 import {Project} from '../../../types';
 import { X, Upload, Video, Github, ExternalLink } from 'lucide-react';
-import { addProjectToFirestore,updateProjectInFirestore } from '../../firebasehelpers';
+import { addProjectToFirestore,updateProjectInFirestore } from '../../Helpers/firebasehelpers';
 
 interface ProjectFormProps {
   project?: Project | null;
@@ -55,14 +59,35 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose }) => {
     }
   };
 
-  const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const videoUrl = URL.createObjectURL(file);
-      setVideoUrl(videoUrl);
-      setFormData(prev => ({ ...prev, videoUrl }));
+const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (file) {
+    if (file.size > 50 * 1024 * 1024) { // Optional: 50MB size limit
+      setError('Video is too large. Max size is 50MB.');
+      return;
     }
-  };
+
+    try {
+      const formDataCloud = new FormData();
+      formDataCloud.append('file', file);
+      formDataCloud.append('upload_preset', UPLOAD_PRESET);
+      formDataCloud.append('resource_type', 'video'); // important for Cloudinary to treat this as video
+
+      const response = await axios.post(
+        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/video/upload`,
+        formDataCloud
+      );
+
+      const uploadedUrl = response.data.secure_url;
+      setVideoUrl(uploadedUrl);
+      setFormData(prev => ({ ...prev, videoUrl: uploadedUrl }));
+      setError(null);
+    } catch (error) {
+      console.error('Video upload failed:', error);
+      setError('Video upload failed. Please try again.');
+    }
+  }
+};
 
   const addTechnology = () => {
     if (newTechnology.trim() && !formData.technologies.includes(newTechnology.trim())) {

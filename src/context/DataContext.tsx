@@ -12,7 +12,7 @@ import {
   Education,
   AboutData,
 } from '../types';
-import { db } from '../components/firebase';
+import { db } from '../components/Helpers/firebase';
 import {
   collection,
   getDocs,

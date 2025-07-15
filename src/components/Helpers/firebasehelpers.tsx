@@ -1,7 +1,8 @@
 // src/utils/firebaseHelpers.ts
 import { db } from './firebase';
+
 import { collection, addDoc, doc, updateDoc } from 'firebase/firestore';
-import { Project } from '../types';
+import { Project } from '../../types';
 
 export const addProjectToFirestore = async (
   project: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>

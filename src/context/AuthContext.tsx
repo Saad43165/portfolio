@@ -6,7 +6,7 @@ import {
   User as FirebaseUser,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../../src/components/firebase';
+import { auth, db } from '../components/Helpers/firebase';
 interface AuthContextType {
   user: AdminUser | null;
   isAuthenticated: boolean;
