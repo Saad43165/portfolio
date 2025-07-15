@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useData } from '../../context/DataContext';
-import { Project, Skill, Experience, Education, AboutData, } from '../../types';
+import { useData } from '../../../../../context/DataContext';
+import { Project, Skill, Experience, Education, AboutData, } from '../../../../../types';
 import { Download, Upload, X } from 'lucide-react';
 
 interface ImportData {

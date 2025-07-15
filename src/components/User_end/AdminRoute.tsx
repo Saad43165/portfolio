@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { useAuth} from  '../../context/AuthContext';
-import AdminLogin from '../admin/AdminLogin';
-import AdminDashboard from '../admin/AdminDashboard';
+import AdminLogin from '../admin/Manager/OverViewManager/Dashboard/AdminLogin';
+import AdminDashboard from '../admin/Manager/OverViewManager/Dashboard/AdminDashboard';
 //import { form } from 'framer-motion/client';
 
 const AdminRoute = () => {
