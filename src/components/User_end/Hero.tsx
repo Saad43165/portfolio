@@ -8,11 +8,10 @@ const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
   
   const titles = [
-    'Software Engineering Student',
+    'Software Engineer',
     'Android Developer',
     'Flutter Developer',
     'Java Developer',
-    'Full Stack Developer'
   ];
 
   useEffect(() => {
