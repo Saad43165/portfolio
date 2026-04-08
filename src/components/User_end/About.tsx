@@ -124,8 +124,8 @@ const About = () => {
                   <img
                     src="/saad_pic.JPG"
                     alt="Profile picture of Saad Ikram"
-                    width="320"
-                    height="320"
+                    width="256"
+                    height="256"
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />

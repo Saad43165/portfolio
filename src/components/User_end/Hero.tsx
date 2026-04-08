@@ -72,8 +72,8 @@ const Hero = () => {
                 <img
                   src="/image.png"
                   alt="Saad Ikram - Software Engineering Student"
-                  width="144"
-                  height="144"
+                  width="112"
+                  height="112"
                   className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-110"
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = 'none';
