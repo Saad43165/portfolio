@@ -114,7 +114,7 @@ const About = () => {
           </motion.div>
 
           <motion.div className="space-y-8" variants={itemVariants}>
-            <div className="relative w-80 h-80 mx-auto">
+            <div className="relative w-64 h-64 sm:w-80 sm:h-80 mx-auto">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-[2px] shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
                 <div
                   className={`relative w-full h-full rounded-2xl overflow-hidden transition-colors duration-300 ${
@@ -124,6 +124,8 @@ const About = () => {
                   <img
                     src="/saad_pic.JPG"
                     alt="Profile picture of Saad Ikram"
+                    width="320"
+                    height="320"
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />

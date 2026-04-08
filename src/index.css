@@ -7,6 +7,8 @@
   html {
     scroll-behavior: smooth;
     line-height: 1.5;
+    /* Prevent horizontal overflow on mobile */
+    overflow-x: hidden;
   }
   
   body {
@@ -15,12 +17,26 @@
     -moz-osx-font-smoothing: grayscale;
     color: #1f2937; /* Tailwind's gray-800 */
     background-color: #f9fafb; /* Tailwind's gray-100 */
+    /* Prevent horizontal overflow on mobile */
+    overflow-x: hidden;
+    max-width: 100%;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     line-height: 1.2;
     color: #111827; /* Tailwind's gray-900 */
+  }
+
+  /* Improve tap target sizing on mobile */
+  button, a, [role="button"] {
+    touch-action: manipulation;
+  }
+
+  /* Ensure images don't overflow their containers */
+  img {
+    max-width: 100%;
+    height: auto;
   }
 }
 

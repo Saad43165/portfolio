@@ -100,7 +100,7 @@ const Projects = () => {
               return (
                 <div
                   key={project.title}
-                  className={`bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-1 flex flex-col overflow-hidden h-[550px] ${
+                  className={`bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-1 flex flex-col overflow-hidden h-auto sm:h-[550px] ${
                     isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                   }`}
                   style={{ transitionDelay: `${index * 150}ms` }}
@@ -271,29 +271,35 @@ const Projects = () => {
 
         {/* Video Modal */}
         {videoModalOpen && selectedVideoUrl && (
-          <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+          <div
+            className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-3 sm:p-4"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Project demo video"
+          >
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-5xl max-h-[95vh] flex flex-col">
-              <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                <h2 className="text-2xl font-bold text-gray-900">Project Demo</h2>
+              <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200">
+                <h2 className="text-lg sm:text-2xl font-bold text-gray-900">Project Demo</h2>
                 <button
                   onClick={handleCloseVideoModal}
-                  className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all duration-200"
+                  aria-label="Close video modal"
+                  className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all duration-200"
                 >
-                  <X size={24} />
+                  <X size={24} aria-hidden="true" />
                 </button>
               </div>
-              <div className="p-6 flex-grow flex items-center justify-center">
+              <div className="p-4 sm:p-6 flex-grow flex items-center justify-center">
                 <video 
                   src={selectedVideoUrl}
-                  className="w-full h-auto max-h-[75vh] rounded-lg shadow-lg"
+                  className="w-full h-auto max-h-[70vh] sm:max-h-[75vh] rounded-lg shadow-lg"
                   controls
                   autoPlay
                 />
               </div>
-              <div className="p-6 bg-gray-50 flex justify-end border-t border-gray-200">
+              <div className="p-4 sm:p-6 bg-gray-50 flex justify-end border-t border-gray-200">
                 <button
                   onClick={handleCloseVideoModal}
-                  className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium"
+                  className="px-5 py-2.5 sm:px-6 sm:py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium min-h-[44px]"
                 >
                   Close
                 </button>

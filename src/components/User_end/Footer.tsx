@@ -80,9 +80,9 @@ const Footer = () => {
         <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(45deg,transparent_35%,rgba(255,255,255,0.01)_50%,transparent_65%)]"></div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 mb-10 sm:mb-16">
           {/* Profile Section - Takes more space */}
           <div className="lg:col-span-5 space-y-6">
             <div className="space-y-4">
@@ -126,7 +126,7 @@ const Footer = () => {
                   <button
                     key={link.to}
                     onClick={() => scrollToSection(link.to)}
-                    className="group text-left p-3 rounded-lg hover:bg-slate-800/50 transition-all duration-200 text-slate-400 hover:text-white"
+                    className="group text-left p-3 min-h-[44px] rounded-lg hover:bg-slate-800/50 transition-all duration-200 text-slate-400 hover:text-white"
                   >
                     <div className="flex items-center gap-2">
                       <div className="w-1.5 h-1.5 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
