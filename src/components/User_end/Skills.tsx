@@ -73,17 +73,17 @@ const Skills = () => {
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}
       variants={containerVariants}
-      className={`py-12 sm:py-16 transition-colors duration-500 relative overflow-hidden ${
+      className={`py-8 sm:py-16 transition-colors duration-500 relative overflow-hidden ${
         theme.theme === 'light' ? 'bg-white' : 'bg-gray-950'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div className="mb-10" variants={itemVariants}>
-          <div className="flex items-center gap-4 mb-4">
-            <div className="h-[1px] w-12 bg-blue-600" />
-            <span className="text-xs font-black uppercase tracking-[0.4em] text-blue-600">Technical Arsenal</span>
+          <div className="flex items-center justify-center lg:justify-start gap-4 mb-4">
+            <div className="h-[2px] w-12 bg-blue-600 rounded-full" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-blue-600">Technical Arsenal</span>
           </div>
-          <h2 className={`text-4xl sm:text-6xl font-bold tracking-tight leading-[1.1] ${
+          <h2 className={`text-4xl sm:text-6xl font-bold tracking-tight leading-[1.1] text-center lg:text-left ${
               theme.theme === 'light' ? 'text-gray-900' : 'text-white'
             }`}
           >
@@ -93,7 +93,7 @@ const Skills = () => {
         </motion.div>
 
         {skills.length > 0 ? (
-          <div className="space-y-10">
+          <div className="space-y-6 sm:space-y-10">
             {Object.entries(skillCategories).map(([categoryName, categorySkills]) => {
               const Icon = getCategoryIcon(categoryName);
               return (
@@ -105,7 +105,7 @@ const Skills = () => {
                   <div className="flex items-center gap-6">
                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center border shadow-lg relative group ${
                       theme.theme === 'light' 
-                        ? 'bg-white border-gray-100 text-blue-600' 
+                        ? 'bg-blue-50 border-blue-100/50 text-blue-600' 
                         : 'bg-gray-800 border-white/10 text-blue-400 shadow-blue-500/10'
                     }`}>
                       <div className="absolute inset-0 bg-blue-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity rounded-full" />

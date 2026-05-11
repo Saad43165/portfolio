@@ -8,26 +8,13 @@ const Footer = () => {
   const { portfolioInfo } = useData();
   const theme = useContext(ThemeContext);
   const year = new Date().getFullYear();
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const toggleVisibility = () => {
-      if (window.scrollY > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-    };
-
-    window.addEventListener('scroll', toggleVisibility);
-    return () => window.removeEventListener('scroll', toggleVisibility);
-  }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const headerHeight = 80;
+      const target = element.getBoundingClientRect().top + window.scrollY - headerHeight;
+      window.scrollTo({ top: target, behavior: 'smooth' });
+    }
   };
 
   const getSocialIcon = (platform: string) => {
@@ -50,14 +37,6 @@ const Footer = () => {
     { label: 'Contact', to: 'contact' }
   ];
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const headerHeight = 80;
-      const target = element.getBoundingClientRect().top + window.scrollY - headerHeight;
-      window.scrollTo({ top: target, behavior: 'smooth' });
-    }
-  };
 
   return (
     <footer className={`relative overflow-hidden transition-colors duration-500 border-t ${
@@ -70,7 +49,7 @@ const Footer = () => {
           {/* Brand Column */}
           <div className="lg:col-span-5 space-y-8">
             <div className="space-y-4">
-              <h3 className={`text-3xl font-black tracking-tight ${
+              <h3 className={`text-2xl font-bold tracking-tight ${
                 theme.theme === 'light' ? 'text-gray-900' : 'text-white'
               }`}>
                 {portfolioInfo.name}
@@ -173,32 +152,11 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className={`pt-12 border-t flex flex-col md:flex-row justify-between items-center gap-8 ${
-          theme.theme === 'light' ? 'border-gray-100' : 'border-white/5'
-        }`}>
-          <div className={`text-[10px] font-black uppercase tracking-[0.2em] ${
+          <div className={`text-[10px] font-bold uppercase tracking-[0.2em] ${
             theme.theme === 'light' ? 'text-gray-400' : 'text-gray-500'
           }`}>
             © {year} {portfolioInfo.name}. All Rights Reserved.
           </div>
-
-          <AnimatePresence>
-            {isVisible && (
-              <motion.button
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                onClick={scrollToTop}
-                className={`flex items-center gap-3 px-6 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
-                  theme.theme === 'light'
-                    ? 'bg-gray-100 text-gray-900 hover:bg-gray-200 shadow-sm'
-                    : 'bg-gray-900 text-white hover:bg-gray-800'
-                }`}
-              >
-                Back To Top <ChevronUp size={16} />
-              </motion.button>
-            )}
-          </AnimatePresence>
         </div>
       </div>
     </footer>

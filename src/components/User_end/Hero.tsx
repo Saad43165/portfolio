@@ -99,7 +99,7 @@ const Hero = () => {
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
           className={`absolute top-0 -left-1/4 w-[600px] h-[600px] rounded-full blur-[100px] ${
-            theme.theme === 'light' ? 'bg-blue-50/40' : 'bg-blue-900/5'
+            theme.theme === 'light' ? 'bg-blue-100/30' : 'bg-blue-900/5'
           }`}
         />
         <motion.div 
@@ -110,7 +110,7 @@ const Hero = () => {
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
           className={`absolute bottom-0 -right-1/4 w-[600px] h-[600px] rounded-full blur-[100px] ${
-            theme.theme === 'light' ? 'bg-purple-50/40' : 'bg-purple-900/5'
+            theme.theme === 'light' ? 'bg-purple-100/30' : 'bg-purple-900/5'
           }`}
         />
       </div>
@@ -119,30 +119,30 @@ const Hero = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full pt-12"
+        className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full"
       >
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-4 lg:gap-16 items-center">
           
           {/* Main Info Section */}
-          <div className="order-2 lg:order-1 space-y-6 sm:space-y-8 text-center lg:text-left">
+          <div className="order-2 lg:order-1 space-y-4 sm:space-y-8 text-center lg:text-left">
             <div className="space-y-4">
               <motion.div variants={itemVariants} className="flex items-center justify-center lg:justify-start gap-4 mb-2">
-                <div className="h-[1px] w-8 bg-blue-600" />
-                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600">Personal Overview</span>
+                <div className="h-[2px] w-8 bg-blue-600 rounded-full" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-blue-600">Personal Overview</span>
               </motion.div>
               
-              <motion.h1 variants={itemVariants} className={`text-4xl sm:text-6xl xl:text-7xl font-bold leading-[1.05] tracking-tight ${
+              <motion.h1 variants={itemVariants} className={`text-5xl sm:text-7xl xl:text-8xl font-bold leading-[0.9] tracking-tight ${
                 theme.theme === 'light' ? 'text-gray-900' : 'text-white'
               }`}>
-                Crafting <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Digital Mastery</span> <br />
-                with {portfolioInfo.name.split(' ')[0]}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Digital</span> <br />
+                Mastery
               </motion.h1>
               
               <motion.div variants={itemVariants} className="h-8">
-                <p className={`text-lg sm:text-xl font-bold ${
+                <p className={`text-xl sm:text-2xl font-bold ${
                   theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
                 }`}>
-                  Specializing in <span className="text-blue-600 dark:text-blue-400 border-r-2 border-blue-600 dark:border-blue-400 pr-2">{displayText}</span>
+                  {portfolioInfo.name.split(' ')[0]} — <span className="text-blue-600 dark:text-blue-400 border-r-2 border-blue-600 dark:border-blue-400 pr-2">{displayText}</span>
                 </p>
               </motion.div>
             </div>
@@ -151,7 +151,7 @@ const Hero = () => {
               theme.theme === 'light' ? 'text-gray-700' : 'text-gray-400'
             }`}>
               Engineering high-performance applications with a focus on seamless user experiences. 
-              Currently based in <span className={`font-black ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>{portfolioInfo.location}</span>.
+              Currently based in <span className={`font-bold ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>{portfolioInfo.location}</span>.
             </motion.p>
 
             {/* CTA Buttons - More compact */}
@@ -209,9 +209,12 @@ const Hero = () => {
           {/* Profile Visual Section - Scaled down for mobile */}
           <motion.div 
             variants={itemVariants}
-            className="order-1 lg:order-2 flex justify-center lg:justify-end"
+            className="order-1 lg:order-2 flex justify-center lg:justify-end mb-4 lg:mb-0 w-full"
           >
-            <div className="relative group max-w-[200px] sm:max-w-[300px] lg:max-w-[340px] w-full">
+            <div className="relative group max-w-[260px] sm:max-w-[340px] lg:max-w-[400px] w-full">
+              {/* Background Glow */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl blur-2xl opacity-0 group-hover:opacity-20 dark:group-hover:opacity-30 transition-opacity duration-700" />
+              
               <div className="relative aspect-square rounded-2xl bg-gradient-to-br from-gray-100 to-white dark:from-gray-800 dark:to-gray-900 p-1 shadow-xl border border-white/50 dark:border-white/5 overflow-hidden">
                 <img
                   src={portfolioInfo.profileImage || "/image.png"}
@@ -236,8 +239,8 @@ const Hero = () => {
                     <Code size={16} />
                   </div>
                   <div className="text-left">
-                    <p className="text-[8px] font-black uppercase tracking-widest text-gray-400">Works</p>
-                    <p className="text-sm font-black text-gray-900 dark:text-white leading-none">{projects.length}+</p>
+                    <p className="text-[8px] font-bold uppercase tracking-widest text-gray-400">Works</p>
+                    <p className="text-sm font-bold text-gray-900 dark:text-white leading-none">{projects.length}+</p>
                   </div>
                 </div>
               </motion.div>

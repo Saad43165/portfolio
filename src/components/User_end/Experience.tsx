@@ -52,7 +52,7 @@ const Experience = () => {
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}
       variants={containerVariants}
-      className={`py-12 sm:py-16 transition-colors duration-500 relative overflow-hidden ${
+      className={`py-8 sm:py-16 transition-colors duration-500 relative overflow-hidden ${
         theme.theme === 'light' ? 'bg-white' : 'bg-gray-950'
       }`}
     >
@@ -61,11 +61,11 @@ const Experience = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div className="mb-10" variants={itemVariants}>
-          <div className="flex items-center gap-4 mb-4">
-            <div className="h-[1px] w-12 bg-blue-600" />
-            <span className="text-xs font-black uppercase tracking-[0.4em] text-blue-600">Career Path</span>
+          <div className="flex items-center justify-center lg:justify-start gap-4 mb-4">
+            <div className="h-[2px] w-12 bg-blue-600 rounded-full" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-blue-600">Career Path</span>
           </div>
-          <h2 className={`text-4xl sm:text-6xl font-bold tracking-tight leading-[1.1] ${
+          <h2 className={`text-4xl sm:text-6xl font-bold tracking-tight leading-[1.1] text-center lg:text-left ${
               theme.theme === 'light' ? 'text-gray-900' : 'text-white'
             }`}
           >
@@ -75,7 +75,7 @@ const Experience = () => {
         </motion.div>
 
         {experiences.length > 0 ? (
-          <div className="relative space-y-12">
+          <div className="relative space-y-8 sm:space-y-12">
             {/* Timeline Center Line (Desktop) */}
             <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-[2px] bg-gray-100 dark:bg-gray-900 transform md:-translate-x-1/2 rounded-full"></div>
 

@@ -129,7 +129,7 @@ const Contact = () => {
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}
       variants={containerVariants}
-      className={`py-12 sm:py-16 transition-colors duration-500 relative overflow-hidden ${
+      className={`py-8 sm:py-16 transition-colors duration-500 relative overflow-hidden ${
         theme.theme === 'light' ? 'bg-white' : 'bg-gray-950'
       }`}
     >
@@ -148,7 +148,7 @@ const Contact = () => {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
           {/* Left Column: Info */}
           <div className="lg:col-span-5 space-y-12">
             <motion.div className="space-y-6" variants={itemVariants}>

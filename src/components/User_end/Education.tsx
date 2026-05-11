@@ -52,22 +52,22 @@ const Education = () => {
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}
       variants={containerVariants}
-      className={`py-12 sm:py-16 transition-colors duration-500 relative overflow-hidden ${
+      className={`py-8 sm:py-16 transition-colors duration-500 relative overflow-hidden ${
         theme.theme === 'light' ? 'bg-gray-50/50' : 'bg-gray-900/20'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div className="mb-10" variants={itemVariants}>
-          <div className="flex items-center gap-4 mb-4">
-            <div className="h-[1px] w-12 bg-purple-600" />
-            <span className="text-xs font-black uppercase tracking-[0.4em] text-purple-600">Learning Path</span>
+        <motion.div className="mb-6 sm:mb-10" variants={itemVariants}>
+          <div className="flex items-center justify-center lg:justify-start gap-4 mb-4">
+            <div className="h-[2px] w-12 bg-purple-600 rounded-full" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-purple-600">Learning Path</span>
           </div>
-          <h2 className={`text-4xl sm:text-6xl font-black tracking-tight leading-[1.1] ${
+          <h2 className={`text-4xl sm:text-6xl font-bold tracking-tight leading-[1.1] text-center lg:text-left ${
               theme.theme === 'light' ? 'text-gray-900' : 'text-white'
             }`}
           >
             Academic <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-red-500">Foundation</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">Foundation</span>
           </h2>
         </motion.div>
 
@@ -98,7 +98,7 @@ const Education = () => {
                       </span>
                     </div>
                     
-                    <h3 className={`text-3xl font-black leading-[1.2] transition-colors duration-300 ${
+                    <h3 className={`text-2xl sm:text-3xl font-bold leading-[1.2] transition-colors duration-300 ${
                       theme.theme === 'light' ? 'text-gray-900' : 'text-white'
                     }`}>
                       {edu.degree}
@@ -113,11 +113,11 @@ const Education = () => {
                   </div>
                   
                   {edu.gpa && (
-                    <div className={`px-8 py-5 rounded-[2rem] border flex flex-col items-center justify-center shadow-lg ${
-                      theme.theme === 'light' ? 'bg-purple-50 border-purple-100' : 'bg-gray-800 border-purple-500/20 shadow-purple-500/5'
+                    <div className={`px-5 py-3 rounded-2xl border flex flex-col items-center justify-center shadow-md ${
+                      theme.theme === 'light' ? 'bg-purple-50/50 border-purple-100' : 'bg-gray-800 border-purple-500/20'
                     }`}>
-                      <span className="text-[10px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-widest mb-1">GPA</span>
-                      <span className={`text-3xl font-black ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                      <span className="text-[8px] font-bold text-purple-600 dark:text-purple-400 uppercase tracking-widest">GPA</span>
+                      <span className={`text-xl font-bold ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                         {edu.gpa}
                       </span>
                     </div>

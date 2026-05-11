@@ -30,23 +30,14 @@ const Navigation = () => {
     { name: 'Contact', href: '#contact', icon: Mail },
   ];
 
-  const { scrollY } = useScroll();
+  const { scrollY, scrollYProgress } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() ?? 0;
-    
     // Scrolled state
     if (latest > 50) {
       setScrolled(true);
     } else {
       setScrolled(false);
-    }
-
-    // Hidden state (Smart Header) - disable when mobile menu is open
-    if (latest > 100 && latest > previous && !isOpen) {
-      setHidden(true);
-    } else {
-      setHidden(false);
     }
   });
 
@@ -131,17 +122,25 @@ const Navigation = () => {
 
   return (
     <motion.nav
-      initial={{ y: 0 }}
-      animate={{ y: hidden ? "-100%" : 0 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 40 }}
-      className={`fixed top-0 w-full z-[60] transition-all duration-500 ease-in-out ${
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+      className={`fixed z-[60] transition-all duration-500 ease-in-out ${
         scrolled || isOpen
-          ? 'bg-white/95 dark:bg-gray-950/95 shadow-xl shadow-gray-200/50 dark:shadow-none backdrop-blur-2xl border-b border-gray-100 dark:border-white/5'
-          : 'bg-transparent'
+          ? 'top-4 left-4 right-4 sm:left-6 sm:right-6 lg:left-0 lg:right-0 lg:top-0 lg:w-full bg-white/70 dark:bg-gray-950/70 shadow-lg shadow-gray-200/10 dark:shadow-none backdrop-blur-xl border border-gray-100/30 dark:border-white/5 rounded-2xl lg:rounded-none'
+          : 'top-0 left-0 w-full bg-transparent'
       }`}
     >
+      {/* Scroll Progress Bar */}
+      <motion.div
+        className="absolute bottom-0 left-0 h-[2px] bg-blue-600 z-[70] rounded-full"
+        style={{ scaleX: scrollYProgress, originX: 0 }}
+      />
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+        <div className={`flex justify-between items-center transition-all duration-500 ${
+          scrolled ? 'h-14 lg:h-16' : 'h-20 sm:h-24'
+        }`}>
           {/* Logo */}
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
@@ -149,17 +148,18 @@ const Navigation = () => {
             className="flex-shrink-0 cursor-pointer group z-[70]"
             onClick={() => handleNavClick('#home')}
           >
-            <span className={`text-2xl sm:text-3xl font-black transition-all duration-500 ${
+            <span className={`text-xl sm:text-2xl font-bold transition-all duration-500 ${
               theme.theme === 'light' 
                 ? 'text-gray-900' 
-                : 'bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent'
+                : 'bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent'
             }`}>
-              {portfolioInfo.name}
+              <span className="hidden sm:inline">{portfolioInfo.name}</span>
+              <span className="sm:hidden">{portfolioInfo.name.split(' ')[0]}</span>
             </span>
           </motion.div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-6">
             <div className="flex space-x-1 items-center bg-gray-100/80 dark:bg-gray-900/80 backdrop-blur-md p-1.5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
               {navItems.map((item) => (
                 <button
@@ -205,7 +205,7 @@ const Navigation = () => {
           </div>
 
           {/* Mobile Toggle */}
-          <div className="md:hidden flex items-center gap-4 z-[70]">
+          <div className="lg:hidden flex items-center gap-2 z-[70]">
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={theme.toggleTheme}
@@ -279,22 +279,23 @@ const Navigation = () => {
                     </span>
                     <span className="relative">
                       {item.name}
-                      <motion.div 
-                        className="absolute -bottom-2 left-0 h-1 bg-blue-600 rounded-full"
-                        initial={{ width: 0 }}
-                        animate={{ width: activeSection === item.href ? '100%' : 0 }}
-                      />
+                      {activeSection === item.href && (
+                        <motion.div 
+                          layoutId="activeIndicator"
+                          className="absolute -right-8 top-1/2 -translate-y-1/2 w-2 h-2 bg-blue-600 rounded-full"
+                        />
+                      )}
                     </span>
                   </div>
                   <motion.div
-                    whileHover={{ x: 10 }}
-                    className={`p-4 rounded-2xl transition-all ${
+                    whileHover={{ x: 5 }}
+                    className={`transition-all ${
                       activeSection === item.href 
-                        ? 'bg-blue-600 text-white' 
-                        : 'bg-gray-50 dark:bg-gray-900 text-gray-400 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 group-hover:text-blue-600'
+                        ? 'text-blue-600' 
+                        : 'text-gray-300 dark:text-gray-800'
                     }`}
                   >
-                    <item.icon size={24} />
+                    <item.icon size={28} strokeWidth={1.5} />
                   </motion.div>
                 </motion.button>
               ))}

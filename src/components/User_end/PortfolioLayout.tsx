@@ -135,6 +135,46 @@ const CustomCursor = () => {
   );
 };
 
+const BackToTop = () => {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisible = () => {
+      if (window.pageYOffset > 300) {
+        setVisible(true);
+      } else {
+        setVisible(false);
+      }
+    };
+    window.addEventListener('scroll', toggleVisible);
+    return () => window.removeEventListener('scroll', toggleVisible);
+  }, []);
+
+  return (
+    <motion.button
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: visible ? 1 : 0, scale: visible ? 1 : 0.5 }}
+      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      className="fixed bottom-8 right-8 z-[80] p-4 rounded-2xl bg-blue-600 text-white shadow-2xl shadow-blue-600/30 backdrop-blur-xl border border-white/10 flex items-center justify-center group"
+    >
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        width="24" 
+        height="24" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor" 
+        strokeWidth="3" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+        className="transition-transform duration-300 group-hover:-translate-y-1"
+      >
+        <path d="M18 15l-6-6-6 6" />
+      </svg>
+    </motion.button>
+  );
+};
+
 const PortfolioLayout = () => {
   const location = useLocation();
   const { isLoading: isDataLoading, portfolioInfo } = useData();
@@ -238,15 +278,20 @@ const PortfolioLayout = () => {
         aria-label="Portfolio website content"
       >
         <CustomCursor />
+        <BackToTop />
         {isLoading && <LoadingIndicator progress={displayProgress} />}
+
+        <Suspense fallback={null}>
+          <Navigation />
+        </Suspense>
 
         {/* Content container with smooth fade-in transition */}
         <div
-          className={`transition-opacity duration-700 ease-in-out ${isLoading ? 'opacity-0 pointer-events-none translate-y-4' : 'opacity-100 translate-y-0'
-            }`}
+          className={`transition-opacity duration-1000 ease-in-out ${
+            isLoading ? 'opacity-0' : 'opacity-100'
+          }`}
         >
           <Suspense fallback={<LoadingIndicator progress={displayProgress} />}>
-            <Navigation />
             <main className="relative">
               <Hero />
               <section id="about" className="scroll-mt-20">
