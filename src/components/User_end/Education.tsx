@@ -1,91 +1,162 @@
-import { GraduationCap } from 'lucide-react';
 import { useData } from '../../context/DataContext';
+import { GraduationCap, Calendar, MapPin, Award } from 'lucide-react';
+import { useState, useEffect, useRef, useContext } from 'react';
+import { motion, Variants } from 'framer-motion';
+import { ThemeContext } from './PortfolioLayout';
 
 const Education = () => {
   const { education } = useData();
+  const theme = useContext(ThemeContext);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15 },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+    },
+  };
 
   return (
-    <section id="education" className="py-20 bg-gradient-to-b from-gray-50 to-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-4 mx-auto">
-            <GraduationCap size={32} className="text-white" />
+    <motion.section
+      id="education"
+      ref={sectionRef}
+      initial="hidden"
+      animate={isVisible ? 'visible' : 'hidden'}
+      variants={containerVariants}
+      className={`py-32 transition-colors duration-500 relative overflow-hidden ${
+        theme.theme === 'light' ? 'bg-gray-50/50' : 'bg-gray-900/20'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <motion.div className="mb-20" variants={itemVariants}>
+          <div className="flex items-center gap-4 mb-4">
+            <div className="h-[1px] w-12 bg-purple-600" />
+            <span className="text-xs font-black uppercase tracking-[0.4em] text-purple-600">Learning Path</span>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-            Education <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Journey</span>
+          <h2 className={`text-4xl sm:text-6xl font-black tracking-tight leading-[1.1] ${
+              theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+            }`}
+          >
+            Academic <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-red-500">Foundation</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            My academic background and qualifications that shaped my technical expertise
-          </p>
-        </div>
+        </motion.div>
 
         {education.length > 0 ? (
-          <div className="relative">
-            {/* Timeline line */}
-            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500/20 via-purple-500/50 to-blue-500/20 transform -translate-x-1/2"></div>
-            
-            <div className="space-y-8 md:space-y-12">
-              {education.map((edu, index) => (
-                <div 
-                  key={edu.id} 
-                  className={`relative group ${index % 2 === 0 ? 'md:pr-8 md:text-right' : 'md:pl-8'}`}
-                  data-aos="fade-up"
-                  data-aos-delay={index * 100}
-                >
-                  {/* Timeline dot */}
-                  <div className={`hidden md:flex absolute top-6 ${index % 2 === 0 ? '-right-1' : '-left-1'} items-center justify-center w-6 h-6 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg transform group-hover:scale-125 transition-transform duration-300`}>
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
-                  </div>
-
-                  <div className={`bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-1 ${index % 2 === 0 ? 'md:mr-8' : 'md:ml-8'}`}>
-                    <div className="flex items-start space-x-4">
-                      <div className="flex-shrink-0 p-3 bg-blue-50 rounded-lg text-blue-600">
-                        <GraduationCap size={24} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14">
+            {education.map((edu, index) => (
+              <motion.div 
+                key={edu.id || index} 
+                variants={itemVariants}
+                whileHover={{ y: -8 }}
+                className={`p-10 sm:p-14 rounded-[3.5rem] transition-all duration-500 border group flex flex-col relative overflow-hidden ${
+                  theme.theme === 'light' 
+                    ? 'bg-white border-gray-200 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.1)] hover:shadow-[0_30px_70px_-20px_rgba(0,0,0,0.15)]' 
+                    : 'bg-gray-900 border-white/10 hover:border-purple-500/50 shadow-2xl'
+                }`}
+              >
+                {/* Visual Accent */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 blur-[60px] rounded-full -mr-16 -mt-16 group-hover:bg-purple-500/10 transition-all duration-700" />
+                
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-8 mb-12 relative z-10">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-lg bg-purple-500/10">
+                        <Calendar size={14} className="text-purple-600 dark:text-purple-400" />
                       </div>
-                      <div className="flex-1">
-                        <h3 className="text-xl font-bold text-gray-900">{edu.degree}</h3>
-                        <p className="text-blue-600 font-medium">{edu.institution}</p>
-                        <p className="text-sm text-gray-500 mb-2">
-                          {edu.location} • {new Date(edu.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })} - {edu.endDate ? new Date(edu.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }) : 'Present'}
-                        </p>
-                        
-                        {edu.gpa && (
-                          <div className="inline-block bg-gradient-to-r from-blue-100 to-purple-100 px-3 py-1 rounded-full text-sm font-medium text-blue-800 mb-3">
-                            GPA: {edu.gpa}
-                          </div>
-                        )}
-
-                        {edu.description && (
-                          <p className="text-gray-700 mb-3">{edu.description}</p>
-                        )}
-
-                        {edu.achievements.length > 0 && (
-                          <div className="mt-4">
-                            <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Key Achievements</h4>
-                            <ul className="space-y-2">
-                              {edu.achievements.map((achievement, idx) => (
-                                <li key={idx} className="flex items-start">
-                                  <span className="flex-shrink-0 mt-1 mr-2 text-blue-500">•</span>
-                                  <span className="text-gray-700">{achievement}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
+                      <span className="text-[11px] font-black uppercase tracking-[0.2em] text-purple-600 dark:text-purple-400">
+                        {new Date(edu.startDate).getFullYear()} — {edu.endDate ? new Date(edu.endDate).getFullYear() : 'Present'}
+                      </span>
+                    </div>
+                    
+                    <h3 className={`text-3xl font-black leading-[1.2] transition-colors duration-300 ${
+                      theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+                    }`}>
+                      {edu.degree}
+                    </h3>
+                    
+                    <div className="flex items-center gap-3 text-sm font-bold text-gray-500 dark:text-gray-400">
+                      <div className="w-5 h-5 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                        <MapPin size={12} />
                       </div>
+                      {edu.institution}
                     </div>
                   </div>
+                  
+                  {edu.gpa && (
+                    <div className={`px-8 py-5 rounded-[2rem] border flex flex-col items-center justify-center shadow-lg ${
+                      theme.theme === 'light' ? 'bg-purple-50 border-purple-100' : 'bg-gray-800 border-purple-500/20 shadow-purple-500/5'
+                    }`}>
+                      <span className="text-[10px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-widest mb-1">GPA</span>
+                      <span className={`text-3xl font-black ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                        {edu.gpa}
+                      </span>
+                    </div>
+                  )}
                 </div>
-              ))}
-            </div>
+
+                <div className="space-y-8 flex-grow relative z-10">
+                  <p className={`text-lg font-medium leading-relaxed ${
+                    theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                  }`}>
+                    {edu.description}
+                  </p>
+
+                  {edu.achievements.length > 0 && (
+                    <div className="flex flex-wrap gap-3 pt-8 border-t border-gray-100 dark:border-white/10">
+                      {edu.achievements.map((achievement, i) => (
+                        <div key={i} className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest border transition-all ${
+                          theme.theme === 'light' 
+                            ? 'bg-gray-50 border-gray-100 text-gray-500 hover:border-purple-200 hover:text-purple-600' 
+                            : 'bg-gray-800/50 border-white/5 text-gray-400 hover:border-purple-500/30 hover:text-purple-400'
+                        }`}>
+                          <Award size={14} className="text-purple-500" />
+                          {achievement}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            ))}
           </div>
         ) : (
-          <div className="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-200">
-            <p className="text-gray-500">No education data available yet.</p>
+          <div className={`text-center py-24 rounded-[3.5rem] border-2 border-dashed ${
+            theme.theme === 'light' ? 'border-gray-100 bg-gray-50' : 'border-white/5 bg-gray-900'
+          }`}>
+            <p className="text-xl font-black text-gray-300 uppercase tracking-widest">Archiving Journey...</p>
           </div>
         )}
       </div>
-    </section>
+    </motion.section>
   );
 };
 

@@ -116,14 +116,14 @@ const AboutForm2 = () => {
   }, [resetAboutData]);
 
   const themeClasses = useMemo(() => ({
-    title: theme === 'light' ? 'text-gray-900' : 'text-white',
-    subtitle: theme === 'light' ? 'text-gray-600' : 'text-gray-400',
-    label: theme === 'light' ? 'text-gray-700' : 'text-gray-300',
-    input: theme === 'light' 
+    title: theme.theme === 'light' ? 'text-gray-900' : 'text-white',
+    subtitle: theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400',
+    label: theme.theme === 'light' ? 'text-gray-700' : 'text-gray-300',
+    input: theme.theme === 'light' 
       ? 'border-gray-300 bg-white text-gray-900' 
       : 'border-gray-700 bg-gray-800 text-gray-200',
-    container: theme === 'light' ? 'bg-white/10' : 'bg-gray-800/10',
-    sectionHeader: theme === 'light' ? 'text-gray-800' : 'text-gray-200'
+    container: theme.theme === 'light' ? 'bg-white/10' : 'bg-gray-800/10',
+    sectionHeader: theme.theme === 'light' ? 'text-gray-800' : 'text-gray-200'
   }), [theme]);
 
   const highlightsValue = useMemo(() => {
@@ -169,7 +169,7 @@ const AboutForm2 = () => {
       <div className={`glass-effect rounded-lg p-6 space-y-6 transition-colors duration-300 ${themeClasses.container}`}>
         <div>
           <div className="flex items-center mb-2">
-            <Star className={`mr-2 ${theme === 'light' ? 'text-yellow-600' : 'text-yellow-400'}`} size={20} />
+            <Star className={`mr-2 ${theme.theme === 'light' ? 'text-yellow-600' : 'text-yellow-400'}`} size={20} />
             <label className={`block text-sm font-medium transition-colors duration-300 ${themeClasses.label}`}>
               Highlights (comma-separated, max 50 chars each)
             </label>
@@ -203,7 +203,7 @@ const AboutForm2 = () => {
                   <span
                     key={i}
                     className={`px-2 py-1 rounded-full text-xs ${
-                      theme === 'light' 
+                      theme.theme === 'light' 
                         ? 'bg-blue-100 text-blue-800' 
                         : 'bg-blue-900 text-blue-200'
                     } ${highlight.length > 50 ? 'bg-red-100 text-red-800' : ''}`}
@@ -219,7 +219,7 @@ const AboutForm2 = () => {
         <div>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
-              <BarChart3 className={`mr-2 ${theme === 'light' ? 'text-green-600' : 'text-green-400'}`} size={20} />
+              <BarChart3 className={`mr-2 ${theme.theme === 'light' ? 'text-green-600' : 'text-green-400'}`} size={20} />
               <h4 className={`text-lg font-medium transition-colors duration-300 ${themeClasses.sectionHeader}`}>
                 Achievement Stats (max 6)
               </h4>

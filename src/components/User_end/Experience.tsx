@@ -1,106 +1,168 @@
-
 import { useData } from '../../context/DataContext';
-
-import { Briefcase, ChevronRight } from 'lucide-react';
+import { Briefcase, Calendar, MapPin, CheckCircle2 } from 'lucide-react';
+import { motion, Variants } from 'framer-motion';
+import { useState, useEffect, useRef, useContext } from 'react';
+import { ThemeContext } from './PortfolioLayout';
 
 const Experience = () => {
   const { experiences } = useData();
+  const theme = useContext(ThemeContext);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2 },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+    },
+  };
 
   return (
-    <section id="experience" className="py-20 bg-gradient-to-b from-gray-50 to-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-4 mx-auto">
-            <Briefcase size={32} className="text-white" />
+    <motion.section
+      id="experience"
+      ref={sectionRef}
+      initial="hidden"
+      animate={isVisible ? 'visible' : 'hidden'}
+      variants={containerVariants}
+      className={`py-32 transition-colors duration-500 relative overflow-hidden ${
+        theme.theme === 'light' ? 'bg-white' : 'bg-gray-950'
+      }`}
+    >
+      {/* Background Orbs */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[120px] translate-x-1/2 -translate-y-1/2" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <motion.div className="mb-20" variants={itemVariants}>
+          <div className="flex items-center gap-4 mb-4">
+            <div className="h-[1px] w-12 bg-blue-600" />
+            <span className="text-xs font-black uppercase tracking-[0.4em] text-blue-600">Career Path</span>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-            Professional <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Experience</span>
+          <h2 className={`text-4xl sm:text-6xl font-black tracking-tight leading-[1.1] ${
+              theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+            }`}
+          >
+            Professional <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">Trajectory</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            My career journey and the roles that shaped my professional growth
-          </p>
-        </div>
+        </motion.div>
 
         {experiences.length > 0 ? (
-          <div className="relative">
-            {/* Timeline line */}
-            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500/20 via-purple-500/50 to-blue-500/20 transform -translate-x-1/2"></div>
-            
-            <div className="space-y-8 md:space-y-12">
-              {experiences.map((exp, index) => (
-                <div 
-                  key={exp.id} 
-                  className={`relative group ${index % 2 === 0 ? 'md:pr-8 md:text-right' : 'md:pl-8'}`}
-                  data-aos="fade-up"
-                  data-aos-delay={index * 100}
-                >
-                  {/* Timeline dot */}
-                  <div className={`hidden md:flex absolute top-6 ${index % 2 === 0 ? '-right-1' : '-left-1'} items-center justify-center w-6 h-6 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg transform group-hover:scale-125 transition-transform duration-300`}>
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
-                  </div>
+          <div className="relative space-y-12">
+            {/* Timeline Center Line (Desktop) */}
+            <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-[2px] bg-gray-100 dark:bg-gray-900 transform md:-translate-x-1/2 rounded-full"></div>
 
-                  <div className={`bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-1 ${index % 2 === 0 ? 'md:mr-8' : 'md:ml-8'}`}>
-                    <div className="flex items-start space-x-4">
-                      <div className="flex-shrink-0 p-3 bg-blue-50 rounded-lg text-blue-600">
-                        <Briefcase size={24} />
+            {experiences.map((exp, index) => (
+              <motion.div 
+                key={exp.id || index} 
+                variants={itemVariants}
+                className={`relative flex flex-col md:flex-row items-start ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
+              >
+                {/* Timeline Node */}
+                <div className="absolute left-8 md:left-1/2 w-4 h-4 bg-blue-600 rounded-full z-10 transform -translate-x-1/2 mt-12 shadow-[0_0_20px_rgba(37,99,235,0.5)]">
+                  <div className="absolute inset-0 bg-blue-600 rounded-full animate-ping opacity-20" />
+                </div>
+
+                <div className={`w-full md:w-1/2 pl-16 md:pl-0 ${index % 2 === 0 ? 'md:pr-16' : 'md:pl-16'}`}>
+                  <div className={`p-8 sm:p-10 rounded-[3rem] transition-all duration-500 border group ${
+                    theme.theme === 'light' 
+                      ? 'bg-white border-gray-100 shadow-xl shadow-gray-200/30 hover:shadow-blue-500/10' 
+                      : 'bg-gray-900/50 backdrop-blur-xl border-white/5 hover:bg-gray-800/80'
+                  }`}>
+                    <div className="flex flex-col mb-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <Calendar size={14} className="text-blue-600" />
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600">
+                          {new Date(exp.startDate).getFullYear()} — {exp.endDate ? new Date(exp.endDate).getFullYear() : 'Present'}
+                        </span>
                       </div>
-                      <div className="flex-1">
-                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-2">
-                          <h3 className="text-xl font-bold text-gray-900">{exp.title}</h3>
-                          <div className="text-sm text-gray-500">
-                            {new Date(exp.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })} - {exp.endDate ? new Date(exp.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }) : 'Present'}
-                          </div>
-                        </div>
-                        
-                        <p className="text-blue-600 font-medium mb-3">{exp.company} • {exp.location}</p>
-                        
-                        <p className="text-gray-700 mb-4">{exp.description}</p>
-                        
-                        {exp.technologies.length > 0 && (
-                          <div className="mb-4">
-                            <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Technologies Used</h4>
-                            <div className="flex flex-wrap gap-2">
-                              {exp.technologies.map((tech, techIndex) => (
-                                <span 
-                                  key={techIndex} 
-                                  className="px-3 py-1 bg-gradient-to-br from-blue-50 to-purple-50 text-blue-800 rounded-full text-sm font-medium border border-blue-100"
-                                >
-                                  {tech}
-                                </span>
-                              ))}
+                      
+                      <h3 className={`text-2xl sm:text-3xl font-black transition-colors duration-300 ${
+                        theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+                      }`}>
+                        {exp.title}
+                      </h3>
+                      
+                      <div className="flex items-center gap-2 mt-2 text-sm font-bold text-gray-500 dark:text-gray-400">
+                        <MapPin size={14} />
+                        {exp.company}
+                      </div>
+                    </div>
+
+                    <p className={`leading-relaxed mb-8 text-base font-medium ${
+                      theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                    }`}>
+                      {exp.description}
+                    </p>
+
+                    {exp.achievements.length > 0 && (
+                      <div className="space-y-3 mb-8">
+                        {exp.achievements.map((achievement, i) => (
+                          <div key={i} className="flex items-start gap-3">
+                            <div className="mt-1 flex-shrink-0">
+                              <CheckCircle2 size={16} className="text-green-500" />
                             </div>
+                            <span className={`text-sm font-medium ${
+                              theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                            }`}>
+                              {achievement}
+                            </span>
                           </div>
-                        )}
-                        
-                        {exp.achievements.length > 0 && (
-                          <div>
-                            <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Key Achievements</h4>
-                            <ul className="space-y-2">
-                              {exp.achievements.map((achievement, achievementIndex) => (
-                                <li key={achievementIndex} className="flex items-start">
-                                  <span className="flex-shrink-0 mt-1 mr-2 text-blue-500">
-                                    <ChevronRight size={16} className="text-blue-500" />
-                                  </span>
-                                  <span className="text-gray-700">{achievement}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
+                        ))}
                       </div>
+                    )}
+
+                    <div className="flex flex-wrap gap-2">
+                      {exp.technologies.map((tech) => (
+                        <span key={tech} className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl border ${
+                          theme.theme === 'light' 
+                            ? 'bg-gray-50 border-gray-100 text-gray-500' 
+                            : 'bg-gray-800 border-white/5 text-gray-400'
+                        }`}>
+                          {tech}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
+              </motion.div>
+            ))}
           </div>
         ) : (
-          <div className="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-200">
-            <p className="text-gray-500">No experience data available yet.</p>
+          <div className={`text-center py-24 rounded-[3.5rem] border-2 border-dashed ${
+            theme.theme === 'light' ? 'border-gray-100 bg-gray-50' : 'border-white/5 bg-gray-900'
+          }`}>
+            <p className="text-xl font-black text-gray-300 uppercase tracking-widest">Assembling History...</p>
           </div>
         )}
       </div>
-    </section>
+    </motion.section>
   );
 };
 

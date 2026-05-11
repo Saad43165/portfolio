@@ -8,7 +8,9 @@ const AdminLogin = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isResetMode, setIsResetMode] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === null) {
@@ -16,7 +18,7 @@ const AdminLogin = () => {
     }
     return savedTheme === 'dark';
   });
-  const { login } = useAuth();
+  const { login, sendPasswordReset } = useAuth();
   const navigate = useNavigate();
 
   // Set dark mode class on initial render and when it changes
@@ -28,19 +30,24 @@ const AdminLogin = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setSuccessMsg('');
     setIsLoading(true);
 
     try {
-      const success = await login(username, password);
-      
-      if (!success) {
-        setError('Invalid credentials. Please try again.');
+      if (isResetMode) {
+        await sendPasswordReset(username);
+        setSuccessMsg('Password reset email sent! Please check your inbox.');
       } else {
-        navigate('/admin/dashboard');
+        const success = await login(username, password);
+        if (!success) {
+          setError('Invalid credentials. Please use your registered email.');
+        } else {
+          navigate('/admin/dashboard');
+        }
       }
-    } catch (err) {
-      setError('An error occurred. Please try again.');
-      console.error('Login error:', err);
+    } catch (err: any) {
+      setError(err.message || 'An error occurred. Please try again.');
+      console.error('Auth error:', err);
     } finally {
       setIsLoading(false);
     }
@@ -74,68 +81,85 @@ const AdminLogin = () => {
               <Lock size={24} className="text-white" />
             </div>
             <h2 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-              Admin Login
+              {isResetMode ? 'Reset Password' : 'Admin Login'}
             </h2>
             <p className={`mt-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-              Access your portfolio dashboard
+              {isResetMode ? 'Enter your email to receive a reset link' : 'Access your portfolio dashboard'}
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="username" className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                Username
+                Email Address
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <User size={20} className={isDarkMode ? 'text-gray-400' : 'text-gray-400'} />
                 </div>
                 <input
-                  type="text"
+                  type="email"
                   id="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   className={`w-full pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'}`}
-                  placeholder="Enter your username"
+                  placeholder="Enter your email"
                   required
                 />
               </div>
             </div>
 
-            <div>
-              <label htmlFor="password" className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock size={20} className={isDarkMode ? 'text-gray-400' : 'text-gray-400'} />
+            {!isResetMode && (
+              <div>
+                <label htmlFor="password" className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  Password
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Lock size={20} className={isDarkMode ? 'text-gray-400' : 'text-gray-400'} />
+                  </div>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className={`w-full pl-10 pr-12 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'}`}
+                    placeholder="Enter your password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  >
+                    {showPassword ? (
+                      <EyeOff size={20} className={isDarkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'} />
+                    ) : (
+                      <Eye size={20} className={isDarkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'} />
+                    )}
+                  </button>
                 </div>
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className={`w-full pl-10 pr-12 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'}`}
-                  placeholder="Enter your password"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                >
-                  {showPassword ? (
-                    <EyeOff size={20} className={isDarkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'} />
-                  ) : (
-                    <Eye size={20} className={isDarkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'} />
-                  )}
-                </button>
+                <div className="flex justify-end mt-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsResetMode(true)}
+                    className="text-sm text-blue-600 hover:text-blue-500 font-medium"
+                  >
+                    Forgot Password?
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
 
             {error && (
               <div className={`p-3 rounded-lg text-sm ${isDarkMode ? 'bg-red-900/30 border-red-700 text-red-200' : 'bg-red-50 border-red-200 text-red-700'}`}>
                 {error}
+              </div>
+            )}
+
+            {successMsg && (
+              <div className={`p-3 rounded-lg text-sm ${isDarkMode ? 'bg-green-900/30 border-green-700 text-green-200' : 'bg-green-50 border-green-200 text-green-700'}`}>
+                {successMsg}
               </div>
             )}
 
@@ -147,24 +171,36 @@ const AdminLogin = () => {
               {isLoading ? (
                 <>
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  <span>Signing in...</span>
+                  <span>{isResetMode ? 'Sending...' : 'Signing in...'}</span>
                 </>
               ) : (
-                <span>Sign In</span>
+                <span>{isResetMode ? 'Send Reset Link' : 'Sign In'}</span>
               )}
             </button>
+
+            {isResetMode && (
+              <div className="text-center mt-4">
+                <button
+                  type="button"
+                  onClick={() => setIsResetMode(false)}
+                  className={`text-sm font-medium ${isDarkMode ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}
+                >
+                  Back to Login
+                </button>
+              </div>
+            )}
           </form>
 
           <div className={`mt-6 p-4 rounded-lg ${isDarkMode ? 'bg-gray-700/50' : 'bg-gray-50'}`}>
             <p className={`text-sm text-center ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-              <strong className={isDarkMode ? 'text-white' : 'text-gray-900'}>Demo Credentials:</strong><br />
-              Username: admin<br />
-              Password: admin123
+              <strong className={isDarkMode ? 'text-white' : 'text-gray-900'}>Note:</strong><br />
+              Use the email address associated with your portfolio admin account.
             </p>
           </div>
         </div>
       </div>
     </div>
+
   );
 };
 

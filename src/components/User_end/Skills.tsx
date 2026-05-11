@@ -1,12 +1,13 @@
-import  { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import { useData } from '../../context/DataContext';
-
-import { Code, Palette, Database, Globe, Smartphone, Zap, Clock } from 'lucide-react';
+import { Code, Palette, Database, Smartphone, Zap, CheckCircle2, Cpu, Cloud, Terminal } from 'lucide-react';
+import { motion, Variants } from 'framer-motion';
+import { ThemeContext } from './PortfolioLayout';
 
 const Skills = () => {
-  const [, setIsVisible] = useState(false);
-  const [animatedBars, setAnimatedBars] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const { skills } = useData();
+  const theme = useContext(ThemeContext);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -14,10 +15,9 @@ const Skills = () => {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          setTimeout(() => setAnimatedBars(true), 500);
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.2 }
     );
 
     if (sectionRef.current) {
@@ -27,7 +27,6 @@ const Skills = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Group skills by category
   const skillCategories = skills.reduce((acc, skill) => {
     const category = skill.category;
     if (!acc[category]) {
@@ -38,184 +37,144 @@ const Skills = () => {
   }, {} as Record<string, typeof skills>);
 
   const getCategoryIcon = (category: string) => {
-    switch (category.toLowerCase()) {
-      case 'frontend development':
-      case 'frontend':
-        return Code;
-      case 'backend development':
-      case 'backend':
-      case 'database':
-        return Database;
-      case 'mobile development':
-      case 'mobile':
-        return Smartphone;
-      case 'design':
-        return Palette;
-      case 'devops':
-        return Globe;
-      default:
-        return Zap;
-    }
+    const cat = category.toLowerCase();
+    if (cat.includes('frontend')) return Code;
+    if (cat.includes('backend')) return Terminal;
+    if (cat.includes('database')) return Database;
+    if (cat.includes('mobile')) return Smartphone;
+    if (cat.includes('design')) return Palette;
+    if (cat.includes('devops') || cat.includes('cloud')) return Cloud;
+    if (cat.includes('languages') || cat.includes('core')) return Cpu;
+    return Zap;
   };
 
-  const getCategoryColor = (index: number) => {
-    const colors = ['blue', 'purple', 'green', 'orange', 'pink', 'indigo'];
-    return colors[index % colors.length];
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 },
+    },
   };
 
-  const getColorClasses = (color: string) => {
-    const colors = {
-      blue: {
-        bg: 'bg-blue-100',
-        text: 'text-blue-600',
-        gradient: 'from-blue-500 to-blue-600',
-        ring: 'ring-blue-100'
-      },
-      purple: {
-        bg: 'bg-purple-100',
-        text: 'text-purple-600',
-        gradient: 'from-purple-500 to-purple-600',
-        ring: 'ring-purple-100'
-      },
-      green: {
-        bg: 'bg-green-100',
-        text: 'text-green-600',
-        gradient: 'from-green-500 to-green-600',
-        ring: 'ring-green-100'
-      },
-      orange: {
-        bg: 'bg-orange-100',
-        text: 'text-orange-600',
-        gradient: 'from-orange-500 to-orange-600',
-        ring: 'ring-orange-100'
-      },
-      pink: {
-        bg: 'bg-pink-100',
-        text: 'text-pink-600',
-        gradient: 'from-pink-500 to-pink-600',
-        ring: 'ring-pink-100'
-      },
-      indigo: {
-        bg: 'bg-indigo-100',
-        text: 'text-indigo-600',
-        gradient: 'from-indigo-500 to-indigo-600',
-        ring: 'ring-indigo-100'
-      }
-    };
-    return colors[color as keyof typeof colors] || colors.blue;
-  };
-
-  const getLevelText = (level: number) => {
-    if (level >= 90) return 'Expert';
-    if (level >= 70) return 'Advanced';
-    if (level >= 50) return 'Intermediate';
-    return 'Beginner';
-  };
-
-  const getLevelColor = (level: number) => {
-    if (level >= 90) return 'bg-green-100 text-green-800';
-    if (level >= 70) return 'bg-blue-100 text-blue-800';
-    if (level >= 50) return 'bg-yellow-100 text-yellow-800';
-    return 'bg-gray-100 text-gray-800';
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+    },
   };
 
   return (
-    <section id="skills" ref={sectionRef} className="py-20 bg-gradient-to-b from-gray-50 to-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-4 mx-auto">
-            <Code size={32} className="text-white" />
+    <motion.section
+      id="skills"
+      ref={sectionRef}
+      initial="hidden"
+      animate={isVisible ? 'visible' : 'hidden'}
+      variants={containerVariants}
+      className={`py-32 transition-colors duration-500 relative overflow-hidden ${
+        theme.theme === 'light' ? 'bg-white' : 'bg-gray-950'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <motion.div className="mb-20" variants={itemVariants}>
+          <div className="flex items-center gap-4 mb-4">
+            <div className="h-[1px] w-12 bg-blue-600" />
+            <span className="text-xs font-black uppercase tracking-[0.4em] text-blue-600">Technical Arsenal</span>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-            Technical <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Skills</span>
+          <h2 className={`text-4xl sm:text-6xl font-black tracking-tight leading-[1.1] ${
+              theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+            }`}
+          >
+            Empowering Vision <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">Through Technology</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            My expertise across different technologies and programming domains
-          </p>
-        </div>
+        </motion.div>
 
         {skills.length > 0 ? (
-          <div className="relative">
-            {/* Timeline line */}
-            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500/20 via-purple-500/50 to-blue-500/20 transform -translate-x-1/2"></div>
-            
-            <div className="space-y-8 md:space-y-12">
-              {Object.entries(skillCategories).map(([categoryName, categorySkills], categoryIndex) => {
-                const CategoryIcon = getCategoryIcon(categoryName);
-                const color = getCategoryColor(categoryIndex);
-                const colorClasses = getColorClasses(color);
-
-                return (
-                  <div 
-                    key={categoryName} 
-                    className={`relative group ${categoryIndex % 2 === 0 ? 'md:pr-8 md:text-right' : 'md:pl-8'}`}
-                    data-aos="fade-up"
-                    data-aos-delay={categoryIndex * 100}
-                  >
-                    {/* Timeline dot */}
-                    <div className={`hidden md:flex absolute top-6 ${categoryIndex % 2 === 0 ? '-right-1' : '-left-1'} items-center justify-center w-6 h-6 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg transform group-hover:scale-125 transition-transform duration-300`}>
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
+          <div className="space-y-24">
+            {Object.entries(skillCategories).map(([categoryName, categorySkills]) => {
+              const Icon = getCategoryIcon(categoryName);
+              return (
+                <motion.div 
+                  key={categoryName}
+                  variants={itemVariants}
+                  className="space-y-12"
+                >
+                  <div className="flex items-center gap-6">
+                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center border shadow-xl relative group ${
+                      theme.theme === 'light' 
+                        ? 'bg-white border-gray-100 text-blue-600' 
+                        : 'bg-gray-800 border-white/10 text-blue-400 shadow-blue-500/10'
+                    }`}>
+                      <div className="absolute inset-0 bg-blue-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity rounded-full" />
+                      <Icon size={28} className="relative z-10" />
                     </div>
+                    <h3 className={`text-3xl font-black tracking-tight ${
+                      theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+                    }`}>
+                      {categoryName}
+                    </h3>
+                  </div>
 
-                    <div className={`bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-1 ${categoryIndex % 2 === 0 ? 'md:mr-8' : 'md:ml-8'}`}>
-                      <div className="flex items-start space-x-4">
-                        <div className="flex-shrink-0 p-3 bg-blue-50 rounded-lg text-blue-600">
-                          <CategoryIcon size={24} />
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                    {categorySkills.map((skill) => (
+                      <motion.div 
+                        key={skill.id}
+                        whileHover={{ y: -5, scale: 1.02 }}
+                        className={`p-8 rounded-[2rem] border transition-all duration-500 group/skill relative overflow-hidden ${
+                          theme.theme === 'light' 
+                            ? 'bg-white border-gray-200 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.08)] hover:shadow-[0_25px_50px_-15px_rgba(0,0,0,0.12)]' 
+                            : 'bg-gray-900 border-white/10 hover:border-blue-500/50 shadow-2xl'
+                        }`}
+                      >
+                        {/* Interactive Hover Accent */}
+                        <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-600 to-purple-600 transform scale-y-0 group-hover/skill:scale-y-100 transition-transform duration-500" />
+                        
+                        <div className="flex justify-between items-center mb-8">
+                          <span className={`font-black text-xl tracking-tight ${
+                            theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+                          }`}>
+                            {skill.name}
+                          </span>
+                          <span className="text-[10px] font-black text-blue-500 bg-blue-500/10 px-4 py-1.5 rounded-full border border-blue-500/20">
+                            {skill.level}%
+                          </span>
                         </div>
-                        <div className="flex-1">
-                          <h3 className="text-xl font-bold text-gray-900">{categoryName}</h3>
+                        
+                        <div className="space-y-6">
+                          <div className="w-full bg-gray-100 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
+                            <motion.div 
+                              initial={{ width: 0 }}
+                              animate={isVisible ? { width: `${skill.level}%` } : {}}
+                              transition={{ duration: 1.5, ease: "easeOut" }}
+                              className="h-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 rounded-full"
+                            />
+                          </div>
                           
-                          <div className="mt-4 space-y-4">
-                            {categorySkills.map((skill, skillIndex) => (
-                              <div key={skill.id} className="space-y-2">
-                                <div className="flex justify-between items-center">
-                                  <span className="text-sm font-medium text-gray-700">{skill.name}</span>
-                                  <div className="flex items-center space-x-2">
-                                    <span className={`px-2 py-1 text-xs rounded-full font-medium ${getLevelColor(skill.level)}`}>
-                                      {getLevelText(skill.level)}
-                                    </span>
-                                    <span className="text-sm font-bold text-gray-900">{skill.level}%</span>
-                                  </div>
-                                </div>
-                                <div className="w-full bg-gray-200 rounded-full h-2">
-                                  <div
-                                    className={`h-2 rounded-full bg-gradient-to-r ${colorClasses.gradient} transition-all duration-1000 ease-out`}
-                                    style={{
-                                      width: animatedBars ? `${skill.level}%` : '0%',
-                                      transitionDelay: `${(categoryIndex * 200) + (skillIndex * 100) + 600}ms`
-                                    }}
-                                  ></div>
-                                </div>
-                                
-                                {skill.yearsOfExperience > 0 && (
-                                  <div className="flex items-center text-sm text-gray-600">
-                                    <Clock size={14} className="mr-1" />
-                                    <span>
-                                      {skill.yearsOfExperience} year{skill.yearsOfExperience !== 1 ? 's' : ''} of experience
-                                    </span>
-                                  </div>
-                                )}
-                                
-                                {skill.description && (
-                                  <p className="text-sm text-gray-600 mt-1">{skill.description}</p>
-                                )}
-                              </div>
-                            ))}
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">
+                              <CheckCircle2 size={14} className="mr-2 text-blue-500" />
+                              {skill.yearsOfExperience > 0 ? `${skill.yearsOfExperience}Y Mastery` : 'Rising Talent'}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </motion.div>
+                    ))}
                   </div>
-              )})}
-            </div>
+                </motion.div>
+              );
+            })}
           </div>
         ) : (
-          <div className="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-200">
-            <p className="text-gray-500">No skills data available yet.</p>
+          <div className={`text-center py-24 rounded-[3.5rem] border-2 border-dashed ${
+            theme.theme === 'light' ? 'border-gray-100 bg-gray-50' : 'border-white/5 bg-gray-900'
+          }`}>
+            <p className="text-xl font-black text-gray-300 uppercase tracking-widest">Synchronizing Arsenal...</p>
           </div>
         )}
       </div>
-    </section>
+    </motion.section>
   );
 };
 

@@ -21,11 +21,13 @@ import SkillManager from '../../SkillManager';
 import ExperienceManager from '../../ExperienceManager';
 import EducationManager from '../../EducationManager';
 import AboutManager from '../../AboutManager';
+import GeneralInfoManager from '../../GeneralInfoManager';
 import SettingsScreen from './SettingsManager';
 import OverviewManager from '../components/OverViewManager';
 
 type TabType =
   | 'overview'
+  | 'general'
   | 'projects'
   | 'skills'
   | 'experience'
@@ -41,11 +43,12 @@ const AdminDashboard: React.FC = () => {
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard, description: 'Dashboard summary' },
+    { id: 'general', label: 'General Info', icon: User, description: 'Hero & social links' },
     { id: 'projects', label: 'Projects', icon: FolderOpen, description: 'Manage your projects' },
     { id: 'skills', label: 'Skills', icon: Code, description: 'Technical skills' },
     { id: 'experience', label: 'Experience', icon: Briefcase, description: 'Work history' },
     { id: 'education', label: 'Education', icon: GraduationCap, description: 'Academic background' },
-    { id: 'about', label: 'About', icon: User, description: 'Personal information' },
+    { id: 'about', label: 'About', icon: User, description: 'About section details' },
     { id: 'settings', label: 'Settings', icon: Settings, description: 'Account settings' },
   ];
 
@@ -84,6 +87,8 @@ const AdminDashboard: React.FC = () => {
     switch (activeTab) {
       case 'overview':
         return <OverviewManager setActiveTab={setActiveTab} />;
+      case 'general':
+        return <GeneralInfoManager />;
       case 'projects':
         return <ProjectManager />;
       case 'skills':

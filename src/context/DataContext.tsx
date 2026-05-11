@@ -11,6 +11,7 @@ import {
   Experience,
   Education,
   AboutData,
+  PortfolioInfo,
 } from '../types';
 import { db } from '../components/Helpers/firebase';
 import {
@@ -30,6 +31,7 @@ interface DataContextType {
   experiences: Experience[];
   education: Education[];
   aboutData: AboutData;
+  portfolioInfo: PortfolioInfo;
   addProject: (project: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) => void;
   updateProject: (id: string, project: Partial<Project>) => void;
   deleteProject: (id: string) => void;
@@ -44,6 +46,7 @@ interface DataContextType {
   deleteEducation: (id: string) => void;
   updateAboutData: (about: Partial<AboutData>) => void;
   resetAboutData: () => void;
+  updatePortfolioInfo: (info: Partial<PortfolioInfo>) => void;
   isLoading: boolean;
 }
 
@@ -59,6 +62,22 @@ const defaultAbout: AboutData = {
     { label: 'Team Projects', value: '5+' },
     { label: 'Years Learning', value: '2+' },
   ],
+  aboutImage: '/saad_pic.JPG',
+};
+
+const defaultInfo: PortfolioInfo = {
+  name: 'Saad Ikram',
+  roles: ['Software Engineer', 'Android Developer', 'Flutter Developer', 'Java Developer'],
+  profileImage: '/image.png',
+  resumeUrl: '/Saad_Ikram_Resume.pdf',
+  socialLinks: [
+    { platform: 'Github', url: 'https://github.com/Saad43165' },
+    { platform: 'Linkedin', url: 'https://linkedin.com/in/saadikram' },
+    { platform: 'Instagram', url: 'https://instagram.com/the__bluesss' },
+  ],
+  email: 'saadnaz43165@gmail.com',
+  location: 'Chakwal, Punjab, Pakistan',
+  phone: '03414279749',
 };
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -78,88 +97,93 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [education, setEducation] = useState<Education[]>([]);
   const [aboutData, setAboutData] = useState<AboutData>(defaultAbout);
+  const [portfolioInfo, setPortfolioInfo] = useState<PortfolioInfo>(defaultInfo);
   const [isLoading, setIsLoading] = useState(true);
 
   // Utility
   const timestamp = () => new Date().toISOString();
 
   // FETCH ALL DATA
- useEffect(() => {
-  const fetchAll = async () => {
-    try {
-      const fetchCollection = async <T,>(name: string): Promise<T[]> => {
-        const snap = await getDocs(collection(db, name));
-        return snap.docs.map(docSnap => ({ id: docSnap.id, ...docSnap.data() } as T));
-      };
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        const fetchCollection = async <T,>(name: string): Promise<T[]> => {
+          const snap = await getDocs(collection(db, name));
+          return snap.docs.map(docSnap => ({ id: docSnap.id, ...docSnap.data() } as T));
+        };
 
-      const [fetchedProjects, fetchedSkills, fetchedExperiences, fetchedEducation] =
-        await Promise.all([
-          fetchCollection<Project>('projects'),
-          fetchCollection<Skill>('skills'),
-          fetchCollection<Experience>('experiences'),
-          fetchCollection<Education>('education'),
-        ]);
+        const [fetchedProjects, fetchedSkills, fetchedExperiences, fetchedEducation] =
+          await Promise.all([
+            fetchCollection<Project>('projects'),
+            fetchCollection<Skill>('skills'),
+            fetchCollection<Experience>('experiences'),
+            fetchCollection<Education>('education'),
+          ]);
 
-      setProjects(fetchedProjects);
-      setSkills(fetchedSkills);
-      setExperiences(fetchedExperiences);
-      setEducation(fetchedEducation);
+        setProjects(fetchedProjects);
+        setSkills(fetchedSkills);
+        setExperiences(fetchedExperiences);
+        setEducation(fetchedEducation);
 
-      const aboutSnap = await getDoc(doc(db, 'about', 'aboutData'));
-      if (aboutSnap.exists()) {
-        setAboutData(aboutSnap.data() as AboutData);
+        const aboutSnap = await getDoc(doc(db, 'about', 'aboutData'));
+        if (aboutSnap.exists()) {
+          setAboutData(aboutSnap.data() as AboutData);
+        }
+
+        const infoSnap = await getDoc(doc(db, 'info', 'portfolioInfo'));
+        if (infoSnap.exists()) {
+          setPortfolioInfo(infoSnap.data() as PortfolioInfo);
+        }
+      } catch (err) {
+        console.error('Error loading data:', err);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err) {
-      console.error('Error loading data:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    };
 
-  fetchAll();
-}, []);
-
+    fetchAll();
+  }, []);
 
   // --------- CRUD HELPERS ----------
- const addDocTo = async <T extends { id?: string }>(
-  col: string,
-  data: Omit<T, 'id' | 'createdAt' | 'updatedAt'>,
-  setter: React.Dispatch<React.SetStateAction<T[]>>
-): Promise<void> => {
-  const payload: T = {
-    ...(data as T),
-    createdAt: timestamp(),
-    updatedAt: timestamp(),
+  const addDocTo = async <T extends { id?: string }>(
+    col: string,
+    data: Omit<T, 'id' | 'createdAt' | 'updatedAt'>,
+    setter: React.Dispatch<React.SetStateAction<T[]>>
+  ): Promise<void> => {
+    const payload: T = {
+      ...(data as T),
+      createdAt: timestamp(),
+      updatedAt: timestamp(),
+    };
+    const ref = await addDoc(collection(db, col), payload);
+    setter((prev) => [...prev, { ...payload, id: ref.id }]);
   };
-  const ref = await addDoc(collection(db, col), payload);
-  setter((prev) => [...prev, { ...payload, id: ref.id }]);
-};
 
-const updateDocIn = async <T extends { id: string }>(
-  col: string,
-  id: string,
-  data: Partial<T>,
-  setter: React.Dispatch<React.SetStateAction<T[]>>
-): Promise<void> => {
-  const ref = doc(db, col, id);
-  const updatedAtTime = timestamp();
-  await updateDoc(ref, { ...data, updatedAt: updatedAtTime });
+  const updateDocIn = async <T extends { id: string }>(
+    col: string,
+    id: string,
+    data: Partial<T>,
+    setter: React.Dispatch<React.SetStateAction<T[]>>
+  ): Promise<void> => {
+    const ref = doc(db, col, id);
+    const updatedAtTime = timestamp();
+    await updateDoc(ref, { ...data, updatedAt: updatedAtTime });
 
-  setter((prev) =>
-    prev.map((item) =>
-      item.id === id ? { ...item, ...data, updatedAt: updatedAtTime } : item
-    )
-  );
-};
+    setter((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, ...data, updatedAt: updatedAtTime } : item
+      )
+    );
+  };
 
-const deleteDocFrom = async <T extends { id: string }>(
-  col: string,
-  id: string,
-  setter: React.Dispatch<React.SetStateAction<T[]>>
-): Promise<void> => {
-  await deleteDoc(doc(db, col, id));
-  setter((prev) => prev.filter((item) => item.id !== id));
-};
+  const deleteDocFrom = async <T extends { id: string }>(
+    col: string,
+    id: string,
+    setter: React.Dispatch<React.SetStateAction<T[]>>
+  ): Promise<void> => {
+    await deleteDoc(doc(db, col, id));
+    setter((prev) => prev.filter((item) => item.id !== id));
+  };
 
   // --------- PROJECT ----------
   const addProject = (data: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) =>
@@ -202,6 +226,13 @@ const deleteDocFrom = async <T extends { id: string }>(
     setAboutData(defaultAbout);
   };
 
+  // --------- PORTFOLIO INFO ----------
+  const updatePortfolioInfo = async (data: Partial<PortfolioInfo>) => {
+    const ref = doc(db, 'info', 'portfolioInfo');
+    await setDoc(ref, { ...portfolioInfo, ...data }, { merge: true });
+    setPortfolioInfo(prev => ({ ...prev, ...data }));
+  };
+
   return (
     <DataContext.Provider
       value={{
@@ -210,6 +241,7 @@ const deleteDocFrom = async <T extends { id: string }>(
         experiences,
         education,
         aboutData,
+        portfolioInfo,
         addProject,
         updateProject,
         deleteProject,
@@ -224,6 +256,7 @@ const deleteDocFrom = async <T extends { id: string }>(
         deleteEducation,
         updateAboutData,
         resetAboutData,
+        updatePortfolioInfo,
         isLoading,
       }}
     >

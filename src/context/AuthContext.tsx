@@ -4,6 +4,7 @@ import {
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
   User as FirebaseUser,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../components/Helpers/firebase';
@@ -12,6 +13,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
+  sendPasswordReset: (email: string) => Promise<void>;
   isLoading: boolean;
 }
 
@@ -29,8 +31,6 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-
-
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<AdminUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,6 +46,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (username: string, password: string): Promise<boolean> => {
     setIsLoading(true);
     try {
+      // Security Check: Only allow specific admin email
+      const ALLOWED_ADMIN_EMAIL = 'saadnaz43165@gmail.com';
+      
+      if (username.toLowerCase() !== ALLOWED_ADMIN_EMAIL.toLowerCase()) {
+        console.error('Unauthorized access attempt');
+        return false;
+      }
+
       const res = await signInWithEmailAndPassword(auth, username, password);
       const fbUser: FirebaseUser = res.user;
 
@@ -79,6 +87,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const sendPasswordReset = async (email: string) => {
+    await sendPasswordResetEmail(auth, email);
+  };
+
   const logout = () => {
     firebaseSignOut(auth);
     setUser(null);
@@ -87,9 +99,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated: !!user, login, logout, isLoading }}
+      value={{ user, isAuthenticated: !!user, login, logout, sendPasswordReset, isLoading }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
+

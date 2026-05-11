@@ -37,16 +37,16 @@ const About = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.2 },
+      transition: { staggerChildren: 0.15 },
     },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: 'easeOut' },
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
     },
   };
 
@@ -54,121 +54,128 @@ const About = () => {
     <motion.section
       id="about"
       ref={sectionRef}
-      className={`py-20 transition-colors duration-300 ${theme === 'light' ? 'bg-gray-50' : 'bg-gray-900'}`}
+      className={`py-32 transition-colors duration-500 overflow-hidden relative ${theme.theme === 'light' ? 'bg-gray-50/50' : 'bg-gray-950'}`}
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}
       variants={containerVariants}
-      aria-labelledby="about-heading"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div className="text-center mb-16" variants={itemVariants}>
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-4 mx-auto">
-            <User size={32} className="text-white" />
+      {/* Subtle Background Accent */}
+      <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] -translate-x-1/2" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <motion.div className="mb-20" variants={itemVariants}>
+          <div className="flex items-center gap-4 mb-4">
+            <div className="h-[1px] w-12 bg-blue-600" />
+            <span className="text-xs font-black uppercase tracking-[0.4em] text-blue-600">Personal Story</span>
           </div>
-          <h2
-            id="about-heading"
-            className={`text-4xl sm:text-5xl font-bold mb-4 transition-colors duration-300 ${
-              theme === 'light' ? 'text-gray-900' : 'text-white'
+          <h2 className={`text-4xl sm:text-6xl font-black tracking-tight leading-[1.1] ${
+              theme.theme === 'light' ? 'text-gray-900' : 'text-white'
             }`}
           >
-            About <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Me</span>
+            A Glimpse Into <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">My Creative Journey</span>
           </h2>
-          <p className={`text-lg transition-colors duration-300 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
-            Get to know me better
-          </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <motion.div className="space-y-6" variants={itemVariants}>
-            <h3
-              className={`text-3xl font-bold transition-colors duration-300 ${
-                theme === 'light' ? 'text-gray-900' : 'text-white'
-              }`}
-            >
-              {aboutData.heading}
-            </h3>
-            {aboutData.paragraphs.map((para, i) => (
-              <p
-                key={i}
-                className={`text-lg leading-relaxed transition-colors duration-300 ${
-                  theme === 'light' ? 'text-gray-600' : 'text-gray-300'
-                }`}
-              >
-                {para}
-              </p>
-            ))}
-            <div className="flex flex-wrap gap-3 mt-8">
-              {aboutData.highlights.map((highlight) => (
-                <span
-                  key={highlight}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 ${
-                    theme === 'light'
-                      ? 'bg-blue-100 text-blue-800 hover:bg-blue-200'
-                      : 'bg-blue-900/50 text-blue-200 hover:bg-blue-800/50'
-                  }`}
-                >
-                  {highlight}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div className="space-y-8" variants={itemVariants}>
-            <div className="relative w-80 h-80 mx-auto">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-[2px] shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
-                <div
-                  className={`relative w-full h-full rounded-2xl overflow-hidden transition-colors duration-300 ${
-                    theme === 'light' ? 'bg-white' : 'bg-gray-800'
-                  }`}
-                >
-                  <img
-                    src="/saad_pic.JPG"
-                    alt="Profile picture of Saad Ikram"
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+          {/* Left Column: Visuals & Stats */}
+          <div className="lg:col-span-5 space-y-12 order-2 lg:order-1">
+            <motion.div className="relative group" variants={itemVariants}>
+              <div className="absolute -inset-4 bg-gradient-to-br from-blue-600 to-purple-600 rounded-[3.5rem] blur-2xl opacity-10 group-hover:opacity-20 transition-opacity duration-700" />
+              <div className={`relative aspect-[4/5] rounded-[3rem] overflow-hidden border border-white dark:border-white/5 shadow-2xl ${
+                theme.theme === 'light' ? 'bg-white' : 'bg-gray-900'
+              }`}>
+                <img
+                  src={aboutData.aboutImage || "/saad_pic.JPG"}
+                  alt="Saad Ikram"
+                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 transform group-hover:scale-105"
+                  loading="lazy"
+                />
               </div>
-            </div>
+            </motion.div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-6">
               {stats.map((stat, index) => (
                 <motion.div
                   key={stat.label}
-                  className={`p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-[1.03] ${
-                    theme === 'light' ? 'bg-white' : 'bg-gray-800'
+                  className={`p-8 rounded-[2.5rem] transition-all duration-500 border ${
+                    theme.theme === 'light' 
+                      ? 'bg-white border-gray-100 shadow-xl shadow-gray-200/40 hover:shadow-blue-500/10' 
+                      : 'bg-gray-900 border-white/5 hover:bg-gray-800'
                   }`}
                   variants={itemVariants}
-                  custom={index}
                 >
-                  <div className="flex justify-center mb-3">
-                    <div
-                      className={`p-3 rounded-full ${
-                        theme === 'light' ? 'bg-blue-100' : 'bg-blue-900/50'
-                      }`}
-                    >
-                      <stat.Icon
-                        size={24}
-                        className={theme === 'light' ? 'text-blue-600' : 'text-blue-400'}
-                      />
+                  <div className="flex items-center gap-6">
+                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${
+                      theme.theme === 'light' ? 'bg-blue-50 text-blue-600' : 'bg-blue-950 text-blue-400'
+                    }`}>
+                      <stat.Icon size={28} />
                     </div>
-                  </div>
-                  <div
-                    className={`text-2xl font-bold mb-2 transition-colors duration-300 ${
-                      theme === 'light' ? 'text-gray-900' : 'text-white'
-                    }`}
-                  >
-                    {stat.value}
-                  </div>
-                  <div
-                    className={`text-sm transition-colors duration-300 ${
-                      theme === 'light' ? 'text-gray-600' : 'text-gray-400'
-                    }`}
-                  >
-                    {stat.label}
+                    <div>
+                      <div className={`text-3xl font-black tracking-tight leading-none mb-1 ${
+                        theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+                      }`}>
+                        {stat.value}
+                      </div>
+                      <div className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
+                        {stat.label}
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
               ))}
+            </div>
+          </div>
+
+          {/* Right Column: Narrative */}
+          <motion.div className="lg:col-span-7 space-y-12 order-1 lg:order-2" variants={itemVariants}>
+            <div className="space-y-8">
+              <h3 className={`text-2xl sm:text-4xl font-black leading-tight ${
+                  theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+                }`}
+              >
+                {aboutData.heading}
+              </h3>
+              <div className="space-y-6">
+                {aboutData.paragraphs.map((para, i) => (
+                  <p key={i} className={`text-lg sm:text-xl leading-relaxed font-medium ${
+                      theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                    }`}
+                  >
+                    {para}
+                  </p>
+                ))}
+              </div>
+            </div>
+            
+            <div className="space-y-6">
+              <p className="text-xs font-black uppercase tracking-[0.3em] text-blue-600">Core Expertise</p>
+              <div className="flex flex-wrap gap-3">
+                {aboutData.highlights.map((highlight) => (
+                  <motion.span 
+                    key={highlight} 
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    className={`px-6 py-3 rounded-2xl text-xs font-black tracking-widest uppercase border transition-all ${
+                      theme.theme === 'light'
+                        ? 'bg-white border-gray-200 text-gray-700 shadow-sm hover:border-blue-600 hover:text-blue-600'
+                        : 'bg-gray-900 border-white/10 text-gray-300 hover:border-blue-500 hover:text-blue-500'
+                    }`}
+                  >
+                    {highlight}
+                  </motion.span>
+                ))}
+              </div>
+            </div>
+
+            {/* Visual Callout */}
+            <div className={`p-8 rounded-[2.5rem] border-2 border-dashed ${
+              theme.theme === 'light' ? 'border-blue-100 bg-blue-50/30' : 'border-blue-900/30 bg-blue-900/5'
+            }`}>
+               <p className={`text-base font-bold italic ${
+                 theme.theme === 'light' ? 'text-blue-900/70' : 'text-blue-400/70'
+               }`}>
+                 "My mission is to translate complex problems into intuitive digital solutions that empower users and scale businesses."
+               </p>
             </div>
           </motion.div>
         </div>

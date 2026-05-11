@@ -1,9 +1,11 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useData } from '../../context/DataContext';
+import { motion } from 'framer-motion';
 
 // Enhanced lazy loading with prefetching and progress tracking
-type LazyWithPrefetch<T extends React.ComponentType<unknown>> = React.LazyExoticComponent<T> & { 
-  prefetch: () => Promise<{ default: T }> 
+type LazyWithPrefetch<T extends React.ComponentType<unknown>> = React.LazyExoticComponent<T> & {
+  prefetch: () => Promise<{ default: T }>
 };
 
 const lazyWithPrefetch = <T extends React.ComponentType<unknown>>(
@@ -25,125 +27,225 @@ const Education = lazyWithPrefetch(() => import('./Education'));
 const Contact = lazyWithPrefetch(() => import('./Contact'));
 const Footer = lazyWithPrefetch(() => import('./Footer'));
 
-// Theme context
-const ThemeContext = React.createContext('light');
-
 // Improved loading component with smooth progress animation
+// Improved loading component with professional premium aesthetic
 const LoadingIndicator = ({ progress }: { progress: number }) => {
   return (
-    <div 
-      className="fixed inset-0 flex items-center justify-center bg-white z-50"
+    <div
+      className="fixed inset-0 flex items-center justify-center bg-white dark:bg-gray-950 z-[100] overflow-hidden"
       role="status"
       aria-live="polite"
       aria-busy="true"
     >
-      <div className="w-full max-w-md mx-4">
-        <div className="flex justify-between items-center mb-3">
-          <span className="text-gray-700 font-medium text-lg">
-            {progress < 100 ? 'Loading Portfolio...' : 'Almost there!'}
-          </span>
-          <span className="text-gray-500 font-mono text-sm">{progress}%</span>
+      {/* Dynamic Background Orbs */}
+      <motion.div
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.1, 0.2, 0.1],
+          x: [0, 50, 0],
+          y: [0, -50, 0]
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[120px]"
+      />
+      <motion.div
+        animate={{
+          scale: [1.2, 1, 1.2],
+          opacity: [0.1, 0.2, 0.1],
+          x: [0, -50, 0],
+          y: [0, 50, 0]
+        }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[120px]"
+      />
+
+      <div className="relative z-10 w-full max-w-sm px-8 flex flex-col items-center">
+        <div className="w-full space-y-6">
+          <div className="flex justify-between items-end">
+            <div className="space-y-1">
+              <h2 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">
+                {progress < 100 ? 'Initialising' : 'Finalising'}
+              </h2>
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em]">
+                {progress < 40 ? 'Database handshake' : progress < 80 ? 'Syncing assets' : 'Polishing interface'}
+              </p>
+            </div>
+            <span className="text-3xl font-black text-blue-600 dark:text-blue-400 tabular-nums">{progress}%</span>
+          </div>
+
+          <div className="h-1.5 w-full bg-gray-100 dark:bg-gray-900 rounded-full overflow-hidden">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ type: "spring", bounce: 0, duration: 0.5 }}
+              className="h-full bg-gradient-to-r from-blue-600 to-purple-600"
+            />
+          </div>
         </div>
-        <div className="h-3 bg-gray-200 rounded-full overflow-hidden shadow-inner">
-          <div 
-            className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-300 ease-out shadow-sm"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-        <div className="mt-2 text-center">
-          <span className="text-gray-400 text-sm">Preparing your experience...</span>
-        </div>
+
+        <motion.div
+          animate={{ opacity: [0.4, 1, 0.4] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="mt-12 flex items-center gap-2"
+        >
+          <div className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
+          <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">Secure Session Active</span>
+        </motion.div>
       </div>
     </div>
   );
 };
 
+// Theme context
+const ThemeContext = React.createContext<{ theme: string; toggleTheme: () => void }>({
+  theme: 'light',
+  toggleTheme: () => { },
+});
+
+const CustomCursor = () => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isPointer, setIsPointer] = useState(false);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setPosition({ x: e.clientX, y: e.clientY });
+      const target = e.target as HTMLElement;
+      setIsPointer(window.getComputedStyle(target).cursor === 'pointer');
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  return (
+    <>
+      <motion.div
+        className="custom-cursor hidden md:block"
+        animate={{
+          x: position.x - 10,
+          y: position.y - 10,
+          scale: isPointer ? 1.5 : 1,
+        }}
+        transition={{ type: 'spring', damping: 20, stiffness: 250, mass: 0.5 }}
+      />
+      <div
+        className="custom-cursor-dot hidden md:block"
+        style={{ left: `${position.x}px`, top: `${position.y}px` }}
+      />
+    </>
+  );
+};
+
 const PortfolioLayout = () => {
   const location = useLocation();
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
+  const { isLoading: isDataLoading, portfolioInfo } = useData();
+  const [isAssetsLoading, setIsAssetsLoading] = useState(true);
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [displayProgress, setDisplayProgress] = useState(0);
+  const [forceComplete, setForceComplete] = useState(false);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
+
+  useEffect(() => {
+    document.documentElement.className = theme;
+  }, [theme]);
+
+  // Smooth progress animation logic with safety timeout
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    let safetyTimeout: NodeJS.Timeout;
+
+    if (isDataLoading) {
+      // Fast climb to 40% while waiting for data
+      interval = setInterval(() => {
+        setDisplayProgress(prev => prev < 40 ? prev + 2 : prev);
+      }, 30);
+
+      // Force progress forward if stuck for > 7s
+      safetyTimeout = setTimeout(() => {
+        setForceComplete(true);
+      }, 7000);
+    } else if (isAssetsLoading) {
+      // Rapid climb to 95% while prefetching
+      interval = setInterval(() => {
+        setDisplayProgress(prev => prev < 95 ? prev + 4 : prev);
+      }, 20);
+    } else {
+      // Instant completion
+      setDisplayProgress(100);
+    }
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(safetyTimeout);
+    };
+  }, [isDataLoading, isAssetsLoading]);
+
+  useEffect(() => {
+    // Dynamic SEO
+    if (portfolioInfo?.name) {
+      document.title = `${portfolioInfo.name} | ${portfolioInfo.roles?.[0] || 'Portfolio'}`;
+    }
+  }, [portfolioInfo]);
 
   useEffect(() => {
     // Scroll to top on route change
     window.scrollTo(0, 0);
-    
-    // Simulate smooth progress for better UX
-    const progressInterval = setInterval(() => {
-      setLoadingProgress(prev => {
-        // Gradual slowdown as we approach completion
-        const increment = prev < 60 ? 12 : prev < 80 ? 8 : prev < 90 ? 4 : 1;
-        return Math.min(prev + increment, 90);
-      });
-    }, 250);
 
-    // Actual prefetching with progress tracking
+    // Prefetch essential components with safety timeout
     const prefetchComponents = async () => {
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Prefetch timeout')), 5000)
+      );
+
       try {
-        const componentPromises = [
-          Navigation.prefetch(),
-          Hero.prefetch(),
-          About.prefetch(),
-          Skills.prefetch(),
-          Projects.prefetch(),
-          Experience.prefetch(),
-          Education.prefetch(),
-          Contact.prefetch(),
-          Footer.prefetch()
-        ];
-
-        // Track individual component loading progress
-        let loadedCount = 0;
-        const totalComponents = componentPromises.length;
-        
-        await Promise.all(
-          componentPromises.map(promise => 
-            promise.then(() => {
-              loadedCount++;
-              const actualProgress = Math.min(90, Math.floor((loadedCount / totalComponents) * 90));
-              setLoadingProgress(prev => Math.max(prev, actualProgress));
-            }).catch(err => {
-              console.warn('Component prefetch failed:', err);
-              loadedCount++;
-              const actualProgress = Math.min(90, Math.floor((loadedCount / totalComponents) * 90));
-              setLoadingProgress(prev => Math.max(prev, actualProgress));
-            })
-          )
-        );
-
-        // Complete the loading animation smoothly
-        setLoadingProgress(100);
-        await new Promise(resolve => setTimeout(resolve, 400));
+        await Promise.race([
+          Promise.all([
+            Navigation.prefetch(),
+            Hero.prefetch(),
+            About.prefetch(),
+            Skills.prefetch(),
+            Projects.prefetch(),
+            Experience.prefetch(),
+            Education.prefetch(),
+            Contact.prefetch(),
+            Footer.prefetch()
+          ]),
+          timeoutPromise
+        ]);
       } catch (error) {
-        console.error('Error during component prefetching:', error);
-        setLoadingProgress(100);
-        await new Promise(resolve => setTimeout(resolve, 200));
+        console.warn('Prefetching issue or timeout:', error);
       } finally {
-        clearInterval(progressInterval);
-        setIsLoading(false);
+        setIsAssetsLoading(false);
       }
     };
 
-    prefetchComponents();
+    if (!isDataLoading) {
+      prefetchComponents();
+    }
+  }, [location, isDataLoading]);
 
-    return () => clearInterval(progressInterval);
-  }, [location]);
+  const isLoading = !forceComplete && (isDataLoading || isAssetsLoading || displayProgress < 100);
 
   return (
-    <ThemeContext.Provider value="light">
-      <div 
-        className="min-h-screen bg-white"
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      <div
+        className={`min-h-screen transition-colors duration-500 ${theme === 'light' ? 'bg-white' : 'bg-gray-950'}`}
         role="main"
         aria-label="Portfolio website content"
       >
-        {isLoading && <LoadingIndicator progress={loadingProgress} />}
-        
+        <CustomCursor />
+        {isLoading && <LoadingIndicator progress={displayProgress} />}
+
         {/* Content container with smooth fade-in transition */}
-        <div 
-          className={`transition-opacity duration-500 ease-in-out ${
-            isLoading ? 'opacity-0 pointer-events-none' : 'opacity-100'
-          }`}
+        <div
+          className={`transition-opacity duration-700 ease-in-out ${isLoading ? 'opacity-0 pointer-events-none translate-y-4' : 'opacity-100 translate-y-0'
+            }`}
         >
-          <Suspense fallback={<LoadingIndicator progress={loadingProgress} />}>
+          <Suspense fallback={<LoadingIndicator progress={displayProgress} />}>
             <Navigation />
             <main className="relative">
               <Hero />

@@ -1,13 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import { useData } from '../../context/DataContext';
-import { ExternalLink, Github, Zap, Shield, Smartphone, Globe, X } from 'lucide-react';
+import { ExternalLink, Github, Zap, Shield, Smartphone, Globe, X, Play, Code as CodeIcon } from 'lucide-react';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
+import { ThemeContext } from './PortfolioLayout';
 
 const Projects = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { projects } = useData();
+  const theme = useContext(ThemeContext);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [selectedVideoUrl, setSelectedVideoUrl] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState('All');
+
+  const categories = ['All', ...new Set(projects.map(p => p.category))];
+  const filteredProjects = activeCategory === 'All' 
+    ? projects 
+    : projects.filter(p => p.category === activeCategory);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -27,21 +36,12 @@ const Projects = () => {
   }, []);
 
   const getProjectIcon = (category: string) => {
-    switch (category.toLowerCase()) {
-      case 'mobile':
-      case 'mobile app':
-        return Smartphone;
-      case 'web app':
-      case 'full stack':
-        return Globe;
-      case 'frontend':
-        return Zap;
-      case 'backend':
-      case 'api':
-        return Shield;
-      default:
-        return Globe;
-    }
+    const cat = category.toLowerCase();
+    if (cat.includes('mobile')) return Smartphone;
+    if (cat.includes('web') || cat.includes('full stack')) return Globe;
+    if (cat.includes('frontend')) return Zap;
+    if (cat.includes('backend') || cat.includes('api')) return Shield;
+    return CodeIcon;
   };
 
   const handleViewVideo = (videoUrl: string) => {
@@ -49,260 +49,212 @@ const Projects = () => {
     setVideoModalOpen(true);
   };
 
-  const handleCloseVideoModal = () => {
-    setVideoModalOpen(false);
-    setSelectedVideoUrl(null);
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+    },
   };
 
   return (
-    <section id="projects" ref={sectionRef} className="py-16 bg-gradient-to-b from-gray-50 to-gray-100">
-      {/* Add custom scrollbar CSS */}
-      <style dangerouslySetInnerHTML={{
-        __html: `
-          .scrollable-section {
-            scrollbar-width: thin;
-            scrollbar-color: #cbd5e1 #f1f5f9;
-          }
-          .scrollable-section::-webkit-scrollbar {
-            width: 6px;
-          }
-          .scrollable-section::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 3px;
-          }
-          .scrollable-section::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
-          }
-          .scrollable-section::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-          }
-        `
-      }} />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-4 mx-auto">
-            <Globe size={32} className="text-white" />
+    <motion.section
+      id="projects"
+      ref={sectionRef}
+      initial="hidden"
+      animate={isVisible ? 'visible' : 'hidden'}
+      variants={containerVariants}
+      className={`py-32 transition-colors duration-500 relative overflow-hidden ${
+        theme.theme === 'light' ? 'bg-gray-50/50' : 'bg-gray-950'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <motion.div className="mb-20" variants={itemVariants}>
+          <div className="flex items-center gap-4 mb-4">
+            <div className="h-[1px] w-12 bg-blue-600" />
+            <span className="text-xs font-black uppercase tracking-[0.4em] text-blue-600">Selected Works</span>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-            My <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Projects</span>
+          <h2 className={`text-4xl sm:text-6xl font-black tracking-tight leading-[1.1] ${
+              theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+            }`}
+          >
+            Digital <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">Masterpieces</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            A showcase of my work and contributions to various projects
-          </p>
-        </div>
 
-        {projects.length > 0 ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-            {projects.map((project, index) => {
-              const ProjectIcon = getProjectIcon(project.category);
-              return (
-                <div
-                  key={project.title}
-                  className={`bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-1 flex flex-col overflow-hidden h-[550px] ${
-                    isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                  }`}
-                  style={{ transitionDelay: `${index * 150}ms` }}
-                >
-                  {/* Project Image - Fixed */}
-                  <div className="relative h-44 overflow-hidden bg-gray-50 flex-shrink-0">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-contain transition-transform duration-500 hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <div className="flex space-x-3">
-                        {project.githubUrl && (
-                          <a
-                            href={project.githubUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-3 bg-white rounded-full text-gray-800 hover:bg-gray-100 transition-colors duration-200 transform hover:scale-110"
-                          >
-                            <Github size={20} />
-                          </a>
-                        )}
-                        {project.liveUrl && (
-                          <a
-                            href={project.liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-3 bg-blue-600 rounded-full text-white hover:bg-blue-700 transition-colors duration-200 transform hover:scale-110"
-                          >
-                            <ExternalLink size={20} />
-                          </a>
-                        )}
-                        {project.videoUrl && (
-                          <button
-                            onClick={() => handleViewVideo(project.videoUrl!)}
-                            className="p-3 bg-red-600 rounded-full text-white hover:bg-red-700 transition-colors duration-200 transform hover:scale-110"
-                          >
-                            <Zap size={20} />
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                    
-                    {/* Category Badge */}
-                    <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 bg-blue-600 text-white text-sm rounded-full font-medium">
-                        {project.category}
-                      </span>
-                    </div>
-                    
-                    {/* Status Badge */}
-                    <div className="absolute top-4 right-4">
-                      <span className={`px-2 py-1 text-xs rounded-full font-medium ${
-                        project.status === 'completed' ? 'bg-green-100 text-green-800' :
-                        project.status === 'in-progress' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
-                        {project.status}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Scrollable Content Area */}
-                  <div className="flex-1 flex flex-col overflow-hidden">
-                    <div className="p-6 pb-0">
-                      {/* Title - Fixed */}
-                      <div className="flex items-center mb-4">
-                        <div className="p-2 bg-blue-100 rounded-lg mr-3">
-                          <ProjectIcon size={20} className="text-blue-600" />
-                        </div>
-                        <h3 className="text-xl font-bold text-gray-900">{project.title}</h3>
-                      </div>
-                    </div>
-
-                    {/* Scrollable Content */}
-                    <div className="flex-1 overflow-y-auto scrollable-section px-6">
-                      {/* Description - Scrollable */}
-                      <div className="mb-6">
-                        <div className="text-gray-600 leading-relaxed">
-                          {project.description}
-                        </div>
-                      </div>
-
-                      {/* Technologies - Scrollable */}
-                      {project.technologies.length > 0 && (
-                        <div className="mb-6">
-                          <h4 className="text-sm font-medium text-gray-500 mb-3 sticky top-0 bg-white py-1">
-                            Technologies ({project.technologies.length})
-                          </h4>
-                          <div className="flex flex-wrap gap-2">
-                            {project.technologies.map((tech) => (
-                              <span
-                                key={tech}
-                                className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full"
-                              >
-                                {tech}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Features - Scrollable */}
-                      {project.features.length > 0 && (
-                        <div className="mb-6">
-                          <h4 className="text-sm font-medium text-gray-500 mb-3 sticky top-0 bg-white py-1">
-                            Key Features ({project.features.length})
-                          </h4>
-                          <div className="space-y-2">
-                            {project.features.map((feature, idx) => (
-                              <div key={idx} className="flex items-start text-sm text-gray-600">
-                                <div className="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
-                                <span className="leading-relaxed">{feature}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Action Buttons - Fixed at bottom */}
-                    <div className="p-6 pt-4 bg-white border-t border-gray-100">
-                      <div className="flex space-x-3">
-                        {project.githubUrl && (
-                          <a
-                            href={project.githubUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 bg-gray-900 text-white py-3 px-4 rounded-lg text-center text-sm font-medium hover:bg-gray-800 transition-colors duration-200 flex items-center justify-center space-x-2"
-                          >
-                            <Github size={16} />
-                            <span>Code</span>
-                          </a>
-                        )}
-                        {project.liveUrl && (
-                          <a
-                            href={project.liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg text-center text-sm font-medium hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center space-x-2"
-                          >
-                            <ExternalLink size={16} />
-                            <span>Live</span>
-                          </a>
-                        )}
-                        {!project.githubUrl && !project.liveUrl && project.videoUrl && (
-                          <button
-                            onClick={() => handleViewVideo(project.videoUrl!)}
-                            className="flex-1 bg-red-600 text-white py-3 px-4 rounded-lg text-center text-sm font-medium hover:bg-red-700 transition-colors duration-200 flex items-center justify-center space-x-2"
-                          >
-                            <Zap size={16} />
-                            <span>View Demo</span>
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+          {/* Category Filter */}
+          <div className="flex flex-wrap gap-3 mt-12">
+            {categories.map((cat) => (
+              <motion.button
+                key={cat}
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 border ${
+                  activeCategory === cat 
+                    ? 'bg-blue-600 border-blue-600 text-white shadow-xl shadow-blue-500/30' 
+                    : theme.theme === 'light'
+                      ? 'bg-white border-gray-100 text-gray-500 hover:border-gray-200 shadow-sm'
+                      : 'bg-gray-900 border-white/5 text-gray-400 hover:border-white/10'
+                }`}
+              >
+                {cat}
+              </motion.button>
+            ))}
           </div>
+        </motion.div>
+
+        {filteredProjects.length > 0 ? (
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+            <AnimatePresence mode="popLayout">
+              {filteredProjects.map((project, index) => {
+                const ProjectIcon = getProjectIcon(project.category);
+                const isMobileApp = project.category.toLowerCase().includes('mobile');
+                
+                return (
+                  <motion.div
+                    key={project.id || index}
+                    layout
+                    variants={itemVariants}
+                    whileHover={{ y: -8 }}
+                    className={`group relative rounded-[3rem] p-8 transition-all duration-700 border flex flex-col h-full ${
+                      theme.theme === 'light'
+                        ? 'bg-white border-gray-200 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.1)] hover:shadow-[0_30px_70px_-20px_rgba(0,0,0,0.15)]'
+                        : 'bg-gray-900 border-white/10 hover:border-blue-500/30 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)]'
+                    }`}
+                  >
+                    {/* Media Container */}
+                    <div className={`relative rounded-[2rem] overflow-hidden mb-8 transition-all duration-700 ${
+                      isMobileApp ? 'aspect-[9/16] max-w-[240px] mx-auto border-[6px] border-gray-900 shadow-2xl' : 'aspect-video'
+                    }`}>
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center gap-4">
+                        {project.videoUrl && (
+                          <motion.button 
+                            whileHover={{ scale: 1.1 }}
+                            onClick={() => handleViewVideo(project.videoUrl!)}
+                            className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-white"
+                          >
+                            <Play size={24} fill="currentColor" />
+                          </motion.button>
+                        )}
+                        {project.githubUrl && (
+                          <motion.a 
+                            whileHover={{ scale: 1.1 }}
+                            href={project.githubUrl}
+                            target="_blank"
+                            className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-white"
+                          >
+                            <Github size={24} />
+                          </motion.a>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-grow flex flex-col">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className={`p-3 rounded-xl ${
+                          theme.theme === 'light' ? 'bg-blue-50 text-blue-600' : 'bg-blue-900/30 text-blue-400'
+                        }`}>
+                          <ProjectIcon size={20} />
+                        </div>
+                        <h3 className={`text-2xl font-black tracking-tight transition-colors duration-300 ${
+                          theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+                        }`}>
+                          {project.title}
+                        </h3>
+                      </div>
+
+                      <p className={`text-base font-medium leading-relaxed mb-8 line-clamp-3 group-hover:line-clamp-none transition-all duration-500 ${
+                        theme.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                      }`}>
+                        {project.description}
+                      </p>
+
+                      <div className="mt-auto pt-6 border-t border-gray-100 dark:border-white/5 space-y-6">
+                        <div className="flex flex-wrap gap-2">
+                          {project.technologies.slice(0, 4).map((tech) => (
+                            <span key={tech} className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-xl border ${
+                              theme.theme === 'light' ? 'bg-gray-50 border-gray-100 text-gray-500' : 'bg-gray-800 border-white/5 text-gray-400'
+                            }`}>
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className={`w-2 h-2 rounded-full ${project.status === 'completed' ? 'bg-green-500' : 'bg-blue-500 animate-pulse'}`} />
+                            <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">{project.status}</span>
+                          </div>
+                          <motion.button 
+                            whileHover={{ x: 5 }}
+                            onClick={() => project.videoUrl && handleViewVideo(project.videoUrl)}
+                            className="flex items-center gap-2 text-xs font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest"
+                          >
+                            Details <ExternalLink size={14} />
+                          </motion.button>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </motion.div>
         ) : (
-          <div className="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-200">
-            <p className="text-gray-500">No projects data available yet.</p>
+          <div className={`text-center py-24 rounded-[3.5rem] border-2 border-dashed ${
+            theme.theme === 'light' ? 'border-gray-100 bg-gray-50' : 'border-white/5 bg-gray-900'
+          }`}>
+            <CodeIcon size={48} className="mx-auto text-gray-300 mb-6" />
+            <p className="text-xl font-black text-gray-300 uppercase tracking-widest">Assembling Portfolio...</p>
           </div>
         )}
 
         {/* Video Modal */}
-        {videoModalOpen && selectedVideoUrl && (
-          <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-5xl max-h-[95vh] flex flex-col">
-              <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                <h2 className="text-2xl font-bold text-gray-900">Project Demo</h2>
+        <AnimatePresence>
+          {videoModalOpen && selectedVideoUrl && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 bg-gray-950/90 backdrop-blur-xl" 
+                onClick={() => setVideoModalOpen(false)}
+              />
+              <motion.div 
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="relative w-full max-w-5xl aspect-video bg-black rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10"
+              >
                 <button
-                  onClick={handleCloseVideoModal}
-                  className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all duration-200"
+                  onClick={() => setVideoModalOpen(false)}
+                  className="absolute top-6 right-6 z-50 p-4 bg-white/10 hover:bg-white/20 text-white rounded-2xl backdrop-blur-md transition-colors"
                 >
                   <X size={24} />
                 </button>
-              </div>
-              <div className="p-6 flex-grow flex items-center justify-center">
-                <video 
-                  src={selectedVideoUrl}
-                  className="w-full h-auto max-h-[75vh] rounded-lg shadow-lg"
-                  controls
-                  autoPlay
-                />
-              </div>
-              <div className="p-6 bg-gray-50 flex justify-end border-t border-gray-200">
-                <button
-                  onClick={handleCloseVideoModal}
-                  className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium"
-                >
-                  Close
-                </button>
-              </div>
+                <video src={selectedVideoUrl} className="w-full h-full object-contain" controls autoPlay />
+              </motion.div>
             </div>
-          </div>
-        )}
+          )}
+        </AnimatePresence>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

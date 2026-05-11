@@ -19,7 +19,6 @@ export interface Project {
   updatedAt?: string;
 }
 
-
 export interface Skill {
   id: string;
   name: string;
@@ -32,9 +31,8 @@ export interface Skill {
 }
 
 export interface Experience {
-  position: string;
   id: string;
-  title: string; // Changed from 'position' to align with ExperienceForm
+  title: string;
   company: string;
   location: string;
   startDate: string;
@@ -65,6 +63,23 @@ export interface AboutData {
   paragraphs: string[];
   highlights: string[];
   stats: { label: string; value: string }[];
+  aboutImage?: string;
+}
+
+export interface SocialLink {
+  platform: string;
+  url: string;
+}
+
+export interface PortfolioInfo {
+  name: string;
+  roles: string[];
+  profileImage: string;
+  resumeUrl: string;
+  socialLinks: SocialLink[];
+  email: string;
+  location: string;
+  phone?: string;
 }
 
 export interface AdminUser {

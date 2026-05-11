@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Menu,
   X,
@@ -7,56 +7,81 @@ import {
   Code,
   Briefcase,
   Mail,
+  GraduationCap,
+  Layout,
 } from 'lucide-react';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
+import { useData } from '../../context/DataContext';
+import { ThemeContext } from './PortfolioLayout';
 
 const Navigation = () => {
+  const { portfolioInfo } = useData();
+  const theme = React.useContext(ThemeContext);
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [activeSection, setActiveSection] = useState('#home');
 
   const navItems = [
     { name: 'Home', href: '#home', icon: Home },
     { name: 'About', href: '#about', icon: User },
     { name: 'Experience', href: '#experience', icon: Briefcase },
-    { name: 'Education', href: '#education', icon: User },
+    { name: 'Education', href: '#education', icon: GraduationCap },
     { name: 'Skills', href: '#skills', icon: Code },
-    { name: 'Projects', href: '#projects', icon: Briefcase },
+    { name: 'Projects', href: '#projects', icon: Layout },
     { name: 'Contact', href: '#contact', icon: Mail },
   ];
 
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    
+    // Scrolled state
+    if (latest > 50) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+
+    // Hidden state (Smart Header)
+    // Only hide if we've scrolled down a bit and are continuing to scroll down
+    if (latest > 100 && latest > previous) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  });
+
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+      // Improved active section detection
+      const sections = navItems.map(item => ({
+        id: item.href,
+        element: document.querySelector(item.href)
+      }));
 
-      // Handle navbar visibility
-      if (currentScrollY > 100) {
-        setScrolled(true);
-        setHidden(currentScrollY > lastScrollY && currentScrollY > 200);
-      } else {
-        setScrolled(false);
-        setHidden(false);
-      }
-      setLastScrollY(currentScrollY);
+      const scrollPosition = window.scrollY + 300;
 
-      // Detect which section is active
-      for (const item of navItems) {
-        const section = document.querySelector(item.href);
-        if (section) {
-          const top = (section as HTMLElement).offsetTop - 100;
-          const bottom = top + (section as HTMLElement).offsetHeight;
-          if (currentScrollY >= top && currentScrollY < bottom) {
-            setActiveSection(item.href);
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        if (section.element instanceof HTMLElement) {
+          const offsetTop = section.element.offsetTop;
+          if (scrollPosition >= offsetTop) {
+            setActiveSection(section.id);
             break;
           }
         }
       }
+      
+      if (window.scrollY < 100) {
+        setActiveSection('#home');
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   const handleNavClick = (href: string) => {
     const element = document.querySelector(href);
@@ -68,99 +93,148 @@ const Navigation = () => {
         headerHeight;
       window.scrollTo({ top: target, behavior: 'smooth' });
     }
-    setIsOpen(false); // close mobile menu
+    setIsOpen(false);
   };
 
   return (
-    <nav
+    <motion.nav
+      initial={{ y: 0 }}
+      animate={{ y: hidden ? "-100%" : 0 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 40 }}
       className={`fixed top-0 w-full z-50 transition-all duration-500 ease-in-out ${
         scrolled
-          ? 'bg-white/80 shadow-2xl backdrop-blur-xl border-b border-gray-200/50'
-          : 'bg-white/70 backdrop-blur-xl'
-      } ${hidden ? '-translate-y-full' : 'translate-y-0'}`}
+          ? 'bg-white/95 dark:bg-gray-950/95 shadow-xl shadow-gray-200/50 dark:shadow-none backdrop-blur-2xl border-b border-gray-100 dark:border-white/5'
+          : 'bg-transparent'
+      }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <div className="flex-shrink-0 transform hover:scale-105 transition-transform duration-300">
-            <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent hover:from-purple-600 hover:via-blue-600 hover:to-teal-600 transition-all duration-300 cursor-pointer">
-              Saad Ikram
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex-shrink-0 cursor-pointer group"
+            onClick={() => handleNavClick('#home')}
+          >
+            <span className={`text-2xl sm:text-3xl font-black transition-all duration-500 ${
+              theme.theme === 'light' 
+                ? 'text-gray-900' 
+                : 'bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent'
+            }`}>
+              {portfolioInfo.name}
             </span>
-          </div>
+          </motion.div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-2">
-            {navItems.map((item) => {
-              const IconComponent = item.icon;
-              return (
+          <div className="hidden md:flex items-center gap-6">
+            <div className="flex space-x-1 items-center bg-gray-100/80 dark:bg-gray-900/80 backdrop-blur-md p-1.5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
+              {navItems.map((item) => (
                 <button
                   key={item.name}
                   onClick={() => handleNavClick(item.href)}
-                  className={`relative px-4 py-2.5 rounded-xl text-sm font-medium flex items-center space-x-2 transition-all duration-300 group ${
+                  className={`relative px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest flex items-center space-x-2 transition-all duration-300 overflow-hidden group ${
                     activeSection === item.href
-                      ? 'text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg shadow-blue-500/25 scale-105'
-                      : 'text-gray-700 hover:text-white hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-500 hover:shadow-lg hover:shadow-blue-500/20 hover:scale-105'
+                      ? 'text-white'
+                      : 'text-gray-700 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400'
                   }`}
                 >
-                  <IconComponent size={16} className="transition-transform duration-300 group-hover:scale-110" />
-                  <span className="relative">
+                  {activeSection === item.href && (
+                    <motion.div
+                      layoutId="activeNav"
+                      className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg"
+                      transition={{ type: 'spring', duration: 0.6 }}
+                    />
+                  )}
+                  <span className="relative z-10 flex items-center gap-2">
+                    <item.icon size={14} />
                     {item.name}
-                    {activeSection !== item.href && (
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
-                    )}
                   </span>
                 </button>
-              );
-            })}
+              ))}
+            </div>
+
+            {/* Theme Toggle Button - Compact */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={theme.toggleTheme}
+              className={`p-2.5 rounded-xl border transition-all ${
+                theme.theme === 'light'
+                  ? 'bg-white border-gray-200 text-gray-900 shadow-sm'
+                  : 'bg-gray-900 border-gray-800 text-yellow-400 shadow-xl'
+              }`}
+            >
+              {theme.theme === 'light' ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="18.36" x2="5.64" y2="19.78"></line><line x1="18.36" y1="4.22" x2="19.78" y2="5.64"></line></svg>
+              )}
+            </motion.button>
           </div>
 
           {/* Mobile Toggle */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="relative p-2 rounded-xl text-gray-700 hover:text-white hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-500 focus:outline-none transition-all duration-300 hover:scale-110 hover:shadow-lg"
+          <div className="md:hidden flex items-center gap-4">
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={theme.toggleTheme}
+              className={`p-3 rounded-2xl border transition-all ${
+                theme.theme === 'light'
+                  ? 'bg-white border-gray-200 text-gray-900 shadow-sm'
+                  : 'bg-gray-900 border-gray-800 text-yellow-400'
+              }`}
             >
-              <div className="relative">
-                {isOpen ? <X size={26} /> : <Menu size={26} />}
-              </div>
-            </button>
+              {theme.theme === 'light' ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="18.36" x2="5.64" y2="19.78"></line><line x1="18.36" y1="4.22" x2="19.78" y2="5.64"></line></svg>
+              )}
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setIsOpen(!isOpen)}
+              className="p-3 rounded-2xl bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors shadow-sm"
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </motion.button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <div
-        className={`md:hidden transition-all duration-500 ease-in-out overflow-hidden ${
-          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-        } bg-white/90 backdrop-blur-xl border-t border-gray-200/50 shadow-2xl`}
-      >
-        <div className="px-4 py-6 space-y-3">
-          {navItems.map((item, index) => {
-            const IconComponent = item.icon;
-            return (
-              <button
-                key={item.name}
-                onClick={() => handleNavClick(item.href)}
-                className={`w-full flex items-center space-x-3 px-5 py-3.5 rounded-xl text-base font-medium transition-all duration-300 group ${
-                  activeSection === item.href
-                    ? 'text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg shadow-blue-500/25 scale-105'
-                    : 'text-gray-700 hover:text-white hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-500 hover:shadow-lg hover:shadow-blue-500/20 hover:scale-105'
-                }`}
-                style={{ transitionDelay: `${index * 0.05}s` }}
-              >
-                <IconComponent size={20} className="transition-transform duration-300 group-hover:scale-110" />
-                <span className="relative flex-1 text-left">
-                  {item.name}
-                  {activeSection !== item.href && (
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
-                  )}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    </nav>
+      {/* Mobile Menu with AnimatePresence */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-white/95 dark:bg-gray-950/95 backdrop-blur-2xl border-t border-gray-100 dark:border-gray-800 shadow-2xl overflow-hidden"
+          >
+            <div className="px-4 py-8 space-y-3">
+              {navItems.map((item, index) => (
+                <motion.button
+                  key={item.name}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  onClick={() => handleNavClick(item.href)}
+                  className={`w-full flex items-center justify-between px-6 py-4 rounded-2xl text-lg font-black transition-all duration-300 ${
+                    activeSection === item.href
+                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl shadow-blue-500/20'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900'
+                  }`}
+                >
+                  <span className="flex items-center gap-4">
+                    <item.icon size={22} />
+                    {item.name}
+                  </span>
+                  {activeSection === item.href && <motion.div layoutId="mobileArrow" className="w-2 h-2 bg-white rounded-full" />}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   );
 };
 
