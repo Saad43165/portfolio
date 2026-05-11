@@ -45,17 +45,6 @@ const LoadingIndicator = ({ progress }: { progress: number }) => {
           x: [0, 50, 0],
           y: [0, -50, 0]
         }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[120px]"
-      />
-      <motion.div
-        animate={{
-          scale: [1.2, 1, 1.2],
-          opacity: [0.1, 0.2, 0.1],
-          x: [0, -50, 0],
-          y: [0, 50, 0]
-        }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
         className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[120px]"
       />
 
@@ -274,7 +263,7 @@ const PortfolioLayout = () => {
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <div
-        className={`min-h-screen transition-colors duration-500 overflow-x-hidden ${theme === 'light' ? 'bg-white' : 'bg-[#020617]'}`}
+        className={`min-h-screen transition-colors duration-500 overflow-x-hidden ${theme === 'light' ? 'bg-[#fcfdfe]' : 'bg-[#020617]'}`}
         role="main"
         aria-label="Portfolio website content"
       >

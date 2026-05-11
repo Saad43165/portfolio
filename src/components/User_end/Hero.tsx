@@ -110,7 +110,12 @@ const Hero = () => {
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
           className={`absolute bottom-0 -right-1/4 w-[600px] h-[600px] rounded-full blur-[100px] ${
-            theme.theme === 'light' ? 'bg-purple-100/30' : 'bg-purple-900/5'
+            theme.theme === 'light' ? 'bg-blue-50/50' : 'bg-purple-900/5'
+          }`}
+        />
+        <div 
+          className={`absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px] ${
+            theme.theme === 'light' ? 'bg-indigo-50/40' : 'bg-blue-900/5'
           }`}
         />
       </div>
@@ -119,9 +124,9 @@ const Hero = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full"
+        className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full pt-24 sm:pt-32 lg:pt-0"
       >
-        <div className="grid lg:grid-cols-2 gap-4 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           
           {/* Main Info Section */}
           <div className="order-2 lg:order-1 space-y-4 sm:space-y-8 text-center lg:text-left">
@@ -226,13 +231,13 @@ const Hero = () => {
             variants={itemVariants}
             className="order-1 flex justify-center w-full"
           >
-            <div className="relative group max-w-[280px] sm:max-w-[400px] lg:max-w-[500px] w-full">
+            <div className="relative group max-w-[200px] sm:max-w-[340px] lg:max-w-[480px] w-full">
               {/* Massive Background Glow */}
               <div className="absolute -inset-10 bg-gradient-to-r from-blue-600/20 via-indigo-600/20 to-purple-600/20 rounded-full blur-3xl opacity-40 group-hover:opacity-70 transition-opacity duration-1000" />
               
-              <div className={`relative aspect-square rounded-[2rem] sm:rounded-[4rem] overflow-hidden border-2 shadow-2xl transition-all duration-700 ${
+              <div className={`relative aspect-square rounded-[2rem] sm:rounded-[3rem] lg:rounded-[4rem] overflow-hidden border-2 shadow-2xl transition-all duration-700 ${
                 theme.theme === 'light' 
-                  ? 'bg-white border-gray-100' 
+                  ? 'bg-white border-gray-100 shadow-blue-500/5' 
                   : 'bg-gray-900 border-white/5 group-hover:border-blue-500/20'
               }`}>
                 <img

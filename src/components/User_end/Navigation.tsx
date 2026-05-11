@@ -252,51 +252,53 @@ const Navigation = () => {
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
 
-            <div className="w-full max-w-sm px-6 space-y-10">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="w-full max-w-sm px-8 pt-32 pb-12 overflow-y-auto">
+              <div className="flex flex-col space-y-2">
                 {navItems.map((item, index) => (
                   <motion.button
                     key={item.name}
-                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    transition={{ delay: index * 0.05 }}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.08 }}
                     onClick={() => handleNavClick(item.href)}
-                    className={`p-6 rounded-3xl border flex flex-col items-center gap-4 transition-all group ${
+                    className={`w-full py-6 flex items-center justify-between border-b transition-all ${
                       activeSection === item.href 
-                        ? 'bg-blue-600 border-blue-500 shadow-xl shadow-blue-500/20' 
-                        : theme.theme === 'light' ? 'bg-gray-50 border-gray-100' : 'bg-gray-900 border-white/5'
+                        ? 'border-blue-600 text-blue-600' 
+                        : theme.theme === 'light' ? 'border-gray-100 text-gray-900' : 'border-white/5 text-white/70'
                     }`}
                   >
-                    <div className={`p-3 rounded-2xl transition-colors ${
-                      activeSection === item.href ? 'bg-white/20 text-white' : 'bg-blue-500/10 text-blue-500'
-                    }`}>
-                      <item.icon size={24} />
+                    <div className="flex items-center gap-6">
+                      <div className={`p-2 rounded-xl ${
+                        activeSection === item.href ? 'bg-blue-600/10' : 'bg-gray-500/5'
+                      }`}>
+                        <item.icon size={20} strokeWidth={2} />
+                      </div>
+                      <span className="text-xl font-bold tracking-tight">{item.name}</span>
                     </div>
-                    <span className={`text-[10px] font-bold uppercase tracking-widest ${
-                      activeSection === item.href ? 'text-white' : theme.theme === 'light' ? 'text-gray-900' : 'text-gray-400'
-                    }`}>
-                      {item.name}
-                    </span>
+                    <div className={`w-1.5 h-1.5 rounded-full transition-all ${
+                      activeSection === item.href ? 'bg-blue-600' : 'bg-transparent'
+                    }`} />
                   </motion.button>
                 ))}
               </div>
 
-              <div className="pt-6 border-t border-white/5 flex flex-col items-center gap-6">
+              <div className="mt-12 space-y-8">
                 <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 }}
                   onClick={() => handleNavClick('#contact')}
-                  className="w-full py-4 bg-blue-600 text-white rounded-2xl text-sm font-bold uppercase tracking-[0.2em] shadow-2xl shadow-blue-500/20"
+                  className="w-full py-5 bg-blue-600 text-white rounded-2xl text-base font-bold uppercase tracking-[0.2em] shadow-2xl shadow-blue-500/20"
                 >
                   Start a Project
                 </motion.button>
                 
-                <div className="flex gap-8">
+                <div className="flex justify-center gap-10 pt-4">
                   {portfolioInfo.socialLinks.map((social) => {
                     const Icon = getSocialIcon(social.platform);
                     return (
-                      <a key={social.platform} href={social.url} target="_blank" className="text-gray-500 hover:text-blue-500 transition-colors">
-                        <Icon size={20} />
+                      <a key={social.platform} href={social.url} target="_blank" className="text-gray-400 hover:text-blue-500 transition-colors">
+                        <Icon size={22} />
                       </a>
                     );
                   })}
