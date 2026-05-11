@@ -1,7 +1,7 @@
-import { useState, useEffect, useContext } from 'react';
-import { Github, Linkedin, Instagram, ChevronUp, Mail, MapPin, Twitter, ExternalLink } from 'lucide-react';
+import { useContext } from 'react';
+import { Github, Linkedin, Instagram, Mail, MapPin, Twitter, ExternalLink } from 'lucide-react';
 import { useData } from '../../context/DataContext';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ThemeContext } from './PortfolioLayout';
 
 const Footer = () => {
@@ -158,7 +158,6 @@ const Footer = () => {
             © {year} {portfolioInfo.name}. All Rights Reserved.
           </div>
         </div>
-      </div>
     </footer>
   );
 };

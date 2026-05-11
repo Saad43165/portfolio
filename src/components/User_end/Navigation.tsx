@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Home,
-  User,
-  Code,
-  Briefcase,
-  Mail,
-  GraduationCap,
-  Layout,
-} from 'lucide-react';
+import { Github, Linkedin, Instagram, Twitter, Mail, Layout, User, Briefcase, GraduationCap, Home, Code } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent, Variants } from 'framer-motion';
 import { useData } from '../../context/DataContext';
 import { ThemeContext } from './PortfolioLayout';
@@ -17,7 +9,6 @@ const Navigation = () => {
   const theme = React.useContext(ThemeContext);
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const [activeSection, setActiveSection] = useState('#home');
 
   const navItems = [
@@ -29,8 +20,18 @@ const Navigation = () => {
     { name: 'Projects', href: '#projects', icon: Layout },
     { name: 'Contact', href: '#contact', icon: Mail },
   ];
+  
+  const getSocialIcon = (platform: string) => {
+    switch (platform.toLowerCase()) {
+      case 'github': return Github;
+      case 'linkedin': return Linkedin;
+      case 'instagram': return Instagram;
+      case 'twitter': return Twitter;
+      default: return Mail;
+    }
+  };
 
-  const { scrollY, scrollYProgress } = useScroll();
+  const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     // Scrolled state
@@ -152,8 +153,8 @@ const Navigation = () => {
             </span>
           </motion.div>
 
-          {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-6">
+          {/* Desktop Menu - Aggressive Hiding */}
+          <div className="hidden md:flex items-center gap-6">
             <div className="flex space-x-1 items-center bg-gray-100/80 dark:bg-gray-900/80 backdrop-blur-md p-1.5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
               {navItems.map((item) => (
                 <button
@@ -198,8 +199,8 @@ const Navigation = () => {
             </motion.button>
           </div>
 
-          {/* Mobile Actions */}
-          <div className="lg:hidden flex items-center gap-4">
+          {/* Mobile Actions - Aggressive Visibility */}
+          <div className="md:hidden flex items-center gap-4">
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={theme.toggleTheme}
@@ -240,7 +241,7 @@ const Navigation = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className={`fixed inset-0 z-[100] lg:hidden backdrop-blur-3xl flex flex-col items-center justify-center space-y-8 ${
+            className={`fixed inset-0 z-[100] md:hidden backdrop-blur-3xl flex flex-col items-center justify-center space-y-8 ${
               theme.theme === 'light' ? 'bg-white/95' : 'bg-[#020617]/95'
             }`}
           >
@@ -251,34 +252,57 @@ const Navigation = () => {
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
 
-            <div className="flex flex-col items-center space-y-6">
-              {navItems.map((item, index) => (
-                <motion.button
-                  key={item.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  onClick={() => handleNavClick(item.href)}
-                  className={`text-4xl font-bold tracking-tight transition-all ${
-                    activeSection === item.href 
-                      ? 'text-blue-600' 
-                      : theme.theme === 'light' ? 'text-gray-900' : 'text-white'
-                  }`}
-                >
-                  {item.name}
-                </motion.button>
-              ))}
-            </div>
+            <div className="w-full max-w-sm px-6 space-y-10">
+              <div className="grid grid-cols-2 gap-4">
+                {navItems.map((item, index) => (
+                  <motion.button
+                    key={item.name}
+                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    onClick={() => handleNavClick(item.href)}
+                    className={`p-6 rounded-3xl border flex flex-col items-center gap-4 transition-all group ${
+                      activeSection === item.href 
+                        ? 'bg-blue-600 border-blue-500 shadow-xl shadow-blue-500/20' 
+                        : theme.theme === 'light' ? 'bg-gray-50 border-gray-100' : 'bg-gray-900 border-white/5'
+                    }`}
+                  >
+                    <div className={`p-3 rounded-2xl transition-colors ${
+                      activeSection === item.href ? 'bg-white/20 text-white' : 'bg-blue-500/10 text-blue-500'
+                    }`}>
+                      <item.icon size={24} />
+                    </div>
+                    <span className={`text-[10px] font-bold uppercase tracking-widest ${
+                      activeSection === item.href ? 'text-white' : theme.theme === 'light' ? 'text-gray-900' : 'text-gray-400'
+                    }`}>
+                      {item.name}
+                    </span>
+                  </motion.button>
+                ))}
+              </div>
 
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5 }}
-              onClick={() => handleNavClick('#contact')}
-              className="mt-8 px-10 py-4 bg-blue-600 text-white rounded-full text-xl font-bold shadow-2xl shadow-blue-500/20"
-            >
-              Hire Me
-            </motion.button>
+              <div className="pt-6 border-t border-white/5 flex flex-col items-center gap-6">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => handleNavClick('#contact')}
+                  className="w-full py-4 bg-blue-600 text-white rounded-2xl text-sm font-bold uppercase tracking-[0.2em] shadow-2xl shadow-blue-500/20"
+                >
+                  Start a Project
+                </motion.button>
+                
+                <div className="flex gap-8">
+                  {portfolioInfo.socialLinks.map((social) => {
+                    const Icon = getSocialIcon(social.platform);
+                    return (
+                      <a key={social.platform} href={social.url} target="_blank" className="text-gray-500 hover:text-blue-500 transition-colors">
+                        <Icon size={20} />
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

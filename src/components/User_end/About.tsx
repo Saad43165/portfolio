@@ -1,5 +1,5 @@
 import { useEffect, useRef, useContext, useState } from 'react';
-import { Award, Users, Calendar, User } from 'lucide-react';
+import { Award, Users, Calendar } from 'lucide-react';
 import { motion, Variants } from 'framer-motion';
 import { useData } from '../../context/DataContext';
 import { ThemeContext } from './PortfolioLayout';
@@ -95,7 +95,7 @@ const About = () => {
             </motion.div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-6">
-              {stats.map((stat, index) => (
+              {stats.map((stat) => (
                 <motion.div
                   key={stat.label}
                   className={`p-6 rounded-2xl transition-all duration-500 border ${

@@ -45,8 +45,9 @@ const AdminLogin = () => {
           navigate('/admin/dashboard');
         }
       }
-    } catch (err: any) {
-      setError(err.message || 'An error occurred. Please try again.');
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred. Please try again.';
+      setError(errorMessage);
       console.error('Auth error:', err);
     } finally {
       setIsLoading(false);

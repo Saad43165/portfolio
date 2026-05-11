@@ -232,6 +232,7 @@ const PortfolioLayout = () => {
   }, [portfolioInfo]);
 
   useEffect(() => {
+    console.log("Portfolio Version: 2.0.1 - Redesign Applied");
     // Scroll to top on route change
     window.scrollTo(0, 0);
 

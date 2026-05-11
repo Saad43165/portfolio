@@ -1,5 +1,5 @@
 import { useData } from '../../context/DataContext';
-import { GraduationCap, Calendar, MapPin, Award } from 'lucide-react';
+import { Calendar, MapPin, Award } from 'lucide-react';
 import { useState, useEffect, useRef, useContext } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { ThemeContext } from './PortfolioLayout';

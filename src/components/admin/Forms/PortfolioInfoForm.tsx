@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useData } from '../../../context/DataContext';
-import { Save, Plus, Trash2, Link as LinkIcon, User, Image as ImageIcon, FileText, MapPin, Mail, Phone } from 'lucide-react';
+import { Save, Plus, Trash2, User, Image as ImageIcon, FileText, MapPin, Mail, Phone } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const PortfolioInfoForm = () => {

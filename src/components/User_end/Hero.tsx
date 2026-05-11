@@ -135,7 +135,7 @@ const Hero = () => {
                 theme.theme === 'light' ? 'text-gray-900' : 'text-white'
               }`}>
                 {portfolioInfo.name.split(' ')[0]} <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 uppercase">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-orange-600 to-yellow-600 uppercase">
                   {portfolioInfo.name.split(' ')[1]}
                 </span>
               </motion.h1>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Settings, Info } from 'lucide-react';
+import { Info } from 'lucide-react';
 import { motion } from 'framer-motion';
 import PortfolioInfoForm from '../Forms/PortfolioInfoForm';
 
