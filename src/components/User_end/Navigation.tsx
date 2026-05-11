@@ -267,9 +267,9 @@ const Navigation = () => {
               </button>
             </div>
 
-            {/* Main Menu List */}
-            <div className="w-full max-w-sm px-8 pt-6 pb-12 relative z-10">
-              <div className="flex flex-col">
+            {/* Menu List */}
+            <div className="flex-1 w-full max-w-sm px-8 pt-6 pb-12 relative z-10 overflow-y-auto">
+              <div className="flex flex-col gap-2">
                 {navItems.map((item, index) => (
                   <motion.button
                     key={item.name}

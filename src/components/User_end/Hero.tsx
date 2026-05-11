@@ -124,7 +124,7 @@ const Hero = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full pt-44 sm:pt-48 lg:pt-0"
+        className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full pt-56 sm:pt-60 lg:pt-0"
       >
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           
