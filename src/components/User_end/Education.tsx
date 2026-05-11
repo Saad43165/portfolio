@@ -36,9 +36,10 @@ const Education = () => {
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, scale: 0.98, y: 10 },
     visible: {
       opacity: 1,
+      scale: 1,
       y: 0,
       transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
     },
@@ -51,12 +52,12 @@ const Education = () => {
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}
       variants={containerVariants}
-      className={`py-32 transition-colors duration-500 relative overflow-hidden ${
+      className={`py-12 sm:py-16 transition-colors duration-500 relative overflow-hidden ${
         theme.theme === 'light' ? 'bg-gray-50/50' : 'bg-gray-900/20'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div className="mb-20" variants={itemVariants}>
+        <motion.div className="mb-10" variants={itemVariants}>
           <div className="flex items-center gap-4 mb-4">
             <div className="h-[1px] w-12 bg-purple-600" />
             <span className="text-xs font-black uppercase tracking-[0.4em] text-purple-600">Learning Path</span>
@@ -71,15 +72,15 @@ const Education = () => {
         </motion.div>
 
         {education.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
             {education.map((edu, index) => (
               <motion.div 
                 key={edu.id || index} 
                 variants={itemVariants}
-                whileHover={{ y: -8 }}
-                className={`p-10 sm:p-14 rounded-[3.5rem] transition-all duration-500 border group flex flex-col relative overflow-hidden ${
+                whileHover={{ y: -3 }}
+                className={`p-6 sm:p-8 rounded-2xl transition-all duration-500 border group flex flex-col relative overflow-hidden ${
                   theme.theme === 'light' 
-                    ? 'bg-white border-gray-200 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.1)] hover:shadow-[0_30px_70px_-20px_rgba(0,0,0,0.15)]' 
+                    ? 'bg-white border-gray-200 shadow-sm hover:shadow-md' 
                     : 'bg-gray-900 border-white/10 hover:border-purple-500/50 shadow-2xl'
                 }`}
               >

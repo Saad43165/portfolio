@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Menu,
-  X,
   Home,
   User,
   Code,
@@ -10,7 +8,7 @@ import {
   GraduationCap,
   Layout,
 } from 'lucide-react';
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent, Variants } from 'framer-motion';
 import { useData } from '../../context/DataContext';
 import { ThemeContext } from './PortfolioLayout';
 
@@ -44,9 +42,8 @@ const Navigation = () => {
       setScrolled(false);
     }
 
-    // Hidden state (Smart Header)
-    // Only hide if we've scrolled down a bit and are continuing to scroll down
-    if (latest > 100 && latest > previous) {
+    // Hidden state (Smart Header) - disable when mobile menu is open
+    if (latest > 100 && latest > previous && !isOpen) {
       setHidden(true);
     } else {
       setHidden(false);
@@ -55,7 +52,6 @@ const Navigation = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Improved active section detection
       const sections = navItems.map(item => ({
         id: item.href,
         element: document.querySelector(item.href)
@@ -96,13 +92,50 @@ const Navigation = () => {
     setIsOpen(false);
   };
 
+  // Prevent scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [isOpen]);
+
+  const menuVariants: Variants = {
+    closed: {
+      opacity: 0,
+      y: "-100%",
+      transition: {
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1],
+        staggerChildren: 0.05,
+        staggerDirection: -1
+      }
+    },
+    open: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1],
+        staggerChildren: 0.08,
+        delayChildren: 0.1
+      }
+    }
+  };
+
+  const menuItemVariants: Variants = {
+    closed: { opacity: 0, y: 15 },
+    open: { opacity: 1, y: 0 }
+  };
+
   return (
     <motion.nav
       initial={{ y: 0 }}
       animate={{ y: hidden ? "-100%" : 0 }}
       transition={{ type: 'spring', stiffness: 400, damping: 40 }}
-      className={`fixed top-0 w-full z-50 transition-all duration-500 ease-in-out ${
-        scrolled
+      className={`fixed top-0 w-full z-[60] transition-all duration-500 ease-in-out ${
+        scrolled || isOpen
           ? 'bg-white/95 dark:bg-gray-950/95 shadow-xl shadow-gray-200/50 dark:shadow-none backdrop-blur-2xl border-b border-gray-100 dark:border-white/5'
           : 'bg-transparent'
       }`}
@@ -113,7 +146,7 @@ const Navigation = () => {
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="flex-shrink-0 cursor-pointer group"
+            className="flex-shrink-0 cursor-pointer group z-[70]"
             onClick={() => handleNavClick('#home')}
           >
             <span className={`text-2xl sm:text-3xl font-black transition-all duration-500 ${
@@ -132,7 +165,7 @@ const Navigation = () => {
                 <button
                   key={item.name}
                   onClick={() => handleNavClick(item.href)}
-                  className={`relative px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest flex items-center space-x-2 transition-all duration-300 overflow-hidden group ${
+                  className={`relative px-4 py-2 rounded-xl text-[11px] font-bold uppercase tracking-widest flex items-center space-x-2 transition-all duration-300 overflow-hidden group ${
                     activeSection === item.href
                       ? 'text-white'
                       : 'text-gray-700 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400'
@@ -141,8 +174,8 @@ const Navigation = () => {
                   {activeSection === item.href && (
                     <motion.div
                       layoutId="activeNav"
-                      className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg"
-                      transition={{ type: 'spring', duration: 0.6 }}
+                      className="absolute inset-0 bg-blue-600 dark:bg-blue-500 shadow-md"
+                      transition={{ type: 'spring', duration: 0.5 }}
                     />
                   )}
                   <span className="relative z-10 flex items-center gap-2">
@@ -153,7 +186,6 @@ const Navigation = () => {
               ))}
             </div>
 
-            {/* Theme Toggle Button - Compact */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -173,7 +205,7 @@ const Navigation = () => {
           </div>
 
           {/* Mobile Toggle */}
-          <div className="md:hidden flex items-center gap-4">
+          <div className="md:hidden flex items-center gap-4 z-[70]">
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={theme.toggleTheme}
@@ -192,45 +224,98 @@ const Navigation = () => {
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsOpen(!isOpen)}
-              className="p-3 rounded-2xl bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors shadow-sm"
+              className="relative w-12 h-12 flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors shadow-sm"
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+              <motion.span
+                animate={isOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
+                className="w-6 h-0.5 bg-current rounded-full transition-transform"
+              />
+              <motion.span
+                animate={isOpen ? { opacity: 0, x: -10 } : { opacity: 1, x: 0 }}
+                className="w-6 h-0.5 bg-current rounded-full transition-all"
+              />
+              <motion.span
+                animate={isOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
+                className="w-6 h-0.5 bg-current rounded-full transition-transform"
+              />
             </motion.button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu with AnimatePresence */}
+      {/* Full Screen Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white/95 dark:bg-gray-950/95 backdrop-blur-2xl border-t border-gray-100 dark:border-gray-800 shadow-2xl overflow-hidden"
+            variants={menuVariants}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            className="fixed inset-0 top-0 left-0 w-full h-screen bg-white dark:bg-gray-950 z-[65] flex flex-col justify-center px-8 sm:px-12"
           >
-            <div className="px-4 py-8 space-y-3">
-              {navItems.map((item, index) => (
+            {/* Background Orbs for Menu */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <div className="absolute top-1/4 -right-1/4 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[100px]" />
+              <div className="absolute bottom-1/4 -left-1/4 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-[100px]" />
+            </div>
+
+            <div className="relative z-10 space-y-4">
+              {navItems.map((item) => (
                 <motion.button
                   key={item.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
+                  variants={menuItemVariants}
                   onClick={() => handleNavClick(item.href)}
-                  className={`w-full flex items-center justify-between px-6 py-4 rounded-2xl text-lg font-black transition-all duration-300 ${
+                  className={`group w-full flex items-center justify-between py-4 text-3xl sm:text-4xl font-bold tracking-tight transition-all ${
                     activeSection === item.href
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl shadow-blue-500/20'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900'
+                      ? 'text-blue-600 dark:text-blue-400'
+                      : 'text-gray-400 hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
-                  <span className="flex items-center gap-4">
-                    <item.icon size={22} />
-                    {item.name}
-                  </span>
-                  {activeSection === item.href && <motion.div layoutId="mobileArrow" className="w-2 h-2 bg-white rounded-full" />}
+                  <div className="flex items-center gap-6">
+                    <span className={`text-sm font-black uppercase tracking-[0.3em] ${
+                      activeSection === item.href ? 'text-blue-600' : 'text-gray-300 dark:text-gray-700'
+                    }`}>
+                      0{navItems.indexOf(item) + 1}
+                    </span>
+                    <span className="relative">
+                      {item.name}
+                      <motion.div 
+                        className="absolute -bottom-2 left-0 h-1 bg-blue-600 rounded-full"
+                        initial={{ width: 0 }}
+                        animate={{ width: activeSection === item.href ? '100%' : 0 }}
+                      />
+                    </span>
+                  </div>
+                  <motion.div
+                    whileHover={{ x: 10 }}
+                    className={`p-4 rounded-2xl transition-all ${
+                      activeSection === item.href 
+                        ? 'bg-blue-600 text-white' 
+                        : 'bg-gray-50 dark:bg-gray-900 text-gray-400 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 group-hover:text-blue-600'
+                    }`}
+                  >
+                    <item.icon size={24} />
+                  </motion.div>
                 </motion.button>
               ))}
             </div>
+
+            <motion.div 
+              variants={menuItemVariants}
+              className="mt-16 pt-8 border-t border-gray-100 dark:border-white/5 flex justify-between items-center"
+            >
+              <div className="space-y-1">
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Get in touch</p>
+                <p className="text-lg font-bold text-gray-900 dark:text-white">{portfolioInfo.email}</p>
+              </div>
+              <div className="flex gap-4">
+                {portfolioInfo.socialLinks.slice(0, 3).map((social, i) => (
+                  <a key={i} href={social.url} className="w-12 h-12 rounded-xl bg-gray-50 dark:bg-gray-900 flex items-center justify-center text-gray-500 hover:text-blue-600 transition-colors">
+                    <div className="w-5 h-5 bg-current mask-icon" />
+                  </a>
+                ))}
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

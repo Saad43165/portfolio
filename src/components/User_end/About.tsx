@@ -42,9 +42,10 @@ const About = () => {
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, scale: 0.98, y: 10 },
     visible: {
       opacity: 1,
+      scale: 1,
       y: 0,
       transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
     },
@@ -54,7 +55,7 @@ const About = () => {
     <motion.section
       id="about"
       ref={sectionRef}
-      className={`py-32 transition-colors duration-500 overflow-hidden relative ${theme.theme === 'light' ? 'bg-gray-50/50' : 'bg-gray-950'}`}
+      className={`py-12 sm:py-16 transition-colors duration-500 overflow-hidden relative ${theme.theme === 'light' ? 'bg-gray-50/50' : 'bg-gray-950'}`}
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}
       variants={containerVariants}
@@ -63,26 +64,26 @@ const About = () => {
       <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] -translate-x-1/2" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div className="mb-20" variants={itemVariants}>
+        <motion.div className="mb-10" variants={itemVariants}>
           <div className="flex items-center gap-4 mb-4">
             <div className="h-[1px] w-12 bg-blue-600" />
             <span className="text-xs font-black uppercase tracking-[0.4em] text-blue-600">Personal Story</span>
           </div>
-          <h2 className={`text-4xl sm:text-6xl font-black tracking-tight leading-[1.1] ${
+          <h2 className={`text-4xl sm:text-6xl font-bold tracking-tight leading-[1.1] ${
               theme.theme === 'light' ? 'text-gray-900' : 'text-white'
             }`}
           >
             A Glimpse Into <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">My Creative Journey</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">My Creative Journey</span>
           </h2>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
           {/* Left Column: Visuals & Stats */}
           <div className="lg:col-span-5 space-y-12 order-2 lg:order-1">
-            <motion.div className="relative group" variants={itemVariants}>
-              <div className="absolute -inset-4 bg-gradient-to-br from-blue-600 to-purple-600 rounded-[3.5rem] blur-2xl opacity-10 group-hover:opacity-20 transition-opacity duration-700" />
-              <div className={`relative aspect-[4/5] rounded-[3rem] overflow-hidden border border-white dark:border-white/5 shadow-2xl ${
+            <motion.div className="relative group max-w-[320px] mx-auto lg:mx-0" variants={itemVariants}>
+              <div className="absolute -inset-4 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl blur-2xl opacity-10 group-hover:opacity-20 transition-opacity duration-700" />
+              <div className={`relative aspect-[5/6] rounded-2xl overflow-hidden border border-white dark:border-white/5 shadow-xl ${
                 theme.theme === 'light' ? 'bg-white' : 'bg-gray-900'
               }`}>
                 <img
@@ -98,9 +99,9 @@ const About = () => {
               {stats.map((stat, index) => (
                 <motion.div
                   key={stat.label}
-                  className={`p-8 rounded-[2.5rem] transition-all duration-500 border ${
+                  className={`p-6 rounded-2xl transition-all duration-500 border ${
                     theme.theme === 'light' 
-                      ? 'bg-white border-gray-100 shadow-xl shadow-gray-200/40 hover:shadow-blue-500/10' 
+                      ? 'bg-white border-gray-100 shadow-lg shadow-gray-200/40 hover:shadow-blue-500/10' 
                       : 'bg-gray-900 border-white/5 hover:bg-gray-800'
                   }`}
                   variants={itemVariants}
@@ -130,7 +131,7 @@ const About = () => {
           {/* Right Column: Narrative */}
           <motion.div className="lg:col-span-7 space-y-12 order-1 lg:order-2" variants={itemVariants}>
             <div className="space-y-8">
-              <h3 className={`text-2xl sm:text-4xl font-black leading-tight ${
+              <h3 className={`text-2xl sm:text-4xl font-bold leading-tight ${
                   theme.theme === 'light' ? 'text-gray-900' : 'text-white'
                 }`}
               >
@@ -167,8 +168,8 @@ const About = () => {
               </div>
             </div>
 
-            {/* Visual Callout */}
-            <div className={`p-8 rounded-[2.5rem] border-2 border-dashed ${
+            {/* Visual Callout - Compact */}
+            <div className={`p-6 rounded-3xl border-2 border-dashed ${
               theme.theme === 'light' ? 'border-blue-100 bg-blue-50/30' : 'border-blue-900/30 bg-blue-900/5'
             }`}>
                <p className={`text-base font-bold italic ${

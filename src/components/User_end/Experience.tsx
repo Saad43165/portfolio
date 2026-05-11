@@ -1,5 +1,5 @@
 import { useData } from '../../context/DataContext';
-import { Briefcase, Calendar, MapPin, CheckCircle2 } from 'lucide-react';
+import { Calendar, MapPin, CheckCircle2 } from 'lucide-react';
 import { motion, Variants } from 'framer-motion';
 import { useState, useEffect, useRef, useContext } from 'react';
 import { ThemeContext } from './PortfolioLayout';
@@ -36,9 +36,10 @@ const Experience = () => {
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, scale: 0.98, y: 10 },
     visible: {
       opacity: 1,
+      scale: 1,
       y: 0,
       transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
     },
@@ -51,7 +52,7 @@ const Experience = () => {
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}
       variants={containerVariants}
-      className={`py-32 transition-colors duration-500 relative overflow-hidden ${
+      className={`py-12 sm:py-16 transition-colors duration-500 relative overflow-hidden ${
         theme.theme === 'light' ? 'bg-white' : 'bg-gray-950'
       }`}
     >
@@ -59,17 +60,17 @@ const Experience = () => {
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[120px] translate-x-1/2 -translate-y-1/2" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div className="mb-20" variants={itemVariants}>
+        <motion.div className="mb-10" variants={itemVariants}>
           <div className="flex items-center gap-4 mb-4">
             <div className="h-[1px] w-12 bg-blue-600" />
             <span className="text-xs font-black uppercase tracking-[0.4em] text-blue-600">Career Path</span>
           </div>
-          <h2 className={`text-4xl sm:text-6xl font-black tracking-tight leading-[1.1] ${
+          <h2 className={`text-4xl sm:text-6xl font-bold tracking-tight leading-[1.1] ${
               theme.theme === 'light' ? 'text-gray-900' : 'text-white'
             }`}
           >
             Professional <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">Trajectory</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Trajectory</span>
           </h2>
         </motion.div>
 
@@ -90,9 +91,9 @@ const Experience = () => {
                 </div>
 
                 <div className={`w-full md:w-1/2 pl-16 md:pl-0 ${index % 2 === 0 ? 'md:pr-16' : 'md:pl-16'}`}>
-                  <div className={`p-8 sm:p-10 rounded-[3rem] transition-all duration-500 border group ${
+                  <div className={`p-6 sm:p-8 rounded-2xl transition-all duration-500 border group ${
                     theme.theme === 'light' 
-                      ? 'bg-white border-gray-100 shadow-xl shadow-gray-200/30 hover:shadow-blue-500/10' 
+                      ? 'bg-white border-gray-100 shadow-lg shadow-gray-200/30 hover:shadow-blue-500/10' 
                       : 'bg-gray-900/50 backdrop-blur-xl border-white/5 hover:bg-gray-800/80'
                   }`}>
                     <div className="flex flex-col mb-6">
@@ -103,7 +104,7 @@ const Experience = () => {
                         </span>
                       </div>
                       
-                      <h3 className={`text-2xl sm:text-3xl font-black transition-colors duration-300 ${
+                      <h3 className={`text-2xl sm:text-3xl font-bold transition-colors duration-300 ${
                         theme.theme === 'light' ? 'text-gray-900' : 'text-white'
                       }`}>
                         {exp.title}

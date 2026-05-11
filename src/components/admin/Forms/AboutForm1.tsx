@@ -117,11 +117,6 @@ const AboutForm1 = () => {
     container: theme.theme === 'light' ? 'bg-white/10' : 'bg-gray-800/10'
   }), [theme]);
 
-  const fileInputRef = useCallback((node: HTMLInputElement | null) => {
-    if (node !== null) {
-      // We can use this if needed, but a standard ref is fine too
-    }
-  }, []);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

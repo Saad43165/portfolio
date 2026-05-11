@@ -233,7 +233,7 @@ const PortfolioLayout = () => {
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <div
-        className={`min-h-screen transition-colors duration-500 ${theme === 'light' ? 'bg-white' : 'bg-gray-950'}`}
+        className={`min-h-screen transition-colors duration-500 overflow-x-hidden ${theme === 'light' ? 'bg-white' : 'bg-gray-950'}`}
         role="main"
         aria-label="Portfolio website content"
       >
@@ -249,22 +249,22 @@ const PortfolioLayout = () => {
             <Navigation />
             <main className="relative">
               <Hero />
-              <section id="about" className="scroll-mt-16">
+              <section id="about" className="scroll-mt-20">
                 <About />
               </section>
-              <section id="experience" className="scroll-mt-16">
+              <section id="experience" className="scroll-mt-20">
                 <Experience />
               </section>
-              <section id="education" className="scroll-mt-16">
+              <section id="education" className="scroll-mt-20">
                 <Education />
               </section>
-              <section id="skills" className="scroll-mt-16">
+              <section id="skills" className="scroll-mt-20">
                 <Skills />
               </section>
-              <section id="projects" className="scroll-mt-16">
+              <section id="projects" className="scroll-mt-20">
                 <Projects />
               </section>
-              <section id="contact" className="scroll-mt-16">
+              <section id="contact" className="scroll-mt-20">
                 <Contact />
               </section>
             </main>

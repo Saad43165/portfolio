@@ -58,9 +58,10 @@ const Projects = () => {
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, scale: 0.98, y: 10 },
     visible: {
       opacity: 1,
+      scale: 1,
       y: 0,
       transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
     },
@@ -73,35 +74,35 @@ const Projects = () => {
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}
       variants={containerVariants}
-      className={`py-32 transition-colors duration-500 relative overflow-hidden ${
+      className={`py-12 sm:py-16 transition-colors duration-500 relative overflow-hidden ${
         theme.theme === 'light' ? 'bg-gray-50/50' : 'bg-gray-950'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div className="mb-20" variants={itemVariants}>
+        <motion.div className="mb-10" variants={itemVariants}>
           <div className="flex items-center gap-4 mb-4">
             <div className="h-[1px] w-12 bg-blue-600" />
             <span className="text-xs font-black uppercase tracking-[0.4em] text-blue-600">Selected Works</span>
           </div>
-          <h2 className={`text-4xl sm:text-6xl font-black tracking-tight leading-[1.1] ${
+          <h2 className={`text-4xl sm:text-6xl font-bold tracking-tight leading-[1.1] ${
               theme.theme === 'light' ? 'text-gray-900' : 'text-white'
             }`}
           >
             Digital <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">Masterpieces</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Masterpieces</span>
           </h2>
 
           {/* Category Filter */}
-          <div className="flex flex-wrap gap-3 mt-12">
+          <div className="flex flex-wrap gap-2 mt-8">
             {categories.map((cat) => (
               <motion.button
                 key={cat}
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 border ${
+                className={`px-6 py-2.5 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all duration-300 border ${
                   activeCategory === cat 
-                    ? 'bg-blue-600 border-blue-600 text-white shadow-xl shadow-blue-500/30' 
+                    ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/20' 
                     : theme.theme === 'light'
                       ? 'bg-white border-gray-100 text-gray-500 hover:border-gray-200 shadow-sm'
                       : 'bg-gray-900 border-white/5 text-gray-400 hover:border-white/10'
@@ -114,7 +115,7 @@ const Projects = () => {
         </motion.div>
 
         {filteredProjects.length > 0 ? (
-          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             <AnimatePresence mode="popLayout">
               {filteredProjects.map((project, index) => {
                 const ProjectIcon = getProjectIcon(project.category);
@@ -125,11 +126,11 @@ const Projects = () => {
                     key={project.id || index}
                     layout
                     variants={itemVariants}
-                    whileHover={{ y: -8 }}
-                    className={`group relative rounded-[3rem] p-8 transition-all duration-700 border flex flex-col h-full ${
+                    whileHover={{ y: -5 }}
+                    className={`group relative rounded-2xl p-5 transition-all duration-700 border flex flex-col h-full ${
                       theme.theme === 'light'
-                        ? 'bg-white border-gray-200 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.1)] hover:shadow-[0_30px_70px_-20px_rgba(0,0,0,0.15)]'
-                        : 'bg-gray-900 border-white/10 hover:border-blue-500/30 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)]'
+                        ? 'bg-white border-gray-200 shadow-sm hover:shadow-md'
+                        : 'bg-gray-900 border-white/10 hover:border-blue-500/30 shadow-2xl'
                     }`}
                   >
                     {/* Media Container */}
@@ -172,7 +173,7 @@ const Projects = () => {
                         }`}>
                           <ProjectIcon size={20} />
                         </div>
-                        <h3 className={`text-2xl font-black tracking-tight transition-colors duration-300 ${
+                        <h3 className={`text-2xl font-bold tracking-tight transition-colors duration-300 ${
                           theme.theme === 'light' ? 'text-gray-900' : 'text-white'
                         }`}>
                           {project.title}
@@ -188,7 +189,7 @@ const Projects = () => {
                       <div className="mt-auto pt-6 border-t border-gray-100 dark:border-white/5 space-y-6">
                         <div className="flex flex-wrap gap-2">
                           {project.technologies.slice(0, 4).map((tech) => (
-                            <span key={tech} className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-xl border ${
+                            <span key={tech} className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest rounded-xl border ${
                               theme.theme === 'light' ? 'bg-gray-50 border-gray-100 text-gray-500' : 'bg-gray-800 border-white/5 text-gray-400'
                             }`}>
                               {tech}

@@ -65,8 +65,8 @@ const Footer = () => {
         ? 'bg-white border-gray-100' 
         : 'bg-gray-950 border-white/5'
     }`}>
-      <div className="max-w-7xl mx-auto px-6 pt-24 pb-12 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 mb-20">
+      <div className="max-w-7xl mx-auto px-6 pt-16 pb-10 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 mb-16">
           {/* Brand Column */}
           <div className="lg:col-span-5 space-y-8">
             <div className="space-y-4">
@@ -75,7 +75,7 @@ const Footer = () => {
               }`}>
                 {portfolioInfo.name}
               </h3>
-              <p className={`text-lg font-medium leading-relaxed max-w-md ${
+              <p className={`text-base font-medium leading-relaxed max-w-md ${
                 theme.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
               }`}>
                 {portfolioInfo.roles[0] || 'Software Engineer'} focused on crafting exceptional digital experiences with high performance and elegant design.
@@ -90,14 +90,14 @@ const Footer = () => {
                     key={social.platform}
                     href={social.url}
                     target="_blank"
-                    whileHover={{ y: -5 }}
-                    className={`p-4 rounded-2xl border transition-all ${
+                    whileHover={{ y: -3 }}
+                    className={`p-3.5 rounded-xl border transition-all ${
                       theme.theme === 'light'
                         ? 'bg-gray-50 border-gray-100 text-gray-600 hover:text-blue-600 hover:border-blue-100 hover:shadow-lg hover:shadow-blue-500/5'
                         : 'bg-gray-900 border-white/5 text-gray-400 hover:text-blue-400 hover:border-white/10'
                     }`}
                   >
-                    <Icon size={20} />
+                    <Icon size={18} />
                   </motion.a>
                 );
               })}

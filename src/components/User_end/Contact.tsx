@@ -113,9 +113,10 @@ const Contact = () => {
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, scale: 0.98, y: 10 },
     visible: {
       opacity: 1,
+      scale: 1,
       y: 0,
       transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
     },
@@ -128,12 +129,12 @@ const Contact = () => {
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}
       variants={containerVariants}
-      className={`py-32 transition-colors duration-500 relative overflow-hidden ${
+      className={`py-12 sm:py-16 transition-colors duration-500 relative overflow-hidden ${
         theme.theme === 'light' ? 'bg-white' : 'bg-gray-950'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div className="mb-20" variants={itemVariants}>
+        <motion.div className="mb-10" variants={itemVariants}>
           <div className="flex items-center gap-4 mb-4">
             <div className="h-[1px] w-12 bg-blue-600" />
             <span className="text-xs font-black uppercase tracking-[0.4em] text-blue-600">Get In Touch</span>
@@ -147,7 +148,7 @@ const Contact = () => {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
           {/* Left Column: Info */}
           <div className="lg:col-span-5 space-y-12">
             <motion.div className="space-y-6" variants={itemVariants}>
@@ -169,10 +170,10 @@ const Contact = () => {
                   key={item.label}
                   href={item.href}
                   variants={itemVariants}
-                  whileHover={{ x: 10 }}
-                  className={`flex items-center p-6 rounded-[2.5rem] border transition-all duration-500 group ${
+                  whileHover={{ x: 5 }}
+                  className={`flex items-center p-4 rounded-2xl border transition-all duration-500 group ${
                     theme.theme === 'light' 
-                      ? 'bg-gray-50/50 border-gray-100 hover:bg-white hover:shadow-xl hover:shadow-blue-500/10' 
+                      ? 'bg-gray-50/50 border-gray-100 hover:bg-white hover:shadow-md' 
                       : 'bg-gray-900/50 backdrop-blur-xl border-white/5 hover:bg-gray-800/80'
                   }`}
                 >
@@ -194,14 +195,14 @@ const Contact = () => {
 
           {/* Right Column: Form */}
           <motion.div className="lg:col-span-7" variants={itemVariants}>
-            <div className={`p-10 sm:p-12 rounded-[3.5rem] border relative overflow-hidden ${
+            <div className={`p-8 sm:p-10 rounded-3xl border relative overflow-hidden ${
               theme.theme === 'light'
                 ? 'bg-white border-gray-100 shadow-2xl shadow-gray-200/40'
                 : 'bg-gray-900/40 backdrop-blur-3xl border-white/5 shadow-2xl shadow-black/50'
             }`}>
               <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                  <div className="space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
                     <label className={`text-[10px] font-black uppercase tracking-[0.3em] ml-2 ${
                       theme.theme === 'light' ? 'text-gray-400' : 'text-gray-500'
                     }`}>Name</label>
@@ -211,12 +212,12 @@ const Contact = () => {
                       value={formData.name}
                       onChange={handleInputChange}
                       placeholder="Your Full Name"
-                      className={`w-full px-8 py-5 rounded-2xl border-2 border-transparent transition-all outline-none font-bold ${
+                      className={`w-full px-6 py-4 rounded-xl border-2 border-transparent transition-all outline-none font-bold ${
                         theme.theme === 'light' ? 'bg-gray-50 focus:bg-white focus:border-blue-600' : 'bg-gray-800/50 focus:bg-gray-800 focus:border-blue-500 text-white'
                       }`}
                     />
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <label className={`text-[10px] font-black uppercase tracking-[0.3em] ml-2 ${
                       theme.theme === 'light' ? 'text-gray-400' : 'text-gray-500'
                     }`}>Email</label>
@@ -226,14 +227,14 @@ const Contact = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="your@email.com"
-                      className={`w-full px-8 py-5 rounded-2xl border-2 border-transparent transition-all outline-none font-bold ${
+                      className={`w-full px-6 py-4 rounded-xl border-2 border-transparent transition-all outline-none font-bold ${
                         theme.theme === 'light' ? 'bg-gray-50 focus:bg-white focus:border-blue-600' : 'bg-gray-800/50 focus:bg-gray-800 focus:border-blue-500 text-white'
                       }`}
                     />
                   </div>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <label className={`text-[10px] font-black uppercase tracking-[0.3em] ml-2 ${
                     theme.theme === 'light' ? 'text-gray-400' : 'text-gray-500'
                   }`}>Message</label>
@@ -241,9 +242,9 @@ const Contact = () => {
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
-                    rows={5}
+                    rows={4}
                     placeholder="Tell me about your project..."
-                    className={`w-full px-8 py-5 rounded-2xl border-2 border-transparent transition-all outline-none font-bold resize-none ${
+                    className={`w-full px-6 py-4 rounded-xl border-2 border-transparent transition-all outline-none font-bold resize-none ${
                       theme.theme === 'light' ? 'bg-gray-50 focus:bg-white focus:border-blue-600' : 'bg-gray-800/50 focus:bg-gray-800 focus:border-blue-500 text-white'
                     }`}
                   />
