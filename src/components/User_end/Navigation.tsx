@@ -233,7 +233,6 @@ const Navigation = () => {
         </div>
       </div>
 
-      {/* Full Screen Mobile Overlay - BENCHMARK STYLE */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -241,19 +240,36 @@ const Navigation = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className={`fixed inset-0 z-[100] md:hidden backdrop-blur-3xl flex flex-col items-center justify-center space-y-8 ${
-              theme.theme === 'light' ? 'bg-white/95' : 'bg-[#020617]/95'
+            className={`fixed inset-0 z-[100] md:hidden backdrop-blur-3xl flex flex-col items-center justify-start overflow-y-auto ${
+              theme.theme === 'light' ? 'bg-white' : 'bg-[#020617]'
             }`}
           >
-            <button 
-              onClick={() => setIsOpen(false)}
-              className="absolute top-8 right-8 p-2 text-gray-500"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
+            {/* Background Accent */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+              <div className="absolute top-1/4 -right-1/4 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px]" />
+              <div className="absolute bottom-1/4 -left-1/4 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[100px]" />
+            </div>
 
-            <div className="w-full max-w-sm px-8 pt-32 pb-12 overflow-y-auto">
-              <div className="flex flex-col space-y-2">
+            {/* Header Area */}
+            <div className="w-full flex items-center justify-between p-8 border-b border-gray-100 dark:border-white/5 relative z-[110]">
+              <span className={`text-sm font-black uppercase tracking-[0.3em] ${
+                theme.theme === 'light' ? 'text-gray-400' : 'text-gray-500'
+              }`}>
+                Navigation
+              </span>
+              <button 
+                onClick={() => setIsOpen(false)}
+                className={`p-2 rounded-xl border transition-all ${
+                  theme.theme === 'light' ? 'bg-gray-50 border-gray-100 text-gray-900' : 'bg-gray-900 border-white/5 text-white'
+                }`}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </button>
+            </div>
+
+            {/* Main Menu List */}
+            <div className="w-full max-w-sm px-8 pt-6 pb-12 relative z-10">
+              <div className="flex flex-col">
                 {navItems.map((item, index) => (
                   <motion.button
                     key={item.name}
@@ -261,7 +277,7 @@ const Navigation = () => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.08 }}
                     onClick={() => handleNavClick(item.href)}
-                    className={`w-full py-6 flex items-center justify-between border-b transition-all ${
+                    className={`w-full py-8 flex items-center justify-between border-b transition-all ${
                       activeSection === item.href 
                         ? 'border-blue-600 text-blue-600' 
                         : theme.theme === 'light' ? 'border-gray-100 text-gray-900' : 'border-white/5 text-white/70'
@@ -271,18 +287,19 @@ const Navigation = () => {
                       <div className={`p-2 rounded-xl ${
                         activeSection === item.href ? 'bg-blue-600/10' : 'bg-gray-500/5'
                       }`}>
-                        <item.icon size={20} strokeWidth={2} />
+                        <item.icon size={22} strokeWidth={2} />
                       </div>
-                      <span className="text-xl font-bold tracking-tight">{item.name}</span>
+                      <span className="text-2xl font-bold tracking-tight">{item.name}</span>
                     </div>
-                    <div className={`w-1.5 h-1.5 rounded-full transition-all ${
+                    <div className={`w-2 h-2 rounded-full transition-all ${
                       activeSection === item.href ? 'bg-blue-600' : 'bg-transparent'
                     }`} />
                   </motion.button>
                 ))}
               </div>
 
-              <div className="mt-12 space-y-8">
+              {/* Mobile CTA */}
+              <div className="mt-12 space-y-10 text-center">
                 <motion.button
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -293,96 +310,18 @@ const Navigation = () => {
                   Start a Project
                 </motion.button>
                 
-                <div className="flex justify-center gap-10 pt-4">
+                <div className="flex justify-center gap-10">
                   {portfolioInfo.socialLinks.map((social) => {
                     const Icon = getSocialIcon(social.platform);
                     return (
                       <a key={social.platform} href={social.url} target="_blank" className="text-gray-400 hover:text-blue-500 transition-colors">
-                        <Icon size={22} />
+                        <Icon size={24} />
                       </a>
                     );
                   })}
                 </div>
               </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Full Screen Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            variants={menuVariants}
-            initial="closed"
-            animate="open"
-            exit="closed"
-            className="fixed inset-0 top-0 left-0 w-full h-screen bg-white dark:bg-gray-950 z-[65] flex flex-col justify-center px-8 sm:px-12"
-          >
-            {/* Background Orbs for Menu */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-              <div className="absolute top-1/4 -right-1/4 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[100px]" />
-              <div className="absolute bottom-1/4 -left-1/4 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-[100px]" />
-            </div>
-
-            <div className="relative z-10 space-y-4">
-              {navItems.map((item) => (
-                <motion.button
-                  key={item.name}
-                  variants={menuItemVariants}
-                  onClick={() => handleNavClick(item.href)}
-                  className={`group w-full flex items-center justify-between py-4 text-3xl sm:text-4xl font-bold tracking-tight transition-all ${
-                    activeSection === item.href
-                      ? 'text-blue-600 dark:text-blue-400'
-                      : 'text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                  }`}
-                >
-                  <div className="flex items-center gap-6">
-                    <span className={`text-sm font-black uppercase tracking-[0.3em] ${
-                      activeSection === item.href ? 'text-blue-600' : 'text-gray-300 dark:text-gray-700'
-                    }`}>
-                      0{navItems.indexOf(item) + 1}
-                    </span>
-                    <span className="relative">
-                      {item.name}
-                      {activeSection === item.href && (
-                        <motion.div 
-                          layoutId="activeIndicator"
-                          className="absolute -right-8 top-1/2 -translate-y-1/2 w-2 h-2 bg-blue-600 rounded-full"
-                        />
-                      )}
-                    </span>
-                  </div>
-                  <motion.div
-                    whileHover={{ x: 5 }}
-                    className={`transition-all ${
-                      activeSection === item.href 
-                        ? 'text-blue-600' 
-                        : 'text-gray-300 dark:text-gray-800'
-                    }`}
-                  >
-                    <item.icon size={28} strokeWidth={1.5} />
-                  </motion.div>
-                </motion.button>
-              ))}
-            </div>
-
-            <motion.div 
-              variants={menuItemVariants}
-              className="mt-16 pt-8 border-t border-gray-100 dark:border-white/5 flex justify-between items-center"
-            >
-              <div className="space-y-1">
-                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Get in touch</p>
-                <p className="text-lg font-bold text-gray-900 dark:text-white">{portfolioInfo.email}</p>
-              </div>
-              <div className="flex gap-4">
-                {portfolioInfo.socialLinks.slice(0, 3).map((social, i) => (
-                  <a key={i} href={social.url} className="w-12 h-12 rounded-xl bg-gray-50 dark:bg-gray-900 flex items-center justify-center text-gray-500 hover:text-blue-600 transition-colors">
-                    <div className="w-5 h-5 bg-current mask-icon" />
-                  </a>
-                ))}
-              </div>
-            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

@@ -124,7 +124,7 @@ const Hero = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full pt-24 sm:pt-32 lg:pt-0"
+        className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full pt-44 sm:pt-48 lg:pt-0"
       >
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           
@@ -206,7 +206,6 @@ const Hero = () => {
               )}
             </motion.div>
 
-            {/* Socials - More subtle */}
             <div className="pt-6 flex justify-center lg:justify-start gap-6">
               {portfolioInfo.socialLinks.map((social) => {
                 const Icon = getSocialIcon(social.platform);
