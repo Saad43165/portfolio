@@ -83,7 +83,7 @@ const Skills = () => {
             <div className="h-[2px] w-12 bg-blue-600 rounded-full" />
             <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-blue-600">Technical Arsenal</span>
           </div>
-          <h2 className={`text-4xl sm:text-6xl font-bold tracking-tight leading-[1.1] text-center lg:text-left ${
+          <h2 className={`text-5xl sm:text-6xl font-bold tracking-tight leading-[1.1] text-center lg:text-left ${
               theme.theme === 'light' ? 'text-gray-900' : 'text-white'
             }`}
           >

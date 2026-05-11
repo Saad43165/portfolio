@@ -125,21 +125,15 @@ const Navigation = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      className={`fixed z-[60] transition-all duration-500 ease-in-out ${
+      className={`fixed top-0 left-0 w-full z-[80] transition-all duration-500 ease-in-out ${
         scrolled || isOpen
-          ? 'top-4 left-4 right-4 sm:left-6 sm:right-6 lg:left-0 lg:right-0 lg:top-0 lg:w-full bg-white/70 dark:bg-gray-950/70 shadow-lg shadow-gray-200/10 dark:shadow-none backdrop-blur-xl border border-gray-100/30 dark:border-white/5 rounded-2xl lg:rounded-none'
-          : 'top-0 left-0 w-full bg-transparent'
+          ? 'bg-white/80 dark:bg-[#020617]/80 backdrop-blur-2xl border-b border-gray-100 dark:border-white/5 shadow-xl shadow-blue-500/5'
+          : 'bg-transparent'
       }`}
     >
-      {/* Scroll Progress Bar */}
-      <motion.div
-        className="absolute bottom-0 left-0 h-[2px] bg-blue-600 z-[70] rounded-full"
-        style={{ scaleX: scrollYProgress, originX: 0 }}
-      />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-6">
         <div className={`flex justify-between items-center transition-all duration-500 ${
-          scrolled ? 'h-14 lg:h-16' : 'h-20 sm:h-24'
+          scrolled ? 'h-16' : 'h-20 sm:h-24'
         }`}>
           {/* Logo */}
           <motion.div 
@@ -204,15 +198,15 @@ const Navigation = () => {
             </motion.button>
           </div>
 
-          {/* Mobile Toggle */}
-          <div className="lg:hidden flex items-center gap-2 z-[70]">
+          {/* Mobile Actions */}
+          <div className="lg:hidden flex items-center gap-4">
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={theme.toggleTheme}
-              className={`p-3 rounded-2xl border transition-all ${
+              className={`p-2.5 rounded-xl border transition-all ${
                 theme.theme === 'light'
-                  ? 'bg-white border-gray-200 text-gray-900 shadow-sm'
-                  : 'bg-gray-900 border-gray-800 text-yellow-400'
+                  ? 'bg-gray-50 border-gray-100 text-gray-900 shadow-sm'
+                  : 'bg-gray-900 border-white/5 text-yellow-400'
               }`}
             >
               {theme.theme === 'light' ? (
@@ -224,24 +218,70 @@ const Navigation = () => {
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsOpen(!isOpen)}
-              className="relative w-12 h-12 flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors shadow-sm"
+              className={`p-2.5 rounded-xl transition-all ${
+                theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+              }`}
             >
-              <motion.span
-                animate={isOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-                className="w-6 h-0.5 bg-current rounded-full transition-transform"
-              />
-              <motion.span
-                animate={isOpen ? { opacity: 0, x: -10 } : { opacity: 1, x: 0 }}
-                className="w-6 h-0.5 bg-current rounded-full transition-all"
-              />
-              <motion.span
-                animate={isOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-                className="w-6 h-0.5 bg-current rounded-full transition-transform"
-              />
+              {isOpen ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+              )}
             </motion.button>
           </div>
         </div>
       </div>
+
+      {/* Full Screen Mobile Overlay - BENCHMARK STYLE */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className={`fixed inset-0 z-[100] lg:hidden backdrop-blur-3xl flex flex-col items-center justify-center space-y-8 ${
+              theme.theme === 'light' ? 'bg-white/95' : 'bg-[#020617]/95'
+            }`}
+          >
+            <button 
+              onClick={() => setIsOpen(false)}
+              className="absolute top-8 right-8 p-2 text-gray-500"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+
+            <div className="flex flex-col items-center space-y-6">
+              {navItems.map((item, index) => (
+                <motion.button
+                  key={item.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  onClick={() => handleNavClick(item.href)}
+                  className={`text-4xl font-bold tracking-tight transition-all ${
+                    activeSection === item.href 
+                      ? 'text-blue-600' 
+                      : theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+                  }`}
+                >
+                  {item.name}
+                </motion.button>
+              ))}
+            </div>
+
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5 }}
+              onClick={() => handleNavClick('#contact')}
+              className="mt-8 px-10 py-4 bg-blue-600 text-white rounded-full text-xl font-bold shadow-2xl shadow-blue-500/20"
+            >
+              Hire Me
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Full Screen Mobile Menu */}
       <AnimatePresence>

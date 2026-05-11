@@ -273,7 +273,7 @@ const PortfolioLayout = () => {
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <div
-        className={`min-h-screen transition-colors duration-500 overflow-x-hidden ${theme === 'light' ? 'bg-white' : 'bg-gray-950'}`}
+        className={`min-h-screen transition-colors duration-500 overflow-x-hidden ${theme === 'light' ? 'bg-white' : 'bg-[#020617]'}`}
         role="main"
         aria-label="Portfolio website content"
       >

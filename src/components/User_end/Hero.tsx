@@ -131,28 +131,43 @@ const Hero = () => {
                 <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-blue-600">Personal Overview</span>
               </motion.div>
               
-              <motion.h1 variants={itemVariants} className={`text-5xl sm:text-7xl xl:text-8xl font-bold leading-[0.9] tracking-tight ${
+              <motion.h1 variants={itemVariants} className={`text-6xl sm:text-7xl xl:text-9xl font-bold leading-[0.9] tracking-tighter text-center lg:text-left ${
                 theme.theme === 'light' ? 'text-gray-900' : 'text-white'
               }`}>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Digital</span> <br />
-                Mastery
+                {portfolioInfo.name.split(' ')[0]} <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 uppercase">
+                  {portfolioInfo.name.split(' ')[1]}
+                </span>
               </motion.h1>
               
-              <motion.div variants={itemVariants} className="h-8">
-                <p className={`text-xl sm:text-2xl font-bold ${
-                  theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+              <motion.div 
+                variants={itemVariants} 
+                className="flex items-center justify-center lg:justify-start gap-4"
+              >
+                <div className="h-[2px] w-8 bg-blue-600 rounded-full" />
+                <p className={`text-lg sm:text-xl font-bold tracking-widest uppercase ${
+                  theme.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
                 }`}>
-                  {portfolioInfo.name.split(' ')[0]} — <span className="text-blue-600 dark:text-blue-400 border-r-2 border-blue-600 dark:border-blue-400 pr-2">{displayText}</span>
+                  {portfolioInfo.roles[0]}
                 </p>
               </motion.div>
             </div>
 
-            <motion.p variants={itemVariants} className={`text-base sm:text-lg leading-relaxed font-medium max-w-xl mx-auto lg:mx-0 ${
+            <motion.p variants={itemVariants} className={`text-base sm:text-xl leading-relaxed font-medium max-w-xl mx-auto lg:mx-0 text-center lg:text-left ${
               theme.theme === 'light' ? 'text-gray-700' : 'text-gray-400'
             }`}>
               Engineering high-performance applications with a focus on seamless user experiences. 
               Currently based in <span className={`font-bold ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>{portfolioInfo.location}</span>.
             </motion.p>
+
+            {/* Benchmark Skill Tags */}
+            <motion.div variants={itemVariants} className="flex flex-wrap justify-center lg:justify-start gap-3 pt-2">
+              {['React', 'Node.js', 'TypeScript', 'Tailwind'].map((skill) => (
+                <span key={skill} className="px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest border border-blue-500/20 bg-blue-500/5 text-blue-400">
+                  {skill}
+                </span>
+              ))}
+            </motion.div>
 
             {/* CTA Buttons - More compact */}
             <motion.div variants={itemVariants} className="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
@@ -206,16 +221,20 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Profile Visual Section - Scaled down for mobile */}
+          {/* Profile Visual Section - MATCH BENCHMARK */}
           <motion.div 
             variants={itemVariants}
-            className="order-1 lg:order-2 flex justify-center lg:justify-end mb-4 lg:mb-0 w-full"
+            className="order-1 flex justify-center w-full"
           >
-            <div className="relative group max-w-[260px] sm:max-w-[340px] lg:max-w-[400px] w-full">
-              {/* Background Glow */}
-              <div className="absolute -inset-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl blur-2xl opacity-0 group-hover:opacity-20 dark:group-hover:opacity-30 transition-opacity duration-700" />
+            <div className="relative group max-w-[280px] sm:max-w-[400px] lg:max-w-[500px] w-full">
+              {/* Massive Background Glow */}
+              <div className="absolute -inset-10 bg-gradient-to-r from-blue-600/20 via-indigo-600/20 to-purple-600/20 rounded-full blur-3xl opacity-40 group-hover:opacity-70 transition-opacity duration-1000" />
               
-              <div className="relative aspect-square rounded-2xl bg-gradient-to-br from-gray-100 to-white dark:from-gray-800 dark:to-gray-900 p-1 shadow-xl border border-white/50 dark:border-white/5 overflow-hidden">
+              <div className={`relative aspect-square rounded-[2rem] sm:rounded-[4rem] overflow-hidden border-2 shadow-2xl transition-all duration-700 ${
+                theme.theme === 'light' 
+                  ? 'bg-white border-gray-100' 
+                  : 'bg-gray-900 border-white/5 group-hover:border-blue-500/20'
+              }`}>
                 <img
                   src={portfolioInfo.profileImage || "/image.png"}
                   alt={portfolioInfo.name}
