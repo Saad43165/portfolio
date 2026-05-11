@@ -79,12 +79,12 @@ const Projects = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div className="mb-6 sm:mb-10" variants={itemVariants}>
-          <div className="flex items-center justify-center lg:justify-start gap-4 mb-4">
-            <div className="h-[2px] w-12 bg-blue-600 rounded-full" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-blue-600">Selected Works</span>
+        <motion.div className="mb-12" variants={itemVariants}>
+          <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
+            <div className="h-[2px] w-8 bg-blue-600 rounded-full" />
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600">Selected Works</span>
           </div>
-          <h2 className={`text-4xl sm:text-6xl font-bold tracking-tight leading-[1.1] text-center lg:text-left ${
+          <h2 className={`text-3xl sm:text-5xl font-black tracking-tight leading-[1.1] text-center lg:text-left ${
               theme.theme === 'light' ? 'text-gray-900' : 'text-white'
             }`}
           >

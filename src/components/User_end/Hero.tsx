@@ -86,8 +86,8 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className={`h-dvh min-h-[600px] flex items-center justify-center relative overflow-hidden transition-colors duration-500 ${
-      theme.theme === 'light' ? 'bg-white' : 'bg-gray-950'
+    <section id="home" className={`h-screen min-h-[600px] flex items-center justify-center relative overflow-hidden transition-colors duration-500 ${
+      theme.theme === 'light' ? 'bg-[#fcfdfe]' : 'bg-[#020617]'
     }`}>
       {/* Background Decor - Refined */}
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -124,25 +124,29 @@ const Hero = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full pt-56 sm:pt-60 lg:pt-0"
+        className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full pt-20 lg:pt-0"
       >
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           
           {/* Main Info Section */}
-          <div className="order-2 lg:order-1 space-y-4 sm:space-y-8 text-center lg:text-left">
-            <div className="space-y-4">
+          <div className="order-2 lg:order-1 space-y-2 lg:space-y-4 text-center lg:text-left">
+            <div className="space-y-2">
               <motion.div variants={itemVariants} className="flex items-center justify-center lg:justify-start gap-4 mb-2">
                 <div className="h-[2px] w-8 bg-blue-600 rounded-full" />
                 <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-blue-600">Personal Overview</span>
               </motion.div>
               
-              <motion.h1 variants={itemVariants} className={`text-6xl sm:text-7xl xl:text-9xl font-bold leading-[0.9] tracking-tighter text-center lg:text-left ${
-                theme.theme === 'light' ? 'text-gray-900' : 'text-white'
-              }`}>
-                {portfolioInfo.name.split(' ')[0]} <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-orange-600 to-yellow-600 uppercase">
-                  {portfolioInfo.name.split(' ')[1]}
+              <motion.h1 
+                variants={itemVariants} 
+                className={`text-4xl sm:text-6xl lg:text-7xl font-black leading-tight tracking-tighter text-center lg:text-left relative group ${
+                  theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+                }`}
+              >
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 transition-all duration-700">
+                  {portfolioInfo.name}
                 </span>
+                {/* Architectural Underline */}
+                <div className="absolute -bottom-2 left-1/2 lg:left-0 w-20 h-[3px] bg-gradient-to-r from-blue-600 to-transparent rounded-full transform -translate-x-1/2 lg:translate-x-0" />
               </motion.h1>
               
               <motion.div 
@@ -225,30 +229,40 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Profile Visual Section - MATCH BENCHMARK */}
           <motion.div 
             variants={itemVariants}
-            className="order-1 flex justify-center w-full"
+            className="order-1 lg:order-2 flex justify-center w-full"
           >
-            <div className="relative group max-w-[200px] sm:max-w-[340px] lg:max-w-[480px] w-full">
-              {/* Massive Background Glow */}
-              <div className="absolute -inset-10 bg-gradient-to-r from-blue-600/20 via-indigo-600/20 to-purple-600/20 rounded-full blur-3xl opacity-40 group-hover:opacity-70 transition-opacity duration-1000" />
+            <div className="relative group max-w-[160px] sm:max-w-[340px] lg:max-w-[340px] w-full">
+              {/* Magical Aurora Glow */}
+              <div className="absolute -inset-10 bg-gradient-to-tr from-blue-600/30 via-indigo-600/20 to-purple-600/30 rounded-full blur-[80px] opacity-40 group-hover:opacity-70 transition-opacity duration-1000" />
               
-              <div className={`relative aspect-square rounded-[2rem] sm:rounded-[3rem] lg:rounded-[4rem] overflow-hidden border-2 shadow-2xl transition-all duration-700 ${
+              {/* Rotating Architectural Ring */}
+              <div className="absolute -inset-4 border border-blue-500/20 rounded-[3rem] animate-[spin_12s_linear_infinite] group-hover:border-blue-500/50 transition-colors" />
+              
+              <div className={`relative aspect-square rounded-[2.5rem] sm:rounded-[3.5rem] lg:rounded-[4rem] p-[3px] overflow-hidden transition-all duration-700 ${
                 theme.theme === 'light' 
-                  ? 'bg-white border-gray-100 shadow-blue-500/5' 
-                  : 'bg-gray-900 border-white/5 group-hover:border-blue-500/20'
+                  ? 'bg-blue-600 shadow-2xl shadow-blue-500/20' 
+                  : 'bg-gradient-to-tr from-blue-600 via-white/20 to-indigo-600'
               }`}>
-                <img
-                  src={portfolioInfo.profileImage || "/image.png"}
-                  alt={portfolioInfo.name}
-                  className="w-full h-full object-cover rounded-2xl transition-all duration-1000 transform group-hover:scale-105"
-                  onError={(e) => {
-                    const img = e.target as HTMLImageElement;
-                    img.style.display = 'none';
-                    img.parentElement?.classList.add('bg-gradient-to-br', 'from-blue-600', 'to-purple-600');
-                  }}
-                />
+                {/* Inner Container */}
+                <div className={`w-full h-full rounded-[2.3rem] sm:rounded-[3.3rem] lg:rounded-[3.8rem] overflow-hidden relative ${
+                  theme.theme === 'light' ? 'bg-white' : 'bg-[#01040f]'
+                }`}>
+                  <img
+                    src={portfolioInfo.profileImage || "/image.png"}
+                    alt={portfolioInfo.name}
+                    className="w-full h-full object-cover transition-all duration-1000 transform group-hover:scale-105 group-hover:rotate-1"
+                    onError={(e) => {
+                      const img = e.target as HTMLImageElement;
+                      img.style.display = 'none';
+                      img.parentElement?.classList.add('bg-gradient-to-br', 'from-blue-600', 'to-purple-600');
+                    }}
+                  />
+                  
+                  {/* Glass Shimmer Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                </div>
               </div>
               
               {/* Floating Element - Subtle */}

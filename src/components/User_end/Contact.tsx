@@ -129,155 +129,153 @@ const Contact = () => {
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}
       variants={containerVariants}
-      className={`py-8 sm:py-16 transition-colors duration-500 relative overflow-hidden ${
+      className={`py-8 sm:py-12 transition-colors duration-500 relative overflow-hidden ${
         theme.theme === 'light' ? 'bg-white' : 'bg-gray-950'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div className="mb-10" variants={itemVariants}>
-          <div className="flex items-center gap-4 mb-4">
-            <div className="h-[1px] w-12 bg-blue-600" />
-            <span className="text-xs font-black uppercase tracking-[0.4em] text-blue-600">Get In Touch</span>
+        <motion.div className="mb-12" variants={itemVariants}>
+          <div className="flex items-center gap-3 mb-4 justify-center lg:justify-start">
+            <div className="h-[2px] w-8 bg-blue-600 rounded-full" />
+            <span className="text-[9px] font-black uppercase tracking-[0.4em] text-blue-600">Digital Gateway</span>
           </div>
-          <h2 className={`text-4xl sm:text-6xl font-black tracking-tight leading-[1.1] ${
+          <h2 className={`text-3xl sm:text-5xl font-black tracking-tight leading-[1.05] text-center lg:text-left ${
               theme.theme === 'light' ? 'text-gray-900' : 'text-white'
             }`}
           >
-            Let's Start a <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">Conversation</span>
+            Ready to <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">Forge Something Great?</span>
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
-          {/* Left Column: Info */}
-          <div className="lg:col-span-5 space-y-12">
-            <motion.div className="space-y-6" variants={itemVariants}>
-              <h3 className={`text-3xl font-black tracking-tight ${
-                theme.theme === 'light' ? 'text-gray-900' : 'text-white'
-              }`}>
-                Contact Details
-              </h3>
-              <p className={`text-lg font-medium leading-relaxed ${
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+          {/* Left Column: Premium Contact Info */}
+          <div className="lg:col-span-5 space-y-8">
+            <motion.div className="space-y-6 text-center lg:text-left" variants={itemVariants}>
+              <p className={`text-lg font-medium leading-relaxed max-w-lg mx-auto lg:mx-0 ${
                 theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
               }`}>
-                Feel free to reach out for collaborations or just a friendly hello. I typically respond within 24 hours.
+                Whether you have a breakthrough idea or a complex engineering challenge, I'm ready to help you build the future.
               </p>
             </motion.div>
 
-            <div className="space-y-6">
-              {contactInfo.map((item) => (
+            <div className="grid grid-cols-1 gap-4">
+              {contactInfo.map((item, index) => (
                 <motion.a
                   key={item.label}
                   href={item.href}
                   variants={itemVariants}
-                  whileHover={{ x: 5 }}
-                  className={`flex items-center p-4 rounded-2xl border transition-all duration-500 group ${
+                  whileHover={{ x: 5, scale: 1.01 }}
+                  className={`flex items-center p-5 rounded-3xl border transition-all duration-500 group relative overflow-hidden ${
                     theme.theme === 'light' 
-                      ? 'bg-gray-50/50 border-gray-100 hover:bg-white hover:shadow-md' 
-                      : 'bg-gray-900/50 backdrop-blur-xl border-white/5 hover:bg-gray-800/80'
+                      ? 'bg-white border-blue-50 shadow-lg shadow-blue-500/5 hover:border-blue-200' 
+                      : 'bg-gray-900/40 backdrop-blur-xl border-white/5 hover:border-blue-500/20'
                   }`}
                 >
-                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mr-6 transition-transform duration-500 group-hover:scale-110 ${item.color}`}>
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mr-5 transition-all duration-500 group-hover:rotate-6 ${item.color} shadow-inner`}>
                     <item.icon size={24} />
                   </div>
-                  <div>
-                    <div className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-1">{item.label}</div>
-                    <div className={`text-lg font-black transition-colors ${
+                  <div className="flex flex-col">
+                    <span className="text-[8px] font-black uppercase tracking-[0.2em] text-blue-600 opacity-60 mb-1">{item.label}</span>
+                    <span className={`text-base font-black transition-colors ${
                       theme.theme === 'light' ? 'text-gray-900' : 'text-white'
                     }`}>
                       {item.value}
-                    </div>
+                    </span>
                   </div>
                 </motion.a>
               ))}
             </div>
           </div>
 
-          {/* Right Column: Form */}
+          {/* Right Column: High-End Form */}
           <motion.div className="lg:col-span-7" variants={itemVariants}>
-            <div className={`p-8 sm:p-10 rounded-3xl border relative overflow-hidden ${
+            <div className={`p-6 sm:p-10 rounded-3xl border relative overflow-hidden group/form ${
               theme.theme === 'light'
-                ? 'bg-white border-gray-100 shadow-2xl shadow-gray-200/40'
-                : 'bg-gray-900/40 backdrop-blur-3xl border-white/5 shadow-2xl shadow-black/50'
+                ? 'bg-white border-blue-50 shadow-xl shadow-blue-500/10'
+                : 'bg-gray-900/40 backdrop-blur-3xl border-white/5 shadow-2xl'
             }`}>
-              <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+              {/* Atmospheric Background Glow */}
+              <div className="absolute -top-16 -right-16 w-48 h-48 bg-blue-600/5 blur-[80px] rounded-full group-hover/form:bg-blue-600/10 transition-all duration-1000" />
+              
+              <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className={`text-[10px] font-black uppercase tracking-[0.3em] ml-2 ${
+                    <label className={`text-[9px] font-black uppercase tracking-[0.2em] ml-2 ${
                       theme.theme === 'light' ? 'text-gray-400' : 'text-gray-500'
-                    }`}>Name</label>
+                    }`}>Identity</label>
                     <input
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
                       placeholder="Your Full Name"
-                      className={`w-full px-6 py-4 rounded-xl border-2 border-transparent transition-all outline-none font-bold ${
-                        theme.theme === 'light' ? 'bg-gray-50 focus:bg-white focus:border-blue-600' : 'bg-gray-800/50 focus:bg-gray-800 focus:border-blue-500 text-white'
+                      className={`w-full px-6 py-4 rounded-xl border-2 transition-all outline-none font-bold text-sm ${
+                        theme.theme === 'light' 
+                          ? 'bg-gray-50 border-transparent focus:bg-white focus:border-blue-600' 
+                          : 'bg-white/5 border-transparent focus:bg-white/10 focus:border-blue-500 text-white'
                       }`}
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className={`text-[10px] font-black uppercase tracking-[0.3em] ml-2 ${
+                    <label className={`text-[9px] font-black uppercase tracking-[0.2em] ml-2 ${
                       theme.theme === 'light' ? 'text-gray-400' : 'text-gray-500'
-                    }`}>Email</label>
+                    }`}>Communication</label>
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="your@email.com"
-                      className={`w-full px-6 py-4 rounded-xl border-2 border-transparent transition-all outline-none font-bold ${
-                        theme.theme === 'light' ? 'bg-gray-50 focus:bg-white focus:border-blue-600' : 'bg-gray-800/50 focus:bg-gray-800 focus:border-blue-500 text-white'
+                      className={`w-full px-6 py-4 rounded-xl border-2 transition-all outline-none font-bold text-sm ${
+                        theme.theme === 'light' 
+                          ? 'bg-gray-50 border-transparent focus:bg-white focus:border-blue-600' 
+                          : 'bg-white/5 border-transparent focus:bg-white/10 focus:border-blue-500 text-white'
                       }`}
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label className={`text-[10px] font-black uppercase tracking-[0.3em] ml-2 ${
+                  <label className={`text-[9px] font-black uppercase tracking-[0.2em] ml-2 ${
                     theme.theme === 'light' ? 'text-gray-400' : 'text-gray-500'
-                  }`}>Message</label>
+                  }`}>Objective</label>
                   <textarea
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
                     rows={4}
-                    placeholder="Tell me about your project..."
-                    className={`w-full px-6 py-4 rounded-xl border-2 border-transparent transition-all outline-none font-bold resize-none ${
-                      theme.theme === 'light' ? 'bg-gray-50 focus:bg-white focus:border-blue-600' : 'bg-gray-800/50 focus:bg-gray-800 focus:border-blue-500 text-white'
+                    placeholder="Describe your vision..."
+                    className={`w-full px-6 py-4 rounded-xl border-2 transition-all outline-none font-bold text-sm resize-none ${
+                      theme.theme === 'light' 
+                        ? 'bg-gray-50 border-transparent focus:bg-white focus:border-blue-600' 
+                        : 'bg-white/5 border-transparent focus:bg-white/10 focus:border-blue-500 text-white'
                     }`}
                   />
                 </div>
 
                 <AnimatePresence>
                   {formStatus === 'success' && (
-                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="p-6 bg-green-500/10 border border-green-500/20 rounded-2xl flex items-center gap-4 text-green-500 font-bold overflow-hidden">
-                      <CheckCircle size={24} />
-                      <p>Your message has been successfully transmitted!</p>
-                    </motion.div>
-                  )}
-                  {formStatus === 'error' && (
-                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="p-6 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-4 text-red-500 font-bold overflow-hidden">
-                      <AlertCircle size={24} />
-                      <p>Validation failed. Please verify your inputs.</p>
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="p-4 bg-green-500/10 border border-green-500/20 rounded-2xl flex items-center gap-3 text-green-600 font-bold text-sm overflow-hidden">
+                      <CheckCircle size={20} />
+                      <p>Transmission Complete.</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
 
                 <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.01, y: -1 }}
+                  whileTap={{ scale: 0.99 }}
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-6 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white rounded-2xl font-black uppercase tracking-[0.3em] shadow-xl shadow-blue-500/20 flex items-center justify-center gap-4 group disabled:opacity-50"
+                  className="w-full py-5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black uppercase tracking-[0.3em] shadow-xl shadow-blue-600/20 flex items-center justify-center gap-4 group disabled:opacity-50 transition-all"
                 >
                   {isSubmitting ? (
                     <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
                   ) : (
                     <>
-                      <span>Transmit Message</span>
-                      <Send size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                      <span className="text-[11px] sm:text-xs">Transmit Message</span>
+                      <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                     </>
                   )}
                 </motion.button>

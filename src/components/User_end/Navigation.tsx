@@ -122,116 +122,144 @@ const Navigation = () => {
   };
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      className={`fixed top-0 left-0 w-full z-[80] transition-all duration-500 ease-in-out ${
-        scrolled || isOpen
-          ? 'bg-white/80 dark:bg-[#020617]/80 backdrop-blur-2xl border-b border-gray-100 dark:border-white/5 shadow-xl shadow-blue-500/5'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-6">
-        <div className={`flex justify-between items-center transition-all duration-500 ${
-          scrolled ? 'h-16' : 'h-20 sm:h-24'
-        }`}>
-          {/* Logo */}
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex-shrink-0 cursor-pointer group z-[70]"
-            onClick={() => handleNavClick('#home')}
-          >
-            <span className={`text-xl sm:text-2xl font-bold transition-all duration-500 ${
-              theme.theme === 'light' 
-                ? 'text-gray-900' 
-                : 'bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent'
-            }`}>
-              <span className="hidden sm:inline">{portfolioInfo.name}</span>
-              <span className="sm:hidden">{portfolioInfo.name.split(' ')[0]}</span>
-            </span>
-          </motion.div>
+    <>
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        className={`fixed top-0 left-0 w-full z-[80] transition-all duration-500 ease-in-out ${
+          scrolled || isOpen
+            ? 'border-b border-gray-100 dark:border-white/5 shadow-lg shadow-blue-500/5'
+            : ''
+        }`}
+        style={{ 
+          backgroundColor: (scrolled || isOpen) 
+            ? (theme.theme === 'light' ? '#ffffff' : '#020617') 
+            : 'transparent' 
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-6">
+          <div className={`flex justify-between items-center transition-all duration-500 ${
+            scrolled ? 'h-14' : 'h-16 lg:h-20'
+          }`}>
+            {/* Logo */}
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex-shrink-0 cursor-pointer group z-[70] flex items-center gap-3"
+              onClick={() => handleNavClick('#home')}
+            >
+              {/* Architectural Monogram - No Box */}
+              <div className="relative flex items-center justify-center py-2">
+                <div className="relative">
+                  <span className={`text-4xl font-black tracking-tighter transition-all duration-500 group-hover:scale-110 block ${
+                    theme.theme === 'light' ? 'text-gray-950' : 'text-white'
+                  }`}>
+                    S
+                    <span className="text-blue-600">.</span>
+                  </span>
+                  {/* Premium Glow Aura */}
+                  <div className="absolute -inset-2 bg-blue-600/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                </div>
+              </div>
 
-          {/* Desktop Menu - Aggressive Hiding */}
-          <div className="hidden md:flex items-center gap-6">
-            <div className="flex space-x-1 items-center bg-gray-100/80 dark:bg-gray-900/80 backdrop-blur-md p-1.5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
-              {navItems.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => handleNavClick(item.href)}
+              <div className="flex flex-col justify-center border-l-2 border-gray-100 dark:border-white/10 pl-3">
+                <span className="text-sm font-black tracking-[0.2em] leading-none">
+                  <span style={{ color: theme.theme === 'light' ? '#000000' : '#ffffff' }}>
+                    SAAD
+                  </span>
+                </span>
+                <span className="text-[10px] font-bold text-blue-600 uppercase tracking-[0.5em] mt-1 leading-none">
+                  IKRAM
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Desktop Menu - Aggressive Hiding */}
+            <div className="hidden md:flex items-center gap-6">
+            <div className="flex space-x-1 items-center bg-white dark:bg-gray-900 p-1.5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
+                {navItems.map((item) => (
+                  <button
+                    key={item.name}
+                    onClick={() => handleNavClick(item.href)}
                   className={`relative px-4 py-2 rounded-xl text-[11px] font-bold uppercase tracking-widest flex items-center space-x-2 transition-all duration-300 overflow-hidden group ${
                     activeSection === item.href
                       ? 'text-white'
-                      : 'text-gray-700 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400'
+                      : 'text-gray-950 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400'
                   }`}
-                >
-                  {activeSection === item.href && (
-                    <motion.div
-                      layoutId="activeNav"
-                      className="absolute inset-0 bg-blue-600 dark:bg-blue-500 shadow-md"
-                      transition={{ type: 'spring', duration: 0.5 }}
-                    />
-                  )}
-                  <span className="relative z-10 flex items-center gap-2">
-                    <item.icon size={14} />
-                    {item.name}
-                  </span>
-                </button>
-              ))}
+                  >
+                    {activeSection === item.href && (
+                      <motion.div
+                        layoutId="activeNav"
+                        className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 shadow-lg shadow-blue-500/20"
+                        transition={{ 
+                          type: 'spring', 
+                          stiffness: 400, 
+                          damping: 30,
+                          mass: 0.8
+                        }}
+                      />
+                    )}
+                    <span className="relative z-10 flex items-center gap-2">
+                      <item.icon size={14} />
+                      {item.name}
+                    </span>
+                  </button>
+                ))}
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={theme.toggleTheme}
+                className={`p-2.5 rounded-xl border transition-all ${
+                  theme.theme === 'light'
+                    ? 'bg-white border-gray-200 text-gray-900 shadow-sm'
+                    : 'bg-gray-900 border-gray-800 text-yellow-400 shadow-xl'
+                }`}
+              >
+                {theme.theme === 'light' ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="18.36" x2="5.64" y2="19.78"></line><line x1="18.36" y1="4.22" x2="19.78" y2="5.64"></line></svg>
+                )}
+              </motion.button>
             </div>
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={theme.toggleTheme}
-              className={`p-2.5 rounded-xl border transition-all ${
-                theme.theme === 'light'
-                  ? 'bg-white border-gray-200 text-gray-900 shadow-sm'
-                  : 'bg-gray-900 border-gray-800 text-yellow-400 shadow-xl'
-              }`}
-            >
-              {theme.theme === 'light' ? (
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="18.36" x2="5.64" y2="19.78"></line><line x1="18.36" y1="4.22" x2="19.78" y2="5.64"></line></svg>
-              )}
-            </motion.button>
-          </div>
-
-          {/* Mobile Actions - Aggressive Visibility */}
-          <div className="md:hidden flex items-center gap-4">
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={theme.toggleTheme}
-              className={`p-2.5 rounded-xl border transition-all ${
-                theme.theme === 'light'
-                  ? 'bg-gray-50 border-gray-100 text-gray-900 shadow-sm'
-                  : 'bg-gray-900 border-white/5 text-yellow-400'
-              }`}
-            >
-              {theme.theme === 'light' ? (
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="18.36" x2="5.64" y2="19.78"></line><line x1="18.36" y1="4.22" x2="19.78" y2="5.64"></line></svg>
-              )}
-            </motion.button>
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setIsOpen(!isOpen)}
-              className={`p-2.5 rounded-xl transition-all ${
-                theme.theme === 'light' ? 'text-gray-900' : 'text-white'
-              }`}
-            >
-              {isOpen ? (
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-              )}
-            </motion.button>
+            {/* Mobile Actions - Aggressive Visibility */}
+            <div className="md:hidden flex items-center gap-4">
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                onClick={theme.toggleTheme}
+                className={`p-2.5 rounded-xl border transition-all ${
+                  theme.theme === 'light'
+                    ? 'bg-gray-50 border-gray-100 text-gray-900 shadow-sm'
+                    : 'bg-gray-900 border-white/5 text-yellow-400'
+                }`}
+              >
+                {theme.theme === 'light' ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="18.36" x2="5.64" y2="19.78"></line><line x1="18.36" y1="4.22" x2="19.78" y2="5.64"></line></svg>
+                )}
+              </motion.button>
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setIsOpen(!isOpen)}
+                className={`p-2.5 rounded-xl transition-all ${
+                  theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+                }`}
+              >
+                {isOpen ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                )}
+              </motion.button>
+            </div>
           </div>
         </div>
-      </div>
+      </motion.nav>
 
       <AnimatePresence>
         {isOpen && (
@@ -240,18 +268,13 @@ const Navigation = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className={`fixed inset-0 z-[100] md:hidden backdrop-blur-3xl flex flex-col items-center justify-start overflow-y-auto ${
+            className={`fixed inset-0 z-[120] md:hidden flex flex-col items-center justify-start overflow-y-auto ${
               theme.theme === 'light' ? 'bg-white' : 'bg-[#020617]'
             }`}
+            style={{ backgroundColor: theme.theme === 'light' ? '#ffffff' : '#020617' }}
           >
-            {/* Background Accent */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-              <div className="absolute top-1/4 -right-1/4 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px]" />
-              <div className="absolute bottom-1/4 -left-1/4 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[100px]" />
-            </div>
-
             {/* Header Area */}
-            <div className="w-full flex items-center justify-between p-8 border-b border-gray-100 dark:border-white/5 relative z-[110]">
+            <div className="w-full flex items-center justify-between p-8 border-b border-gray-100 dark:border-white/5 relative z-[130] bg-inherit">
               <span className={`text-sm font-black uppercase tracking-[0.3em] ${
                 theme.theme === 'light' ? 'text-gray-400' : 'text-gray-500'
               }`}>
@@ -267,55 +290,55 @@ const Navigation = () => {
               </button>
             </div>
 
-            {/* Menu List */}
-            <div className="flex-1 w-full max-w-sm px-8 pt-6 pb-12 relative z-10 overflow-y-auto">
-              <div className="flex flex-col gap-2">
-                {navItems.map((item, index) => (
-                  <motion.button
-                    key={item.name}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.08 }}
-                    onClick={() => handleNavClick(item.href)}
-                    className={`w-full py-8 flex items-center justify-between border-b transition-all ${
-                      activeSection === item.href 
-                        ? 'border-blue-600 text-blue-600' 
-                        : theme.theme === 'light' ? 'border-gray-100 text-gray-900' : 'border-white/5 text-white/70'
-                    }`}
-                  >
-                    <div className="flex items-center gap-6">
-                      <div className={`p-2 rounded-xl ${
-                        activeSection === item.href ? 'bg-blue-600/10' : 'bg-gray-500/5'
-                      }`}>
-                        <item.icon size={22} strokeWidth={2} />
+            {/* Menu List - FORCED VISIBILITY */}
+            <div className="w-full max-w-sm px-8 pt-12 pb-20 relative z-[120]">
+              <ul className="flex flex-col w-full space-y-4">
+                {navItems.map((item) => (
+                  <li key={item.name} className="w-full">
+                    <button
+                      onClick={() => {
+                        handleNavClick(item.href);
+                        setIsOpen(false);
+                      }}
+                      className={`w-full py-6 flex items-center justify-between border-b transition-all ${
+                        activeSection === item.href 
+                          ? 'border-blue-600 text-blue-600' 
+                          : theme.theme === 'light' ? 'border-gray-200 text-gray-900' : 'border-white/10 text-white'
+                      }`}
+                    >
+                      <div className="flex items-center gap-6">
+                        <div className={`p-3 rounded-2xl ${
+                          activeSection === item.href ? 'bg-blue-600/10' : 'bg-gray-500/10'
+                        }`}>
+                          <item.icon size={24} strokeWidth={2} />
+                        </div>
+                        <span className="text-2xl font-black tracking-tight">{item.name}</span>
                       </div>
-                      <span className="text-2xl font-bold tracking-tight">{item.name}</span>
-                    </div>
-                    <div className={`w-2 h-2 rounded-full transition-all ${
-                      activeSection === item.href ? 'bg-blue-600' : 'bg-transparent'
-                    }`} />
-                  </motion.button>
+                      <div className={`w-3 h-3 rounded-full transition-all ${
+                        activeSection === item.href ? 'bg-blue-600' : 'bg-transparent'
+                      }`} />
+                    </button>
+                  </li>
                 ))}
-              </div>
+              </ul>
 
-              {/* Mobile CTA */}
-              <div className="mt-12 space-y-10 text-center">
-                <motion.button
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6 }}
-                  onClick={() => handleNavClick('#contact')}
-                  className="w-full py-5 bg-blue-600 text-white rounded-2xl text-base font-bold uppercase tracking-[0.2em] shadow-2xl shadow-blue-500/20"
+              <div className="mt-16 space-y-10">
+                <button
+                  onClick={() => {
+                    handleNavClick('#contact');
+                    setIsOpen(false);
+                  }}
+                  className="w-full py-6 bg-blue-600 text-white rounded-3xl text-lg font-black uppercase tracking-[0.2em] shadow-2xl shadow-blue-500/40"
                 >
                   Start a Project
-                </motion.button>
+                </button>
                 
-                <div className="flex justify-center gap-10">
+                <div className="flex justify-center gap-12">
                   {portfolioInfo.socialLinks.map((social) => {
                     const Icon = getSocialIcon(social.platform);
                     return (
-                      <a key={social.platform} href={social.url} target="_blank" className="text-gray-400 hover:text-blue-500 transition-colors">
-                        <Icon size={24} />
+                      <a key={social.platform} href={social.url} target="_blank" className="text-gray-400 hover:text-blue-500 transition-all hover:scale-110">
+                        <Icon size={28} />
                       </a>
                     );
                   })}
@@ -325,7 +348,7 @@ const Navigation = () => {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </>
   );
 };
 

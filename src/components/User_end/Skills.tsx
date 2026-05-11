@@ -56,6 +56,31 @@ const Skills = () => {
     },
   };
 
+  const getSkillVariants = (index: number): Variants => {
+    const directions = [
+      { x: -30, y: 0 }, // From Left
+      { x: 30, y: 0 },  // From Right
+      { x: 0, y: -30 }, // From Top
+      { x: 0, y: 30 },  // From Bottom
+    ];
+    const { x, y } = directions[index % directions.length];
+    
+    return {
+      hidden: { opacity: 0, x, y, scale: 0.95 },
+      visible: { 
+        opacity: 1, 
+        x: 0, 
+        y: 0, 
+        scale: 1,
+        transition: { 
+          duration: 0.6, 
+          ease: [0.22, 1, 0.36, 1],
+          delay: (index % 4) * 0.1
+        }
+      }
+    };
+  };
+
   const itemVariants: Variants = {
     hidden: { opacity: 0, scale: 0.98, y: 10 },
     visible: {
@@ -78,12 +103,12 @@ const Skills = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div className="mb-10" variants={itemVariants}>
-          <div className="flex items-center justify-center lg:justify-start gap-4 mb-4">
-            <div className="h-[2px] w-12 bg-blue-600 rounded-full" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-blue-600">Technical Arsenal</span>
+        <motion.div className="mb-12" variants={itemVariants}>
+          <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
+            <div className="h-[2px] w-8 bg-blue-600 rounded-full" />
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600">Technical Arsenal</span>
           </div>
-          <h2 className={`text-5xl sm:text-6xl font-bold tracking-tight leading-[1.1] text-center lg:text-left ${
+          <h2 className={`text-3xl sm:text-5xl font-black tracking-tight leading-[1.1] text-center lg:text-left ${
               theme.theme === 'light' ? 'text-gray-900' : 'text-white'
             }`}
           >
@@ -93,7 +118,7 @@ const Skills = () => {
         </motion.div>
 
         {skills.length > 0 ? (
-          <div className="space-y-6 sm:space-y-10">
+          <div className="space-y-12 sm:space-y-16">
             {Object.entries(skillCategories).map(([categoryName, categorySkills]) => {
               const Icon = getCategoryIcon(categoryName);
               return (
@@ -102,49 +127,54 @@ const Skills = () => {
                   variants={itemVariants}
                   className="space-y-6"
                 >
-                  <div className="flex items-center gap-6">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center border shadow-lg relative group ${
+                  {/* Architectural Category Header */}
+                  <div className="flex items-center gap-5">
+                    <div className={`w-12 h-12 rounded-[1.25rem] flex items-center justify-center border shadow-xl relative group overflow-hidden transition-all duration-500 ${
                       theme.theme === 'light' 
-                        ? 'bg-blue-50 border-blue-100/50 text-blue-600' 
-                        : 'bg-gray-800 border-white/10 text-blue-400 shadow-blue-500/10'
+                        ? 'bg-white border-blue-100 text-blue-600' 
+                        : 'bg-gray-900 border-white/5 text-blue-400'
                     }`}>
-                      <div className="absolute inset-0 bg-blue-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity rounded-full" />
-                      <Icon size={22} className="relative z-10" />
+                      <div className="absolute inset-0 bg-blue-600/10 group-hover:bg-blue-600/20 transition-colors" />
+                      <Icon size={20} className="relative z-10" />
                     </div>
-                    <h3 className={`text-2xl font-bold tracking-tight ${
-                      theme.theme === 'light' ? 'text-gray-900' : 'text-white'
-                    }`}>
-                      {categoryName}
-                    </h3>
+                    <div className="flex flex-col">
+                      <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-600 opacity-70">Expertise Area</span>
+                      <h3 className={`text-2xl font-black tracking-tight ${
+                        theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+                      }`}>
+                        {categoryName}
+                      </h3>
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-                    {categorySkills.map((skill) => (
+                    {categorySkills.map((skill, index) => (
                       <motion.div 
                         key={skill.id}
+                        variants={getSkillVariants(index)}
                         whileHover={{ y: -3, scale: 1.02 }}
-                        className={`p-4 rounded-2xl border transition-all duration-500 group/skill relative overflow-hidden ${
+                        className={`p-4 rounded-xl border transition-all duration-500 group/skill relative overflow-hidden ${
                           theme.theme === 'light' 
-                            ? 'bg-white border-gray-200 shadow-sm hover:shadow-md' 
-                            : 'bg-gray-900 border-white/10 hover:border-blue-500/50 shadow-2xl'
+                            ? 'bg-white border-gray-100 shadow-lg shadow-blue-500/5' 
+                            : 'bg-gray-900 border-white/5 hover:border-blue-500/30 shadow-2xl'
                         }`}
                       >
-                        {/* Interactive Hover Accent */}
-                        <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-600 to-purple-600 transform scale-y-0 group-hover/skill:scale-y-100 transition-transform duration-500" />
+                        {/* Interactive Aurora Glow */}
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-blue-600/5 blur-[40px] rounded-full -mr-12 -mt-12 group-hover/skill:bg-blue-600/10 transition-all duration-700" />
                         
-                        <div className="flex justify-between items-center mb-4">
-                          <span className={`font-bold text-base tracking-tight ${
+                        <div className="flex justify-between items-center mb-3">
+                          <span className={`font-bold text-sm tracking-tight ${
                             theme.theme === 'light' ? 'text-gray-900' : 'text-white'
                           }`}>
                             {skill.name}
                           </span>
-                          <span className="text-[9px] font-black text-blue-500 bg-blue-500/10 px-2 py-0.5 rounded-full border border-blue-500/20">
+                          <span className="text-[8px] font-black text-blue-600 bg-blue-500/10 px-1.5 py-0.5 rounded-full border border-blue-500/20">
                             {skill.level}%
                           </span>
                         </div>
                         
                         <div className="space-y-4">
-                          <div className="w-full bg-gray-100 dark:bg-gray-800 h-1.5 rounded-full overflow-hidden">
+                          <div className="w-full bg-gray-100 dark:bg-white/5 h-1.5 rounded-full overflow-hidden relative">
                             <motion.div 
                               initial={{ width: 0 }}
                               animate={isVisible ? { width: `${skill.level}%` } : {}}
@@ -154,10 +184,11 @@ const Skills = () => {
                           </div>
                           
                           <div className="flex items-center justify-between">
-                            <div className="flex items-center text-[9px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">
-                              <CheckCircle2 size={12} className="mr-1 text-blue-500" />
+                            <div className="flex items-center text-[9px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
+                              <CheckCircle2 size={12} className="mr-1.5 text-blue-500" />
                               {skill.yearsOfExperience > 0 ? `${skill.yearsOfExperience}Y Mastery` : 'Expertise'}
                             </div>
+                            <Zap size={10} className="text-blue-500 opacity-0 group-hover/skill:opacity-100 transition-opacity" />
                           </div>
                         </div>
                       </motion.div>

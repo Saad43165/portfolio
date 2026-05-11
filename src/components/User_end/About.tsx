@@ -55,7 +55,7 @@ const About = () => {
     <motion.section
       id="about"
       ref={sectionRef}
-      className={`py-8 sm:py-16 transition-colors duration-500 overflow-hidden relative ${theme.theme === 'light' ? 'bg-gray-50/50' : 'bg-gray-950'}`}
+      className={`py-6 sm:py-10 transition-colors duration-500 overflow-hidden relative ${theme.theme === 'light' ? 'bg-gray-50/50' : 'bg-gray-950'}`}
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}
       variants={containerVariants}
@@ -64,12 +64,12 @@ const About = () => {
       <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] -translate-x-1/2" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div className="mb-10" variants={itemVariants}>
-          <div className="flex items-center justify-center lg:justify-start gap-4 mb-4">
-            <div className="h-[2px] w-12 bg-blue-600 rounded-full" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-blue-600">Personal Story</span>
+        <motion.div className="mb-12" variants={itemVariants}>
+          <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
+            <div className="h-[2px] w-8 bg-blue-600 rounded-full" />
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600">The Genesis</span>
           </div>
-          <h2 className={`text-5xl sm:text-6xl font-bold tracking-tight leading-[1.1] text-center lg:text-left ${
+          <h2 className={`text-3xl sm:text-5xl font-black tracking-tight leading-[1.1] text-center lg:text-left ${
               theme.theme === 'light' ? 'text-gray-900' : 'text-white'
             }`}
           >
@@ -81,17 +81,33 @@ const About = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-20 items-start">
           <div className="lg:col-span-5 space-y-12 order-2 lg:order-1 w-full">
             <motion.div className="relative group max-w-[260px] mx-auto lg:mx-0" variants={itemVariants}>
-              <div className="absolute -inset-4 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl blur-2xl opacity-10 group-hover:opacity-20 transition-opacity duration-700" />
-              <div className={`relative aspect-[5/6] rounded-2xl overflow-hidden border border-white dark:border-white/5 shadow-xl ${
-                theme.theme === 'light' ? 'bg-white' : 'bg-gray-900'
-              }`}>
+              <div className="absolute -inset-2 bg-gradient-to-br from-blue-600/30 to-indigo-600/30 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              <motion.div 
+                whileHover={{ rotateY: 5, rotateX: -5, scale: 1.02 }}
+                className={`relative aspect-[5/6] rounded-3xl overflow-hidden border-2 p-1.5 transition-all duration-500 ${
+                  theme.theme === 'light' ? 'bg-white border-blue-200 shadow-2xl' : 'bg-gray-900 border-white/10'
+                }`}
+              >
                 <img
                   src={aboutData.aboutImage || "/saad_pic.JPG"}
                   alt="Saad Ikram"
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 transform group-hover:scale-105"
+                  className="w-full h-full object-cover rounded-[1.4rem] transition-all duration-1000 transform group-hover:scale-110"
                   loading="lazy"
                 />
-              </div>
+                
+                {/* Magical Experience Float */}
+                <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-[10px]">
+                      SI
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[10px] font-black text-white uppercase tracking-widest">Mastery Level</span>
+                      <span className="text-[9px] font-bold text-blue-300 uppercase tracking-tighter">Elite Developer</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-6">

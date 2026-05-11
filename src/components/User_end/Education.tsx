@@ -57,12 +57,12 @@ const Education = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div className="mb-6 sm:mb-10" variants={itemVariants}>
-          <div className="flex items-center justify-center lg:justify-start gap-4 mb-4">
-            <div className="h-[2px] w-12 bg-purple-600 rounded-full" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-purple-600">Learning Path</span>
+        <motion.div className="mb-12" variants={itemVariants}>
+          <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
+            <div className="h-[2px] w-8 bg-purple-600 rounded-full" />
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-purple-600">Learning Path</span>
           </div>
-          <h2 className={`text-4xl sm:text-6xl font-bold tracking-tight leading-[1.1] text-center lg:text-left ${
+          <h2 className={`text-3xl sm:text-5xl font-black tracking-tight leading-[1.1] text-center lg:text-left ${
               theme.theme === 'light' ? 'text-gray-900' : 'text-white'
             }`}
           >
@@ -72,74 +72,82 @@ const Education = () => {
         </motion.div>
 
         {education.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+          <div className={`grid gap-6 lg:gap-10 ${
+            education.length === 1 ? 'max-w-4xl mx-auto grid-cols-1 w-full' : 'grid-cols-1 md:grid-cols-2'
+          }`}>
             {education.map((edu, index) => (
               <motion.div 
                 key={edu.id || index} 
                 variants={itemVariants}
-                whileHover={{ y: -3 }}
-                className={`p-6 sm:p-8 rounded-2xl transition-all duration-500 border group flex flex-col relative overflow-hidden ${
+                whileHover={{ y: -3, scale: 1.005 }}
+                className={`p-6 sm:p-8 rounded-3xl transition-all duration-500 border group flex flex-col relative overflow-hidden ${
                   theme.theme === 'light' 
-                    ? 'bg-white border-gray-200 shadow-sm hover:shadow-md' 
-                    : 'bg-gray-900 border-white/10 hover:border-purple-500/50 shadow-2xl'
+                    ? 'bg-white border-purple-100 shadow-lg shadow-purple-500/5' 
+                    : 'bg-gray-900 border-white/5 hover:border-purple-500/30 shadow-2xl'
                 }`}
               >
-                {/* Visual Accent */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 blur-[60px] rounded-full -mr-16 -mt-16 group-hover:bg-purple-500/10 transition-all duration-700" />
+                {/* Magical Academic Glow */}
+                <div className="absolute top-0 right-0 w-48 h-48 bg-purple-600/5 blur-[80px] rounded-full -mr-24 -mt-24 group-hover:bg-purple-600/10 transition-all duration-700" />
                 
-                <div className="flex flex-col sm:flex-row justify-between items-start gap-8 mb-12 relative z-10">
+                <div className="flex flex-col lg:flex-row justify-between items-start gap-6 mb-8 relative z-10">
                   <div className="space-y-4">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-purple-500/10">
-                        <Calendar size={14} className="text-purple-600 dark:text-purple-400" />
+                      <div className="px-2.5 py-1 rounded-md bg-purple-500/10 border border-purple-500/20">
+                        <span className="text-[9px] font-black uppercase tracking-[0.1em] text-purple-600 dark:text-purple-400">
+                          {new Date(edu.startDate).getFullYear()} — {edu.endDate ? new Date(edu.endDate).getFullYear() : 'Present'}
+                        </span>
                       </div>
-                      <span className="text-[11px] font-black uppercase tracking-[0.2em] text-purple-600 dark:text-purple-400">
-                        {new Date(edu.startDate).getFullYear()} — {edu.endDate ? new Date(edu.endDate).getFullYear() : 'Present'}
-                      </span>
                     </div>
                     
-                    <h3 className={`text-2xl sm:text-3xl font-bold leading-[1.2] transition-colors duration-300 ${
+                    <h3 className={`text-2xl sm:text-3xl font-black leading-tight tracking-tight transition-colors duration-300 ${
                       theme.theme === 'light' ? 'text-gray-900' : 'text-white'
                     }`}>
                       {edu.degree}
                     </h3>
                     
-                    <div className="flex items-center gap-3 text-sm font-bold text-gray-500 dark:text-gray-400">
-                      <div className="w-5 h-5 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                        <MapPin size={12} />
-                      </div>
-                      {edu.institution}
+                    <div className="flex items-center gap-2 text-sm font-bold text-gray-500 dark:text-gray-400">
+                      <MapPin size={16} className="text-purple-500" />
+                      <span className="tracking-tight">{edu.institution}</span>
                     </div>
                   </div>
                   
                   {edu.gpa && (
-                    <div className={`px-5 py-3 rounded-2xl border flex flex-col items-center justify-center shadow-md ${
-                      theme.theme === 'light' ? 'bg-purple-50/50 border-purple-100' : 'bg-gray-800 border-purple-500/20'
-                    }`}>
-                      <span className="text-[8px] font-bold text-purple-600 dark:text-purple-400 uppercase tracking-widest">GPA</span>
-                      <span className={`text-xl font-bold ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                    <motion.div 
+                      whileHover={{ scale: 1.05 }}
+                      className={`relative px-6 py-4 rounded-2xl border flex flex-col items-center justify-center shadow-xl ${
+                        theme.theme === 'light' 
+                          ? 'bg-gradient-to-br from-purple-50 to-white border-purple-100' 
+                          : 'bg-gradient-to-br from-gray-800 to-gray-950 border-purple-500/20'
+                      }`}
+                    >
+                      <span className="text-[8px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-[0.2em] mb-1">GPA</span>
+                      <span className={`text-2xl font-black ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                         {edu.gpa}
                       </span>
-                    </div>
+                    </motion.div>
                   )}
                 </div>
 
-                <div className="space-y-8 flex-grow relative z-10">
-                  <p className={`text-lg font-medium leading-relaxed ${
-                    theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                <div className="space-y-6 flex-grow relative z-10">
+                  <div className={`p-5 rounded-2xl border border-dashed ${
+                    theme.theme === 'light' ? 'border-purple-100 bg-purple-50/30' : 'border-white/5 bg-white/5'
                   }`}>
-                    {edu.description}
-                  </p>
+                    <p className={`text-base font-medium leading-relaxed ${
+                      theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                    }`}>
+                      {edu.description}
+                    </p>
+                  </div>
 
                   {edu.achievements.length > 0 && (
-                    <div className="flex flex-wrap gap-3 pt-8 border-t border-gray-100 dark:border-white/10">
+                    <div className="flex flex-wrap gap-2">
                       {edu.achievements.map((achievement, i) => (
-                        <div key={i} className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest border transition-all ${
+                        <div key={i} className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-bold uppercase tracking-widest border transition-all ${
                           theme.theme === 'light' 
-                            ? 'bg-gray-50 border-gray-100 text-gray-500 hover:border-purple-200 hover:text-purple-600' 
-                            : 'bg-gray-800/50 border-white/5 text-gray-400 hover:border-purple-500/30 hover:text-purple-400'
+                            ? 'bg-white border-gray-100 text-gray-500 hover:border-purple-400 hover:text-purple-600 shadow-sm' 
+                            : 'bg-gray-800/80 border-white/10 text-gray-400 hover:border-purple-500 hover:text-purple-400'
                         }`}>
-                          <Award size={14} className="text-purple-500" />
+                          <Award size={12} className="text-purple-500" />
                           {achievement}
                         </div>
                       ))}
