@@ -86,7 +86,7 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className={`min-h-screen flex items-center justify-center relative overflow-hidden transition-colors duration-500 pt-20 ${
+    <section id="home" className={`min-h-screen flex items-start sm:items-center justify-center relative overflow-hidden transition-colors duration-500 pt-14 sm:pt-20 ${
       theme.theme === 'light' ? 'bg-[#fcfdfe]' : 'bg-[#020617]'
     }`}>
       {/* Dynamic Background Elements */}
@@ -119,7 +119,7 @@ const Hero = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto w-full py-10 sm:py-20"
+        className="relative z-10 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto w-full pt-2 sm:pt-0 pb-12 sm:pb-20"
       >
         <div className="flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-20">
           
@@ -243,30 +243,6 @@ const Hero = () => {
           </motion.div>
         </div>
       </motion.div>
-              
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                className="absolute -inset-3 border border-dashed border-blue-500/10 rounded-full"
-              />
-              
-              <div className={`relative aspect-square rounded-[2rem] sm:rounded-[2.5rem] lg:rounded-[3.5rem] overflow-hidden border-[1px] p-1.5 ${
-                theme.theme === 'light' ? 'border-gray-200 bg-white shadow-lg' : 'border-white/10 bg-white/5 backdrop-blur-2xl'
-              }`}>
-                <div className="w-full h-full rounded-[1.8rem] sm:rounded-[2.2rem] lg:rounded-[3.2rem] overflow-hidden relative group">
-                  <img
-                    src={portfolioInfo.profileImage || "/image.png"}
-                    alt={portfolioInfo.name}
-                    className="w-full h-full object-cover transition-all duration-1000 transform group-hover:scale-105 grayscale-[10%] group-hover:grayscale-0"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-blue-600/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </motion.div>
-
       {/* Modern Scroll Indicator - Hidden on mobile to prevent overlap */}
       <div className="hidden sm:flex absolute bottom-10 left-1/2 -translate-x-1/2 flex-col items-center gap-3 pointer-events-none">
         <span className={`text-[10px] font-bold uppercase tracking-[0.4em] ${theme.theme === 'light' ? 'text-gray-400' : 'text-gray-600'}`}>Scroll</span>
