@@ -237,30 +237,60 @@ const Hero = () => {
           {/* Visual Right */}
           <motion.div 
             variants={itemVariants}
-            className="flex-1 relative order-1 lg:order-2 mb-4 lg:mb-0"
+            className="flex-1 relative order-1 lg:order-2 mb-8 lg:mb-0"
           >
-            <div className="relative w-full max-w-[180px] sm:max-w-[320px] lg:max-w-[320px] mx-auto">
-              {/* Complex Architectural Background */}
-              <div className="absolute inset-0 bg-blue-600/10 rounded-[4rem] sm:rounded-[5rem] blur-[50px] sm:blur-[80px] animate-pulse" />
+            <div className="relative w-full max-w-[200px] sm:max-w-[320px] lg:max-w-[360px] mx-auto">
               
+              {/* Subtle Elegant Glow */}
+              <div className="absolute inset-0 bg-blue-600/5 rounded-full blur-[80px] lg:blur-[120px] opacity-50" />
+
+              {/* Refined 3D Tilt Container */}
               <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                className="absolute -inset-6 border border-dashed border-blue-500/20 rounded-full"
-              />
-              
-              <div className={`relative aspect-square rounded-[3rem] sm:rounded-[4rem] lg:rounded-[5rem] overflow-hidden border-2 p-2 ${
-                theme.theme === 'light' ? 'border-gray-200 bg-white shadow-2xl' : 'border-white/10 bg-white/5 backdrop-blur-2xl shadow-blue-500/10'
-              }`}>
-                <div className="w-full h-full rounded-[2.8rem] sm:rounded-[3.8rem] lg:rounded-[4.8rem] overflow-hidden relative group">
-                  <img
+                whileHover={{ 
+                  y: -10,
+                  rotateY: 5,
+                  rotateX: -5,
+                  transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
+                }}
+                className={`relative aspect-square rounded-[3.5rem] sm:rounded-[4.5rem] lg:rounded-[5.5rem] overflow-hidden border-2 p-2.5 z-10 transition-all duration-700 ${
+                  theme.theme === 'light' 
+                    ? 'border-gray-100 bg-white shadow-[0_20px_50px_-15px_rgba(0,0,0,0.1)]' 
+                    : 'border-white/5 bg-white/5 backdrop-blur-3xl shadow-2xl'
+                }`}
+              >
+                <div className="w-full h-full rounded-[3.2rem] sm:rounded-[4.2rem] lg:rounded-[5.2rem] overflow-hidden relative group bg-gray-50 dark:bg-gray-900/50">
+                  <motion.img
                     src={portfolioInfo.profileImage || "/image.png"}
                     alt={portfolioInfo.name}
-                    className="w-full h-full object-cover transition-all duration-1000 transform group-hover:scale-105 grayscale-[10%] group-hover:grayscale-0"
+                    className="w-full h-full object-cover transition-all duration-1000 transform group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-blue-600/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  
+                  {/* Subtle Gradient Overlay */}
+                  <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none ${
+                    theme.theme === 'light' 
+                      ? 'bg-gradient-to-tr from-blue-600/5 to-transparent' 
+                      : 'bg-gradient-to-tr from-blue-600/20 to-transparent'
+                  }`} />
                 </div>
-              </div>
+              </motion.div>
+
+              {/* Minimal Professional Badge */}
+              <motion.div
+                variants={itemVariants}
+                className={`absolute -right-2 -bottom-2 px-6 py-3 rounded-2xl border shadow-xl z-20 hidden sm:flex items-center gap-3 ${
+                  theme.theme === 'light' 
+                    ? 'bg-white border-gray-100' 
+                    : 'bg-gray-950 border-white/10'
+                }`}
+              >
+                <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+                <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${
+                  theme.theme === 'light' ? 'text-gray-950' : 'text-white'
+                }`}>
+                  Full-Stack Architect
+                </span>
+              </motion.div>
+
             </div>
           </motion.div>
         </div>
