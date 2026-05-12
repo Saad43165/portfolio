@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useData } from '../../../context/DataContext';
 import { Experience } from '../../../types';
 import { Plus, Edit, Trash2, Briefcase, Calendar, MapPin } from 'lucide-react';
@@ -75,11 +76,22 @@ const ExperienceManager = () => {
       </div>
 
       {/* Experience Timeline */}
-      <div className="space-y-6">
-        {experiences
-          .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime())
-          .map((experience) => (
-            <div key={experience.id} className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+      <motion.div 
+        layout
+        className="space-y-6"
+      >
+        <AnimatePresence mode="popLayout">
+          {experiences
+            .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime())
+            .map((experience) => (
+              <motion.div 
+                key={experience.id}
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 border border-gray-100"
+              >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-start space-x-4">
                   <div className="p-3 bg-blue-100 rounded-lg">
@@ -88,7 +100,7 @@ const ExperienceManager = () => {
                   <div>
                     <h3 className="text-xl font-bold text-gray-900">{experience.title}</h3>
                     <p className="text-lg text-blue-600 font-semibold">{experience.company}</p>
-                    <div className="flex items-center space-x-4 mt-2 text-sm text-gray-600">
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2 text-sm text-gray-600">
                       <div className="flex items-center space-x-1">
                         <MapPin size={14} />
                         <span>{experience.location}</span>
@@ -99,7 +111,7 @@ const ExperienceManager = () => {
                           {formatDate(experience.startDate)} - {experience.endDate ? formatDate(experience.endDate) : 'Present'}
                         </span>
                       </div>
-                      <span className="text-blue-600 font-medium">
+                      <span className="text-blue-600 font-medium whitespace-nowrap">
                         {calculateDuration(experience.startDate, experience.endDate)}
                       </span>
                     </div>
@@ -163,9 +175,10 @@ const ExperienceManager = () => {
                   )}
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-      </div>
+        </AnimatePresence>
+      </motion.div>
 
       {experiences.length === 0 && (
         <div className="text-center py-12">

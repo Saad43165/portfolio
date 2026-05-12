@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useData } from '../../../context/DataContext';
 import { Education } from '../../../types';
 import { Plus, Edit, Trash2, GraduationCap, Calendar, MapPin, Award } from 'lucide-react';
@@ -72,11 +73,22 @@ const EducationManager = () => {
       </div>
 
       {/* Education Timeline */}
-      <div className="space-y-6">
-        {education
-          .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime())
-          .map((edu) => (
-            <div key={edu.id} className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+      <motion.div 
+        layout
+        className="space-y-6"
+      >
+        <AnimatePresence mode="popLayout">
+          {education
+            .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime())
+            .map((edu) => (
+              <motion.div 
+                key={edu.id}
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 border border-gray-100"
+              >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-start space-x-4">
                   <div className="p-3 bg-purple-100 rounded-lg">
@@ -85,7 +97,7 @@ const EducationManager = () => {
                   <div>
                     <h3 className="text-xl font-bold text-gray-900">{edu.degree}</h3>
                     <p className="text-lg text-purple-600 font-semibold">{edu.institution}</p>
-                    <div className="flex items-center space-x-4 mt-2 text-sm text-gray-600">
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2 text-sm text-gray-600">
                       <div className="flex items-center space-x-1">
                         <MapPin size={14} />
                         <span>{edu.location}</span>
@@ -96,7 +108,7 @@ const EducationManager = () => {
                           {formatDate(edu.startDate)} - {edu.endDate ? formatDate(edu.endDate) : 'Present'}
                         </span>
                       </div>
-                      <span className="text-purple-600 font-medium">
+                      <span className="text-purple-600 font-medium whitespace-nowrap">
                         {calculateDuration(edu.startDate, edu.endDate)}
                       </span>
                     </div>
@@ -152,9 +164,10 @@ const EducationManager = () => {
                   )}
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-      </div>
+        </AnimatePresence>
+      </motion.div>
 
       {education.length === 0 && (
         <div className="text-center py-12">

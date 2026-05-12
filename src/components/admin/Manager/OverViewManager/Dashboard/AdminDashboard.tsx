@@ -135,16 +135,16 @@ const AdminDashboard: React.FC = () => {
             {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
           <div>
-            <h1 className="text-lg font-semibold text-gray-900">Admin Panel</h1>
-            <p className="text-sm text-gray-500 capitalize">{activeTab}</p>
+            <h1 className="text-base font-bold text-gray-900 leading-tight">Admin</h1>
+            <p className="text-[10px] text-gray-500 capitalize tracking-wider">{activeTab}</p>
           </div>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-1">
           <button
-            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
+            className="p-1.5 text-gray-500 hover:bg-gray-100 rounded-lg transition-all"
             aria-label="View notifications"
           >
-            <Bell size={20} />
+            <Bell size={18} />
           </button>
         </div>
       </header>
@@ -300,7 +300,7 @@ const AdminDashboard: React.FC = () => {
         </header>
 
         {/* Content Area */}
-        <div className="p-6 md:p-8">
+        <div className="p-4 md:p-8">
           <div className="max-w-7xl mx-auto">
             {renderContent()}
           </div>

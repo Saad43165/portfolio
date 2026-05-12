@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Target, Check, Plus } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Goal {
   id: number;
@@ -38,8 +39,15 @@ const SetGoalsManager: React.FC<SetGoalsManagerProps> = ({ goals, setGoals }) =>
   };
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-semibold text-gray-900">Set New Goals</h2>
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="space-y-6"
+    >
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Set New Goals</h2>
+        <p className="text-gray-600">Define and track your professional milestones</p>
+      </div>
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row gap-4">
           <input
@@ -68,10 +76,15 @@ const SetGoalsManager: React.FC<SetGoalsManagerProps> = ({ goals, setGoals }) =>
           </button>
         </div>
         <div className="space-y-3">
+          <AnimatePresence mode="popLayout">
           {goals.map((goal) => (
-            <div
+            <motion.div
               key={goal.id}
-              className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all duration-200"
+              layout
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="flex items-center space-x-4 p-4 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300"
             >
               <Target size={16} className="text-blue-600" />
               <div className="flex-1">
@@ -90,11 +103,12 @@ const SetGoalsManager: React.FC<SetGoalsManagerProps> = ({ goals, setGoals }) =>
               <div className="flex-shrink-0">
                 <Check size={16} className={goal.current >= goal.target ? 'text-green-500' : 'text-gray-500'} />
               </div>
-            </div>
+            </motion.div>
           ))}
+          </AnimatePresence>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

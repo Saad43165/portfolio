@@ -12,7 +12,7 @@ const WelcomeHeader: React.FC<WelcomeHeaderProps> = ({ user, currentTime, setSho
   useDialogAccessibility(setShowAnalyticsDialog);
 
   return (
-    <div className="group relative bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-700 transform hover:scale-105 hover:-translate-y-2 border border-white/50 overflow-hidden animate-fadeInUp">
+    <div className="group relative bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 transform md:hover:scale-102 border border-white/50 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-white/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
       <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 opacity-0 group-hover:opacity-5 transition-opacity duration-500"></div>
       <div className="relative z-10 p-6">

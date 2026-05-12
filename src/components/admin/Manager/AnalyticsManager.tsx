@@ -1,5 +1,6 @@
 import { Eye, Clock, TrendingUp, Activity, Plus } from 'lucide-react';
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 interface QuickStats {
   totalViews: number;
@@ -68,28 +69,36 @@ const AnalyticsManager: React.FC<AnalyticsManagerProps> = ({ quickStats, customM
   };
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-semibold text-gray-900">Analytics Overview</h2>
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="space-y-6"
+    >
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Analytics Overview</h2>
+        <p className="text-gray-600">Monitor your portfolio's performance metrics</p>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {analyticsData.map((stat, index) => (
-          <div
+          <motion.div
             key={index}
-            className={`${colorMap[stat.color].bg} rounded-lg p-4 hover:bg-opacity-80 transition-all duration-200`}
+            whileHover={{ y: -2 }}
+            className={`${colorMap[stat.color].bg} rounded-xl p-5 border ${colorMap[stat.color].border} shadow-sm hover:shadow-md transition-all duration-300`}
           >
-            <div className="flex items-center justify-between mb-2">
-              <div className={`${colorMap[stat.color].bg} p-2 rounded-lg`}>
-                <stat.icon size={18} className={colorMap[stat.color].text} />
+            <div className="flex items-center justify-between mb-3">
+              <div className={`${colorMap[stat.color].bg} p-2.5 rounded-xl border ${colorMap[stat.color].border}`}>
+                <stat.icon size={20} className={colorMap[stat.color].text} />
               </div>
               <div className="text-right">
-                <div className="text-xl font-semibold text-gray-900">{stat.value}</div>
-                <div className="text-xs text-gray-600">{stat.trend}</div>
+                <div className="text-2xl font-bold text-gray-900 leading-none">{stat.value}</div>
+                <div className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mt-1">{stat.trend}</div>
               </div>
             </div>
-            <h4 className="text-sm font-medium text-gray-900">{stat.label}</h4>
-          </div>
+            <h4 className="text-sm font-bold text-gray-800 uppercase tracking-wide">{stat.label}</h4>
+          </motion.div>
         ))}
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 mt-6">
         <input
           type="number"
           value={newTargetViews}
@@ -105,13 +114,13 @@ const AnalyticsManager: React.FC<AnalyticsManagerProps> = ({ quickStats, customM
           Set Target
         </button>
       </div>
-      <div className="bg-gray-50 rounded-lg p-4">
+      <div className="bg-gray-50 rounded-lg p-4 mt-6">
         <h3 className="text-sm font-medium text-gray-900 mb-2">Analytics Summary</h3>
         <p className="text-xs text-gray-600">
           Current total views: {quickStats.totalViews}. Target set at {customMetrics.targetViews}. You are {((quickStats.totalViews / customMetrics.targetViews) * 100).toFixed(1)}% toward your goal.
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

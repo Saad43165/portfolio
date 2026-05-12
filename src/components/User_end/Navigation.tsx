@@ -96,9 +96,9 @@ const Navigation = () => {
   const menuVariants: Variants = {
     closed: {
       opacity: 0,
-      y: "-100%",
+      x: "100%",
       transition: {
-        duration: 0.5,
+        duration: 0.4,
         ease: [0.22, 1, 0.36, 1],
         staggerChildren: 0.05,
         staggerDirection: -1
@@ -106,19 +106,26 @@ const Navigation = () => {
     },
     open: {
       opacity: 1,
-      y: 0,
+      x: 0,
       transition: {
-        duration: 0.8,
+        duration: 0.6,
         ease: [0.22, 1, 0.36, 1],
-        staggerChildren: 0.08,
-        delayChildren: 0.1
+        staggerChildren: 0.1,
+        delayChildren: 0.2
       }
     }
   };
 
   const menuItemVariants: Variants = {
-    closed: { opacity: 0, y: 15 },
-    open: { opacity: 1, y: 0 }
+    closed: { opacity: 0, x: 20 },
+    open: { 
+      opacity: 1, 
+      x: 0,
+      transition: {
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1]
+      }
+    }
   };
 
   return (
@@ -246,15 +253,27 @@ const Navigation = () => {
               <motion.button
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsOpen(!isOpen)}
-                className={`p-2.5 rounded-xl transition-all ${
+                className={`p-2.5 rounded-xl transition-all relative z-[130] ${
                   theme.theme === 'light' ? 'text-gray-900' : 'text-white'
                 }`}
               >
-                {isOpen ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                )}
+                <div className="w-7 h-7 flex flex-col justify-center items-center gap-1.5">
+                  <motion.span
+                    animate={isOpen ? { rotate: 45, y: 4 } : { rotate: 0, y: 0 }}
+                    className="w-6 h-0.5 bg-current block rounded-full"
+                    transition={{ duration: 0.3 }}
+                  />
+                  <motion.span
+                    animate={isOpen ? { opacity: 0, x: -10 } : { opacity: 1, x: 0 }}
+                    className="w-6 h-0.5 bg-current block rounded-full"
+                    transition={{ duration: 0.3 }}
+                  />
+                  <motion.span
+                    animate={isOpen ? { rotate: -45, y: -4 } : { rotate: 0, y: 0 }}
+                    className="w-6 h-0.5 bg-current block rounded-full"
+                    transition={{ duration: 0.3 }}
+                  />
+                </div>
               </motion.button>
             </div>
           </div>
@@ -264,17 +283,17 @@ const Navigation = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            variants={menuVariants}
             className={`fixed inset-0 z-[120] md:hidden flex flex-col items-center justify-start overflow-y-auto ${
               theme.theme === 'light' ? 'bg-white' : 'bg-[#020617]'
             }`}
             style={{ backgroundColor: theme.theme === 'light' ? '#ffffff' : '#020617' }}
           >
             {/* Header Area */}
-            <div className="w-full flex items-center justify-between p-8 border-b border-gray-100 dark:border-white/5 relative z-[130] bg-inherit">
+            <div className="w-full flex items-center justify-between p-6 border-b border-gray-100 dark:border-white/5 relative z-[130] bg-inherit">
               <span className={`text-sm font-black uppercase tracking-[0.3em] ${
                 theme.theme === 'light' ? 'text-gray-400' : 'text-gray-500'
               }`}>
@@ -291,59 +310,66 @@ const Navigation = () => {
             </div>
 
             {/* Menu List - FORCED VISIBILITY */}
-            <div className="w-full max-w-sm px-8 pt-12 pb-20 relative z-[120]">
-              <ul className="flex flex-col w-full space-y-4">
+            <div className="w-full max-w-sm px-8 pt-6 pb-10 relative z-[120]">
+              <ul className="flex flex-col w-full space-y-1">
                 {navItems.map((item) => (
-                  <li key={item.name} className="w-full">
+                  <motion.li 
+                    key={item.name} 
+                    className="w-full"
+                    variants={menuItemVariants}
+                  >
                     <button
                       onClick={() => {
                         handleNavClick(item.href);
                         setIsOpen(false);
                       }}
-                      className={`w-full py-6 flex items-center justify-between border-b transition-all ${
+                      className={`w-full py-3 flex items-center justify-between border-b transition-all ${
                         activeSection === item.href 
                           ? 'border-blue-600 text-blue-600' 
                           : theme.theme === 'light' ? 'border-gray-200 text-gray-900' : 'border-white/10 text-white'
                       }`}
                     >
                       <div className="flex items-center gap-6">
-                        <div className={`p-3 rounded-2xl ${
+                        <div className={`p-2 rounded-2xl ${
                           activeSection === item.href ? 'bg-blue-600/10' : 'bg-gray-500/10'
                         }`}>
-                          <item.icon size={24} strokeWidth={2} />
+                          <item.icon size={20} strokeWidth={2} />
                         </div>
-                        <span className="text-2xl font-black tracking-tight">{item.name}</span>
+                        <span className="text-lg font-black tracking-tight">{item.name}</span>
                       </div>
                       <div className={`w-3 h-3 rounded-full transition-all ${
                         activeSection === item.href ? 'bg-blue-600' : 'bg-transparent'
                       }`} />
                     </button>
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
 
-              <div className="mt-16 space-y-10">
+              <motion.div 
+                className="mt-8 space-y-8"
+                variants={menuItemVariants}
+              >
                 <button
                   onClick={() => {
                     handleNavClick('#contact');
                     setIsOpen(false);
                   }}
-                  className="w-full py-6 bg-blue-600 text-white rounded-3xl text-lg font-black uppercase tracking-[0.2em] shadow-2xl shadow-blue-500/40"
+                  className="w-full py-4 bg-blue-600 text-white rounded-3xl text-base font-black uppercase tracking-[0.2em] shadow-2xl shadow-blue-500/40"
                 >
                   Start a Project
                 </button>
                 
-                <div className="flex justify-center gap-12">
+                <div className="flex justify-center gap-8">
                   {portfolioInfo.socialLinks.map((social) => {
                     const Icon = getSocialIcon(social.platform);
                     return (
                       <a key={social.platform} href={social.url} target="_blank" className="text-gray-400 hover:text-blue-500 transition-all hover:scale-110">
-                        <Icon size={28} />
+                        <Icon size={24} />
                       </a>
                     );
                   })}
                 </div>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         )}

@@ -19,15 +19,17 @@ const FooterStats: React.FC<FooterStatsProps> = ({
   mousePosition,
 }) => (
   <div
-    className="group relative bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-700 transform hover:scale-105 hover:-translate-y-2 border border-white/50 overflow-hidden animate-fadeInUp"
+    className="group relative bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 transform md:hover:scale-102 border border-white/50 overflow-hidden"
     style={{
-      transform: `perspective(1000px) rotateX(${mousePosition.y * 2}deg) rotateY(${mousePosition.x * 2}deg)`,
+      transform: typeof window !== 'undefined' && window.innerWidth > 768 
+        ? `perspective(1000px) rotateX(${mousePosition.y * 2}deg) rotateY(${mousePosition.x * 2}deg)`
+        : 'none',
     }}
   >
     <div className="absolute inset-0 bg-gradient-to-br from-white/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
     <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 opacity-0 group-hover:opacity-5 transition-opacity duration-500"></div>
     <div className="relative z-10 p-6">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
         <div className="space-y-1">
           <div className="text-xl font-semibold text-gray-900">
             {projects.length + skills.length + experiences.length + education.length}
