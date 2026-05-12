@@ -181,6 +181,20 @@ const PortfolioInfoForm = () => {
             className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
           />
         </div>
+        <div className="md:col-span-2 space-y-2">
+          <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
+            <FileText size={16} /> Hero Tagline / Description
+          </label>
+          <textarea
+            name="tagline"
+            value={formData.tagline || ''}
+            onChange={handleInputChange}
+            rows={2}
+            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-bold"
+            placeholder="e.g. Focused on architecting high-performance Web & Mobile Applications."
+          />
+          <p className="text-xs text-gray-400">This text appears below your name and roles in the Hero section.</p>
+        </div>
       </div>
 
       <hr className="border-gray-100" />

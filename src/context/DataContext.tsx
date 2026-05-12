@@ -63,6 +63,7 @@ const defaultAbout: AboutData = {
     { label: 'Years Learning', value: '2+' },
   ],
   aboutImage: '/saad_pic.JPG',
+  missionStatement: 'My mission is to translate complex problems into intuitive digital solutions that empower users and scale businesses.',
 };
 
 const defaultInfo: PortfolioInfo = {
@@ -78,6 +79,7 @@ const defaultInfo: PortfolioInfo = {
   email: 'saadnaz43165@gmail.com',
   location: 'Chakwal, Punjab, Pakistan',
   phone: '03414279749',
+  tagline: 'Focused on architecting high-performance Web & Mobile Applications.',
 };
 
 const DataContext = createContext<DataContextType | undefined>(undefined);

@@ -129,24 +129,19 @@ const Footer = () => {
             <h4 className={`text-xs font-black uppercase tracking-[0.3em] ${
               theme.theme === 'light' ? 'text-gray-400' : 'text-gray-500'
             }`}>
-              Office
+              Let's Connect
             </h4>
             <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <MapPin size={20} className="text-blue-600 mt-1" />
-                <p className={`text-sm font-black uppercase tracking-widest leading-loose ${
-                  theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
-                }`}>
-                  {portfolioInfo.location}
-                </p>
-              </div>
               <motion.a
                 whileHover={{ x: 5 }}
                 href={`mailto:${portfolioInfo.email}`}
-                className="inline-flex items-center gap-3 text-xs font-black uppercase tracking-[0.2em] text-blue-600"
+                className="inline-flex items-center gap-3 text-xs font-black uppercase tracking-[0.2em] text-blue-600 bg-blue-50 dark:bg-blue-900/20 px-6 py-4 rounded-2xl w-full"
               >
-                Let's Talk <ExternalLink size={14} />
+                Send Message <ExternalLink size={14} />
               </motion.a>
+              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest leading-relaxed">
+                Open for remote collaborations and engineering roles worldwide.
+              </p>
             </div>
           </div>
         </div>

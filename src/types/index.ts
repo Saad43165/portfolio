@@ -64,6 +64,7 @@ export interface AboutData {
   highlights: string[];
   stats: { label: string; value: string }[];
   aboutImage?: string;
+  missionStatement?: string;
 }
 
 export interface SocialLink {
@@ -80,6 +81,7 @@ export interface PortfolioInfo {
   email: string;
   location: string;
   phone?: string;
+  tagline?: string;
 }
 
 export interface AdminUser {

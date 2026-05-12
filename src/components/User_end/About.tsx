@@ -186,11 +186,11 @@ const About = () => {
             <div className={`p-6 rounded-3xl border-2 border-dashed ${
               theme.theme === 'light' ? 'border-blue-100 bg-blue-50/30' : 'border-blue-900/30 bg-blue-900/5'
             }`}>
-               <p className={`text-base font-bold italic ${
-                 theme.theme === 'light' ? 'text-blue-900/70' : 'text-blue-400/70'
-               }`}>
-                 "My mission is to translate complex problems into intuitive digital solutions that empower users and scale businesses."
-               </p>
+                <p className={`text-base font-bold italic ${
+                  theme.theme === 'light' ? 'text-blue-900/70' : 'text-blue-400/70'
+                }`}>
+                  "{aboutData.missionStatement || "My mission is to translate complex problems into intuitive digital solutions that empower users and scale businesses."}"
+                </p>
             </div>
           </motion.div>
         </div>

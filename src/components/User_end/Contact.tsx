@@ -95,13 +95,7 @@ const Contact = () => {
       href: `tel:${portfolioInfo.phone || '03414279749'}`,
       color: theme.theme === 'light' ? 'bg-purple-50 text-purple-600' : 'bg-purple-900/30 text-purple-400'
     },
-    {
-      icon: MapPin,
-      label: 'Location',
-      value: portfolioInfo.location,
-      href: '#',
-      color: theme.theme === 'light' ? 'bg-pink-50 text-pink-600' : 'bg-pink-900/30 text-pink-400'
-    }
+
   ];
 
   const containerVariants: Variants = {

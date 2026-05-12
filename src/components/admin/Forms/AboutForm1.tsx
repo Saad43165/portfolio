@@ -194,6 +194,22 @@ const AboutForm1 = () => {
 
         <div>
           <label className={`block text-sm font-medium mb-1 transition-colors duration-300 ${themeClasses.label}`}>
+            Mission Statement
+          </label>
+          <textarea
+            value={aboutData.missionStatement || ''}
+            onChange={(e) => updateAboutData({ missionStatement: e.target.value })}
+            className={`w-full px-4 py-2 border rounded-md focus-visible:ring-2 focus-visible:ring-blue-500 transition-colors duration-300 ${themeClasses.input}`}
+            rows={2}
+            placeholder="Your professional mission..."
+          />
+          <p className={`text-xs mt-1 transition-colors duration-300 ${themeClasses.subtitle}`}>
+            Displayed at the bottom of the About section.
+          </p>
+        </div>
+
+        <div>
+          <label className={`block text-sm font-medium mb-1 transition-colors duration-300 ${themeClasses.label}`}>
             About Image
           </label>
           <div className="flex gap-2">

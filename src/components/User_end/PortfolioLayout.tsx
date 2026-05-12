@@ -247,26 +247,35 @@ const PortfolioLayout = () => {
         if (prev >= 100) return 100;
         
         let increment = 1;
-        if (prev < 50) increment = 8; // Faster start
-        else if (prev < 85) increment = 4; // Steady middle
-        else if (prev < 99.5) {
-          // Slow down but keep moving to prevent "stuck" feeling
-          increment = (isDataLoading || isAssetsLoading) ? 0.4 : 15;
+        if (prev < 50) increment = 10; // Rapid jump to 50
+        else if (prev < 90) increment = 5; // Steady middle
+        else if (prev < 99) {
+          // Keep moving but wait for loading state
+          increment = (isDataLoading || isAssetsLoading) ? 0.5 : 15;
         }
 
         const next = prev + increment;
         return next >= 100 ? 100 : next;
       });
-    }, 25); // Relaxed interval for better UI thread performance
+    }, 30); 
 
     return () => clearInterval(interval);
   }, [isDataLoading, isAssetsLoading]);
 
   useEffect(() => {
+    // Fail-safe: Force finish after 4 seconds regardless of state
+    const failSafe = setTimeout(() => {
+      setDisplayProgress(100);
+      setIsAssetsLoading(false);
+    }, 4000);
+
     // Snap to completion when all data is definitely ready
     if (!isDataLoading && !isAssetsLoading) {
       setDisplayProgress(100);
+      clearTimeout(failSafe);
     }
+
+    return () => clearTimeout(failSafe);
   }, [isDataLoading, isAssetsLoading]);
 
   useEffect(() => {
@@ -331,9 +340,9 @@ const PortfolioLayout = () => {
           <Navigation />
         </Suspense>
 
-        {/* Content container with smooth fade-in transition */}
+        {/* Content container with snappy transition */}
         <div
-          className={`transition-opacity duration-1000 ease-in-out ${
+          className={`transition-opacity duration-300 ease-out ${
             isLoading ? 'opacity-0' : 'opacity-100'
           }`}
         >
