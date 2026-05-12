@@ -240,34 +240,30 @@ const PortfolioLayout = () => {
     document.documentElement.className = theme;
   }, [theme]);
 
-  // Continuous progress animation logic - Optimized for maximum speed and zero stalling
+  // Continuous progress animation logic - Optimized for stability and speed
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    const interval = setInterval(() => {
+      setDisplayProgress(prev => {
+        if (prev >= 100) return 100;
+        
+        let increment = 1;
+        if (prev < 50) increment = 8; // Faster start
+        else if (prev < 85) increment = 4; // Steady middle
+        else if (prev < 99.5) {
+          // Slow down but keep moving to prevent "stuck" feeling
+          increment = (isDataLoading || isAssetsLoading) ? 0.4 : 15;
+        }
 
-    if (displayProgress < 100) {
-      interval = setInterval(() => {
-        setDisplayProgress(prev => {
-          if (prev >= 100) return 100;
-          
-          let increment = 1;
-          if (prev < 50) increment = 6; // High-velocity start
-          else if (prev < 85) increment = 4; // Steady middle
-          else if (prev < 99) {
-            // Ensure increment is enough to always move forward even with floats
-            increment = (isDataLoading || isAssetsLoading) ? 1.1 : 12;
-          }
-
-          const next = prev + increment;
-          return next >= 100 ? 100 : next;
-        });
-      }, 20); // Steady 50fps update frequency
-    }
+        const next = prev + increment;
+        return next >= 100 ? 100 : next;
+      });
+    }, 25); // Relaxed interval for better UI thread performance
 
     return () => clearInterval(interval);
-  }, [displayProgress, isDataLoading, isAssetsLoading]);
+  }, [isDataLoading, isAssetsLoading]);
 
   useEffect(() => {
-    // Force completion immediately when ready
+    // Snap to completion when all data is definitely ready
     if (!isDataLoading && !isAssetsLoading) {
       setDisplayProgress(100);
     }

@@ -124,9 +124,9 @@ const Hero = () => {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20">
           
           {/* Content Left */}
-          <div className="flex-1 space-y-8 text-center lg:text-left order-2 lg:order-1">
-            <div className="space-y-4">
-              <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-blue-500/20 bg-blue-500/5 backdrop-blur-md">
+          <div className="flex-1 space-y-4 sm:space-y-6 text-center lg:text-left order-2 lg:order-1">
+            <div className="space-y-3 sm:space-y-4">
+              <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-500/20 bg-blue-500/5 backdrop-blur-md">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
@@ -134,10 +134,10 @@ const Hero = () => {
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-500">Available for Innovation</span>
               </motion.div>
               
-              <div className="space-y-2">
+              <div className="space-y-1 sm:space-y-2">
                 <motion.h1 
                   variants={itemVariants} 
-                  className={`text-5xl sm:text-7xl lg:text-8xl font-black leading-[0.9] tracking-tighter ${
+                  className={`text-4xl sm:text-7xl lg:text-8xl font-black leading-[0.9] tracking-tighter ${
                     theme.theme === 'light' ? 'text-gray-950' : 'text-white'
                   }`}
                 >
@@ -148,7 +148,7 @@ const Hero = () => {
               </div>
 
               <motion.div variants={itemVariants}>
-                <h2 className={`text-xl sm:text-2xl font-bold tracking-tight ${
+                <h2 className={`text-lg sm:text-2xl font-bold tracking-tight ${
                   theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
                 }`}>
                   Crafting Digital Excellence through <br className="hidden sm:block" />
@@ -158,18 +158,18 @@ const Hero = () => {
               </motion.div>
             </div>
 
-            <motion.p variants={itemVariants} className={`text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium ${
+            <motion.p variants={itemVariants} className={`text-sm sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium ${
               theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
             }`}>
               I specialize in bridging the gap between <span className="text-blue-500 font-bold">Aesthetic Design</span> and <span className="text-purple-500 font-bold">Engineering Robustness</span>. Currently architecting software in {portfolioInfo.location}.
             </motion.p>
 
-            <motion.div variants={itemVariants} className="flex flex-wrap justify-center lg:justify-start gap-4 pt-4">
+            <motion.div variants={itemVariants} className="flex flex-wrap justify-center lg:justify-start gap-3 sm:gap-4 pt-2 sm:pt-4">
               <motion.button 
                 onClick={handleExploreClick}
                 whileHover={{ y: -5, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`px-10 py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] flex items-center gap-3 shadow-[0_20px_50px_rgba(59,130,246,0.3)] transition-all ${
+                className={`px-8 py-4 sm:px-10 sm:py-5 rounded-2xl text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] flex items-center gap-3 shadow-[0_20px_50px_rgba(59,130,246,0.3)] transition-all ${
                   theme.theme === 'light' ? 'bg-gray-950 text-white' : 'bg-white text-gray-950'
                 }`}
               >
@@ -182,7 +182,7 @@ const Hero = () => {
                 download
                 whileHover={{ y: -5, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`px-10 py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] border flex items-center gap-3 transition-all ${
+                className={`px-8 py-4 sm:px-10 sm:py-5 rounded-2xl text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] border flex items-center gap-3 transition-all ${
                   theme.theme === 'light' 
                     ? 'bg-white border-gray-200 text-gray-900 hover:bg-gray-50' 
                     : 'bg-white/5 border-white/10 text-white hover:bg-white/10 shadow-xl'
@@ -193,7 +193,7 @@ const Hero = () => {
               </motion.a>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="flex justify-center lg:justify-start gap-8 pt-8">
+            <motion.div variants={itemVariants} className="flex justify-center lg:justify-start gap-6 sm:gap-8 pt-4 sm:pt-8">
               {portfolioInfo.socialLinks.map((social) => {
                 const Icon = getSocialIcon(social.platform);
                 return (
@@ -205,7 +205,7 @@ const Hero = () => {
                     whileHover={{ scale: 1.2, y: -5, color: '#3b82f6' }}
                     className={`${theme.theme === 'light' ? 'text-gray-400' : 'text-gray-600'} transition-all`}
                   >
-                    <Icon size={24} />
+                    <Icon size={20} className="sm:w-6 sm:h-6" />
                   </motion.a>
                 );
               })}
