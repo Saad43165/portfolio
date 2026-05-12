@@ -193,7 +193,7 @@ const Hero = () => {
               </motion.a>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="flex justify-center lg:justify-start gap-5 sm:gap-8 pt-3 sm:pt-8">
+            <motion.div variants={itemVariants} className="flex justify-center lg:justify-start gap-5 sm:gap-8 pt-6 sm:pt-12">
               {portfolioInfo.socialLinks.map((social) => {
                 const Icon = getSocialIcon(social.platform);
                 return (
@@ -217,9 +217,9 @@ const Hero = () => {
             variants={itemVariants}
             className="flex-1 relative order-1 lg:order-2"
           >
-            <div className="relative w-full max-w-[140px] sm:max-w-[240px] lg:max-w-[280px] mx-auto">
+            <div className="relative w-full max-w-[120px] sm:max-w-[240px] lg:max-w-[280px] mx-auto">
               {/* Complex Architectural Background */}
-              <div className="absolute inset-0 bg-blue-600/10 rounded-[3rem] sm:rounded-[4rem] blur-[40px] sm:blur-[60px] animate-pulse" />
+              <div className="absolute inset-0 bg-blue-600/10 rounded-[2.5rem] sm:rounded-[4rem] blur-[30px] sm:blur-[60px] animate-pulse" />
               
               <motion.div
                 animate={{ rotate: 360 }}
