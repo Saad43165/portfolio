@@ -66,14 +66,14 @@ const ProjectManager = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Project Management</h2>
           <p className="text-gray-600">Manage your portfolio projects</p>
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+          className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 sm:py-2 rounded-xl hover:shadow-lg transform active:scale-95 transition-all duration-300"
         >
           <Plus size={20} />
           <span>Add Project</span>
@@ -81,20 +81,20 @@ const ProjectManager = () => {
       </div>
 
       {/* Filters */}
-      <div className="flex items-center space-x-4">
-        <span className="text-sm font-medium text-gray-700">Filter by category:</span>
+      <div className="flex flex-col space-y-3">
+        <span className="text-sm font-black uppercase tracking-wider text-gray-400">Filter by category</span>
         <div className="flex flex-wrap gap-2">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setFilter(category)}
-              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200 ${
+              className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 ${
                 filter === category
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20'
+                  : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-100'
               }`}
             >
-              {category === 'all' ? 'All' : category}
+              {category === 'all' ? 'All Projects' : category}
             </button>
           ))}
         </div>

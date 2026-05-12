@@ -108,7 +108,7 @@ const LoadingIndicator = ({ progress }: { progress: number }) => {
             <div className="flex justify-between items-end mb-2">
               <span className="text-[10px] font-bold text-blue-500 uppercase tracking-widest">Efficiency 0.98</span>
               <span className="text-4xl font-black text-white tabular-nums tracking-tighter">
-                {progress}<span className="text-blue-500 text-xl">%</span>
+                {Math.floor(progress)}<span className="text-blue-500 text-xl">%</span>
               </span>
             </div>
             
@@ -251,16 +251,16 @@ const PortfolioLayout = () => {
           
           let increment = 1;
           if (prev < 50) increment = 6; // High-velocity start
-          else if (prev < 85) increment = 3; // Smooth middle
+          else if (prev < 85) increment = 4; // Steady middle
           else if (prev < 99) {
-            // Minimal increment to show activity, but never stall
-            increment = (isDataLoading || isAssetsLoading) ? 0.8 : 8;
+            // Ensure increment is enough to always move forward even with floats
+            increment = (isDataLoading || isAssetsLoading) ? 1.1 : 12;
           }
 
           const next = prev + increment;
-          return next >= 100 ? 100 : Math.floor(next);
+          return next >= 100 ? 100 : next;
         });
-      }, 16); // High-frequency updates (approx 60fps)
+      }, 20); // Steady 50fps update frequency
     }
 
     return () => clearInterval(interval);

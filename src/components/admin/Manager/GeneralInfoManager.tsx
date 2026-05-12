@@ -25,7 +25,7 @@ const GeneralInfoManager = () => {
         </div>
       </div>
 
-      <div className="bg-white p-8 sm:p-12 rounded-[3rem] shadow-xl shadow-gray-200/50 border border-gray-50">
+      <div className="bg-white p-6 sm:p-8 md:p-12 rounded-3xl sm:rounded-[3rem] shadow-xl shadow-gray-200/50 border border-gray-50">
         <PortfolioInfoForm />
       </div>
     </motion.div>

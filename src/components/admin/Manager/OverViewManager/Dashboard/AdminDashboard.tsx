@@ -124,28 +124,25 @@ const AdminDashboard: React.FC = () => {
       )}
 
       {/* Topbar for Mobile */}
-      <header className="md:hidden bg-white shadow-md border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-30">
+      <header className="md:hidden bg-white shadow-sm border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-[60]">
         <div className="flex items-center space-x-3">
           <button
             data-sidebar-trigger
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
+            className="p-2 text-gray-600 hover:bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
             aria-label={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
           >
-            {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
+            {sidebarOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
-          <div>
-            <h1 className="text-base font-bold text-gray-900 leading-tight">Admin</h1>
-            <p className="text-[10px] text-gray-500 capitalize tracking-wider">{activeTab}</p>
+          <div className="flex flex-col">
+            <h1 className="text-sm font-black text-gray-950 leading-none">Dashboard</h1>
+            <p className="text-[10px] text-blue-600 font-bold uppercase tracking-widest mt-1">{activeTab}</p>
           </div>
         </div>
-        <div className="flex items-center space-x-1">
-          <button
-            className="p-1.5 text-gray-500 hover:bg-gray-100 rounded-lg transition-all"
-            aria-label="View notifications"
-          >
-            <Bell size={18} />
-          </button>
+        <div className="flex items-center space-x-2">
+          <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-black text-xs">
+            {user?.username?.charAt(0).toUpperCase() || 'A'}
+          </div>
         </div>
       </header>
 
@@ -300,7 +297,7 @@ const AdminDashboard: React.FC = () => {
         </header>
 
         {/* Content Area */}
-        <div className="p-4 md:p-8">
+        <div className="p-4 sm:p-6 lg:p-8">
           <div className="max-w-7xl mx-auto">
             {renderContent()}
           </div>

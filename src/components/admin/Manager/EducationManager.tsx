@@ -58,14 +58,14 @@ const EducationManager = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Education Management</h2>
-          <p className="text-gray-600">Manage your educational background and qualifications</p>
+          <p className="text-gray-600 text-sm">Academic background and qualifications</p>
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+          className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-blue-600 text-white px-6 py-3 sm:py-2 rounded-xl shadow-lg shadow-blue-600/20 active:scale-95 transition-all"
         >
           <Plus size={20} />
           <span>Add Education</span>
@@ -89,52 +89,49 @@ const EducationManager = () => {
                 exit={{ opacity: 0, scale: 0.95 }}
                 className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 border border-gray-100"
               >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-start space-x-4">
-                  <div className="p-3 bg-purple-100 rounded-lg">
-                    <GraduationCap size={24} className="text-purple-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900">{edu.degree}</h3>
-                    <p className="text-lg text-purple-600 font-semibold">{edu.institution}</p>
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2 text-sm text-gray-600">
-                      <div className="flex items-center space-x-1">
-                        <MapPin size={14} />
-                        <span>{edu.location}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Calendar size={14} />
-                        <span>
-                          {formatDate(edu.startDate)} - {edu.endDate ? formatDate(edu.endDate) : 'Present'}
-                        </span>
-                      </div>
-                      <span className="text-purple-600 font-medium whitespace-nowrap">
-                        {calculateDuration(edu.startDate, edu.endDate)}
-                      </span>
+                <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
+                  <div className="flex items-start space-x-4">
+                    <div className="p-3 bg-purple-100 rounded-xl flex-shrink-0">
+                      <GraduationCap size={24} className="text-purple-600" />
                     </div>
-                    {edu.gpa && (
-                      <div className="flex items-center space-x-1 mt-1">
-                        <Award size={14} className="text-yellow-600" />
-                        <span className="text-sm text-gray-600">GPA: <span className="font-semibold">{edu.gpa}</span></span>
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-black text-gray-950 leading-tight">{edu.degree}</h3>
+                      <p className="text-base text-purple-600 font-bold mt-0.5">{edu.institution}</p>
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                        <div className="flex items-center space-x-1">
+                          <MapPin size={12} />
+                          <span>{edu.location}</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <Calendar size={12} />
+                          <span>
+                            {formatDate(edu.startDate)} - {edu.endDate ? formatDate(edu.endDate) : 'Present'}
+                          </span>
+                        </div>
                       </div>
-                    )}
+                      {edu.gpa && (
+                        <div className="flex items-center space-x-1 mt-2 px-2 py-1 bg-yellow-50 text-yellow-700 rounded-lg w-fit">
+                          <Award size={12} />
+                          <span className="text-[10px] font-black uppercase tracking-widest">GPA: {edu.gpa}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2 w-full sm:w-auto justify-end border-t sm:border-t-0 pt-4 sm:pt-0">
+                    <button
+                      onClick={() => handleEdit(edu)}
+                      className="flex-1 sm:flex-none flex items-center justify-center p-2 text-blue-600 bg-blue-50 sm:bg-transparent rounded-lg transition-colors"
+                    >
+                      <Edit size={16} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(edu.id)}
+                      className="flex-1 sm:flex-none flex items-center justify-center p-2 text-red-600 bg-red-50 sm:bg-transparent rounded-lg transition-colors"
+                    >
+                      <Trash2 size={16} />
+                    </button>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={() => handleEdit(edu)}
-                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200"
-                  >
-                    <Edit size={16} />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(edu.id)}
-                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              </div>
 
               {edu.description && (
                 <div className="mb-4">

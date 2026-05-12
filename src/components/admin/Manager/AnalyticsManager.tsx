@@ -98,20 +98,20 @@ const AnalyticsManager: React.FC<AnalyticsManagerProps> = ({ quickStats, customM
           </motion.div>
         ))}
       </div>
-      <div className="flex items-center gap-2 mt-6">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-6">
         <input
           type="number"
           value={newTargetViews}
           onChange={(e) => setNewTargetViews(parseInt(e.target.value) || 0)}
-          className="p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Target Views"
+          className="flex-1 p-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold"
+          placeholder="Set Target Views"
         />
         <button
           onClick={handleUpdateTarget}
-          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-200"
+          className="flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-600/20 active:scale-95 transition-all"
         >
-          <Plus size={16} />
-          Set Target
+          <Plus size={18} />
+          <span className="font-bold uppercase tracking-wider text-xs">Update Target</span>
         </button>
       </div>
       <div className="bg-gray-50 rounded-lg p-4 mt-6">
