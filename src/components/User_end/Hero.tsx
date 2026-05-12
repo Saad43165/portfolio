@@ -124,57 +124,57 @@ const Hero = () => {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20">
           
           {/* Content Left */}
-          <div className="flex-1 space-y-3 sm:space-y-6 text-center lg:text-left order-2 lg:order-1">
-            <div className="space-y-2 sm:space-y-4">
-              <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-500/20 bg-blue-500/5 backdrop-blur-md">
-                <span className="relative flex h-1.5 w-1.5">
+          <div className="flex-1 space-y-4 sm:space-y-6 text-center lg:text-left order-2 lg:order-1">
+            <div className="space-y-3 sm:space-y-4">
+              <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-500/20 bg-blue-500/5 backdrop-blur-md">
+                <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-blue-500"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                 </span>
-                <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-[0.3em] text-blue-500">Available for Innovation</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-500">Available for Innovation</span>
               </motion.div>
               
-              <div className="space-y-0.5 sm:space-y-2">
+              <div className="space-y-1 sm:space-y-2">
                 <motion.h1 
                   variants={itemVariants} 
-                  className={`text-3xl sm:text-7xl lg:text-8xl font-black leading-[0.9] tracking-tighter ${
+                  className={`text-5xl sm:text-7xl lg:text-8xl font-black leading-[0.9] tracking-tighter ${
                     theme.theme === 'light' ? 'text-gray-950' : 'text-white'
                   }`}
                 >
                   Saad <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600">Ikram</span>
                 </motion.h1>
                 
-                <motion.div variants={itemVariants} className="h-0.5 sm:h-1 w-16 sm:w-24 bg-gradient-to-r from-blue-600 to-transparent rounded-full mx-auto lg:mx-0" />
+                <motion.div variants={itemVariants} className="h-1 w-24 bg-gradient-to-r from-blue-600 to-transparent rounded-full mx-auto lg:mx-0" />
               </div>
 
               <motion.div variants={itemVariants}>
-                <h2 className={`text-sm sm:text-2xl font-bold tracking-tight ${
+                <h2 className={`text-xl sm:text-2xl font-bold tracking-tight ${
                   theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
                 }`}>
                   Crafting Digital Excellence through <br className="hidden sm:block" />
                   <span className="text-blue-500 font-black italic">{displayText}</span>
-                  <span className="animate-pulse inline-block w-0.5 sm:w-1 h-5 sm:h-8 bg-blue-500 ml-1 align-middle" />
+                  <span className="animate-pulse inline-block w-1 h-8 bg-blue-500 ml-1 align-middle" />
                 </h2>
               </motion.div>
             </div>
 
-            <motion.p variants={itemVariants} className={`text-xs sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium ${
+            <motion.p variants={itemVariants} className={`text-sm sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium ${
               theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
             }`}>
               {portfolioInfo.tagline || "Focused on architecting high-performance Web & Mobile Applications."}
             </motion.p>
 
-            <motion.div variants={itemVariants} className="flex flex-wrap justify-center lg:justify-start gap-2 sm:gap-4 pt-1 sm:pt-4">
+            <motion.div variants={itemVariants} className="flex flex-wrap justify-center lg:justify-start gap-3 sm:gap-4 pt-2 sm:pt-4">
               <motion.button 
                 onClick={handleExploreClick}
                 whileHover={{ y: -5, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`px-6 py-3 sm:px-10 sm:py-5 rounded-xl sm:rounded-2xl text-[8px] sm:text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2 sm:gap-3 shadow-lg transition-all ${
+                className={`px-8 py-4 sm:px-10 sm:py-5 rounded-2xl text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] flex items-center gap-3 shadow-lg transition-all ${
                   theme.theme === 'light' ? 'bg-gray-950 text-white' : 'bg-white text-gray-950'
                 }`}
               >
                 Explore
-                <Code size={14} className="sm:w-[18px] sm:h-[18px]" />
+                <Code size={18} />
               </motion.button>
               
               <motion.a 
@@ -182,18 +182,18 @@ const Hero = () => {
                 download
                 whileHover={{ y: -5, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`px-6 py-3 sm:px-10 sm:py-5 rounded-xl sm:rounded-2xl text-[8px] sm:text-xs font-black uppercase tracking-[0.2em] border flex items-center gap-2 sm:gap-3 transition-all ${
+                className={`px-8 py-4 sm:px-10 sm:py-5 rounded-2xl text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] border flex items-center gap-3 transition-all ${
                   theme.theme === 'light' 
                     ? 'bg-white border-gray-200 text-gray-900 hover:bg-gray-50' 
                     : 'bg-white/5 border-white/10 text-white hover:bg-white/10 shadow-xl'
                 }`}
               >
-                <Download size={14} className="sm:w-[18px] sm:h-[18px]" />
+                <Download size={18} />
                 Resume
               </motion.a>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="flex justify-center lg:justify-start gap-5 sm:gap-8 pt-6 sm:pt-12">
+            <motion.div variants={itemVariants} className="flex justify-center lg:justify-start gap-5 sm:gap-8 pt-4 sm:pt-8">
               {portfolioInfo.socialLinks.map((social) => {
                 const Icon = getSocialIcon(social.platform);
                 return (
@@ -205,7 +205,7 @@ const Hero = () => {
                     whileHover={{ scale: 1.2, y: -5, color: '#3b82f6' }}
                     className={`${theme.theme === 'light' ? 'text-gray-400' : 'text-gray-600'} transition-all`}
                   >
-                    <Icon size={18} className="sm:w-6 sm:h-6" />
+                    <Icon size={20} className="sm:w-6 sm:h-6" />
                   </motion.a>
                 );
               })}
@@ -217,9 +217,9 @@ const Hero = () => {
             variants={itemVariants}
             className="flex-1 relative order-1 lg:order-2"
           >
-            <div className="relative w-full max-w-[120px] sm:max-w-[240px] lg:max-w-[280px] mx-auto">
+            <div className="relative w-full max-w-[160px] sm:max-w-[240px] lg:max-w-[280px] mx-auto">
               {/* Complex Architectural Background */}
-              <div className="absolute inset-0 bg-blue-600/10 rounded-[2.5rem] sm:rounded-[4rem] blur-[30px] sm:blur-[60px] animate-pulse" />
+              <div className="absolute inset-0 bg-blue-600/10 rounded-[3rem] sm:rounded-[4rem] blur-[40px] sm:blur-[60px] animate-pulse" />
               
               <motion.div
                 animate={{ rotate: 360 }}
