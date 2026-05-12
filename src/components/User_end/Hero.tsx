@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Github, Linkedin, Download, Mail, Code, Instagram, Twitter } from 'lucide-react';
+import { Github, Linkedin, Download, Mail, Code, Instagram, Twitter, Facebook, Youtube, Globe } from 'lucide-react';
 import { motion, Variants } from 'framer-motion';
 import { useData } from '../../context/DataContext';
 import { ThemeContext } from './PortfolioLayout';
@@ -45,22 +45,23 @@ const Hero = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3
+      transition: { 
+        staggerChildren: 0.15,
+        delayChildren: 0.3,
+        ease: [0.22, 1, 0.36, 1]
       }
     }
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 15, scale: 0.98 },
+    hidden: { opacity: 0, y: 20, filter: 'blur(10px)' },
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
+      filter: 'blur(0px)',
       transition: { 
-        duration: 0.8, 
-        ease: [0.22, 1, 0.36, 1] 
+        duration: 1,
+        ease: [0.22, 1, 0.36, 1]
       }
     }
   };
@@ -70,8 +71,23 @@ const Hero = () => {
       case 'github': return Github;
       case 'linkedin': return Linkedin;
       case 'instagram': return Instagram;
-      case 'twitter': return Twitter;
-      default: return Mail;
+      case 'twitter': case 'x': return Twitter;
+      case 'facebook': return Facebook;
+      case 'youtube': return Youtube;
+      case 'mail': case 'email': return Mail;
+      default: return Globe;
+    }
+  };
+
+  const getSocialColor = (platform: string) => {
+    switch (platform.toLowerCase()) {
+      case 'github': return '#333';
+      case 'linkedin': return '#0077b5';
+      case 'instagram': return '#e4405f';
+      case 'twitter': case 'x': return '#1da1f2';
+      case 'facebook': return '#1877f2';
+      case 'youtube': return '#ff0000';
+      default: return '#3b82f6';
     }
   };
 
@@ -86,7 +102,7 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className={`min-h-screen flex items-center justify-center relative overflow-hidden transition-colors duration-500 pt-10 sm:pt-20 ${
+    <section id="home" className={`min-h-screen flex items-center justify-center relative overflow-hidden transition-colors duration-500 pt-24 lg:pt-32 ${
       theme.theme === 'light' ? 'bg-[#fcfdfe]' : 'bg-[#020617]'
     }`}>
       {/* Dynamic Background Elements */}
@@ -119,13 +135,13 @@ const Hero = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto w-full -mt-10 sm:mt-0"
+        className="relative z-10 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto w-full lg:-mt-16"
       >
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-20">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-12">
           
           {/* Content Left */}
-          <div className="flex-1 space-y-6 sm:space-y-10 text-center lg:text-left order-2 lg:order-1">
-            <div className="space-y-6 sm:space-y-8">
+          <div className="flex-1 space-y-4 lg:space-y-3 text-center lg:text-left order-2 lg:order-1">
+            <div className="space-y-4 lg:space-y-2">
               <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-blue-500/20 bg-blue-500/5 backdrop-blur-md">
                 <span className="relative flex h-2.5 w-2.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
@@ -134,10 +150,10 @@ const Hero = () => {
                 <span className="text-[12px] font-black uppercase tracking-[0.3em] text-blue-500">Available for Innovation</span>
               </motion.div>
               
-              <div className="space-y-3 sm:space-y-4">
+              <div className="space-y-1 lg:space-y-0.5">
                 <motion.h1 
                   variants={itemVariants} 
-                  className={`text-6xl sm:text-7xl lg:text-8xl font-black leading-[0.9] tracking-tighter ${
+                  className={`text-6xl sm:text-7xl lg:text-7xl font-black leading-[0.9] tracking-tighter ${
                     theme.theme === 'light' ? 'text-gray-950' : 'text-white'
                   }`}
                 >
@@ -148,29 +164,29 @@ const Hero = () => {
               </div>
 
               <motion.div variants={itemVariants}>
-                <h2 className={`text-2xl sm:text-3xl font-bold tracking-tight leading-relaxed ${
+                <h2 className={`text-2xl sm:text-3xl lg:text-2xl font-bold tracking-tight leading-relaxed ${
                   theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
                 }`}>
                   Crafting Digital Excellence through <br className="hidden sm:block" />
                   <span className="text-blue-500 font-black italic">{displayText}</span>
-                  <span className="animate-pulse inline-block w-1.5 h-10 bg-blue-500 ml-1 align-middle" />
+                  <span className="animate-pulse inline-block w-1.5 h-10 lg:h-8 bg-blue-500 ml-1 align-middle" />
                 </h2>
               </motion.div>
             </div>
 
-            <motion.p variants={itemVariants} className={`text-base sm:text-xl max-w-2xl mx-auto lg:mx-0 leading-relaxed font-semibold ${
+            <motion.p variants={itemVariants} className={`text-base sm:text-xl lg:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-semibold ${
               theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
             }`}>
               {portfolioInfo.tagline || "Focused on architecting high-performance Web & Mobile Applications."}
             </motion.p>
 
-            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 sm:gap-6 pt-4 sm:pt-6">
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 sm:gap-6 pt-2 lg:pt-1">
               <motion.button 
                 onClick={handleExploreClick}
-                whileHover={{ y: -5, scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className={`px-10 py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 shadow-xl transition-all ${
-                  theme.theme === 'light' ? 'bg-gray-950 text-white' : 'bg-white text-gray-950'
+                whileHover={{ y: -8, scale: 1.05, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
+                whileTap={{ scale: 0.95 }}
+                className={`px-10 py-4 sm:px-10 sm:py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 shadow-xl transition-all ${
+                  theme.theme === 'light' ? 'bg-gray-950 text-white shadow-gray-200' : 'bg-white text-gray-950 shadow-blue-500/20'
                 }`}
               >
                 Explore Works
@@ -180,11 +196,11 @@ const Hero = () => {
               <motion.a 
                 href={portfolioInfo.resumeUrl} 
                 download
-                whileHover={{ y: -5, scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className={`px-10 py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] border flex items-center justify-center gap-3 transition-all ${
+                whileHover={{ y: -8, scale: 1.05, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
+                whileTap={{ scale: 0.95 }}
+                className={`px-10 py-4 sm:px-10 sm:py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] border flex items-center justify-center gap-3 transition-all ${
                   theme.theme === 'light' 
-                    ? 'bg-white border-gray-200 text-gray-900 hover:bg-gray-50' 
+                    ? 'bg-gray-50 border-gray-200 text-gray-900 hover:bg-gray-100 hover:border-gray-300 shadow-md' 
                     : 'bg-white/5 border-white/10 text-white hover:bg-white/10 shadow-xl'
                 }`}
               >
@@ -193,16 +209,22 @@ const Hero = () => {
               </motion.a>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="flex justify-center lg:justify-start gap-8 pt-10 sm:pt-12">
+            <motion.div variants={itemVariants} className="flex justify-center lg:justify-start gap-8 pt-4 lg:pt-3">
               {portfolioInfo.socialLinks.map((social) => {
                 const Icon = getSocialIcon(social.platform);
+                const brandColor = getSocialColor(social.platform);
                 return (
                   <motion.a
                     key={social.url}
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ scale: 1.3, y: -5, color: '#3b82f6' }}
+                    whileHover={{ 
+                      scale: 1.4, 
+                      y: -8, 
+                      color: brandColor,
+                      transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] }
+                    }}
                     className={`${theme.theme === 'light' ? 'text-gray-400' : 'text-gray-600'} transition-all`}
                   >
                     <Icon size={24} />
@@ -215,9 +237,9 @@ const Hero = () => {
           {/* Visual Right */}
           <motion.div 
             variants={itemVariants}
-            className="flex-1 relative order-1 lg:order-2 mb-6 lg:mb-0"
+            className="flex-1 relative order-1 lg:order-2 mb-4 lg:mb-0"
           >
-            <div className="relative w-full max-w-[200px] sm:max-w-[320px] lg:max-w-[380px] mx-auto">
+            <div className="relative w-full max-w-[180px] sm:max-w-[320px] lg:max-w-[320px] mx-auto">
               {/* Complex Architectural Background */}
               <div className="absolute inset-0 bg-blue-600/10 rounded-[4rem] sm:rounded-[5rem] blur-[50px] sm:blur-[80px] animate-pulse" />
               

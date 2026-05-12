@@ -184,7 +184,11 @@ const Navigation = () => {
 
             {/* Desktop Menu - Aggressive Hiding */}
             <div className="hidden md:flex items-center gap-6">
-            <div className="flex space-x-1 items-center bg-white dark:bg-gray-900 p-1.5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
+            <div className={`flex space-x-1 items-center p-1.5 rounded-2xl border shadow-sm transition-colors duration-500 ${
+              theme.theme === 'light' 
+                ? 'bg-white border-gray-100' 
+                : 'bg-gray-900 border-gray-800'
+            }`}>
                 {navItems.map((item) => (
                   <button
                     key={item.name}
@@ -192,7 +196,9 @@ const Navigation = () => {
                   className={`relative px-4 py-2 rounded-xl text-[11px] font-bold uppercase tracking-widest flex items-center space-x-2 transition-all duration-300 overflow-hidden group ${
                     activeSection === item.href
                       ? 'text-white'
-                      : 'text-gray-950 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400'
+                      : theme.theme === 'light'
+                        ? 'text-gray-950 hover:text-blue-600'
+                        : 'text-gray-400 hover:text-blue-400'
                   }`}
                   >
                     {activeSection === item.href && (

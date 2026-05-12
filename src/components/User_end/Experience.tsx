@@ -1,5 +1,5 @@
 import { useData } from '../../context/DataContext';
-import { Calendar, MapPin, CheckCircle2 } from 'lucide-react';
+import { Calendar, MapPin, Briefcase } from 'lucide-react';
 import { motion, Variants } from 'framer-motion';
 import { useState, useEffect, useRef, useContext } from 'react';
 import { ThemeContext } from './PortfolioLayout';
@@ -27,6 +27,12 @@ const Experience = () => {
     return () => observer.disconnect();
   }, []);
 
+  const formatDate = (dateString: string) => {
+    if (!dateString) return 'Present';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  };
+
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -36,11 +42,10 @@ const Experience = () => {
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, scale: 0.98, y: 10 },
+    hidden: { opacity: 0, x: -20 },
     visible: {
       opacity: 1,
-      scale: 1,
-      y: 0,
+      x: 0,
       transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
     },
   };
@@ -52,99 +57,114 @@ const Experience = () => {
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}
       variants={containerVariants}
-      className={`py-8 sm:py-16 transition-colors duration-500 relative overflow-hidden ${
-        theme.theme === 'light' ? 'bg-white' : 'bg-gray-950'
+      className={`py-20 sm:py-32 transition-colors duration-500 relative overflow-hidden ${
+        theme.theme === 'light' ? 'bg-[#f8fafc]' : 'bg-[#020617]'
       }`}
     >
-      {/* Background Orbs */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[120px] translate-x-1/2 -translate-y-1/2" />
+      {/* Dynamic Background Elements */}
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[140px] translate-x-1/3 -translate-y-1/3" />
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-600/5 rounded-full blur-[120px] -translate-x-1/3 translate-y-1/3" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div className="mb-12" variants={itemVariants}>
-          <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
-            <div className="h-[2px] w-8 bg-blue-600 rounded-full" />
-            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600">Professional Journey</span>
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-24 relative z-10">
+        <motion.div className="max-w-3xl mb-16 lg:mb-24" variants={itemVariants}>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="h-[2px] w-12 bg-blue-600 rounded-full" />
+            <span className="text-[12px] font-black uppercase tracking-[0.4em] text-blue-600">The Path to Excellence</span>
           </div>
-          <h2 className={`text-3xl sm:text-5xl font-black tracking-tight leading-[1.1] text-center lg:text-left ${
-              theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+          <h2 className={`text-4xl sm:text-6xl font-black tracking-tighter leading-[0.9] mb-8 ${
+              theme.theme === 'light' ? 'text-gray-950' : 'text-white'
             }`}
           >
             Career <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Trajectory</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600">Trajectory</span>
           </h2>
+          <p className={`text-lg font-medium leading-relaxed max-w-xl ${
+            theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+          }`}>
+            A timeline of professional growth, technical mastery, and impactful digital solutions across various industries.
+          </p>
         </motion.div>
 
         {experiences.length > 0 ? (
         <div className="relative">
-          {/* Magical Timeline Path */}
-          <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-[2.5px] bg-gradient-to-b from-blue-600 via-indigo-500 to-blue-600 opacity-20 hidden md:block" />
+          {/* Enhanced Vertical Path */}
+          <div className="absolute left-0 sm:left-10 top-2 bottom-2 w-[2px] bg-gradient-to-b from-blue-600/40 via-purple-500/40 to-indigo-600/40" />
           
-          <div className="space-y-12 sm:space-y-24 relative">
+          <div className="space-y-12 sm:space-y-20 relative">
             {experiences.map((exp, index) => (
               <motion.div 
                 key={exp.id || index} 
                 variants={itemVariants}
-                className={`relative flex flex-col md:flex-row items-center ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
+                className="relative pl-8 sm:pl-24"
               >
-                {/* Magical Trajectory Node */}
-                <div className="absolute left-8 md:left-1/2 w-4 h-4 bg-blue-600 rounded-full z-20 transform -translate-x-1/2 shadow-[0_0_20px_rgba(37,99,235,0.6)] border-4 border-white dark:border-gray-950 transition-transform duration-500 hover:scale-125">
-                  <div className="absolute inset-0 bg-blue-400 rounded-full animate-ping opacity-30" />
-                </div>
-
-                <div className={`w-full md:w-1/2 pl-12 md:pl-0 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'}`}>
-                  <motion.div 
-                    whileHover={{ rotateY: index % 2 === 0 ? 2 : -2, scale: 1.005 }}
-                    className={`p-5 sm:p-6 rounded-2xl transition-all duration-700 border group relative overflow-hidden ${
-                      theme.theme === 'light' 
-                        ? 'bg-white border-blue-50 shadow-lg shadow-blue-500/5' 
-                        : 'bg-gray-900/40 backdrop-blur-2xl border-white/5 hover:border-blue-500/20 shadow-xl'
-                    }`}
-                  >
-                    {/* Aurora Background Accent */}
-                    <div className="absolute top-0 right-0 w-48 h-48 bg-blue-600/5 blur-[80px] rounded-full -mr-24 -mt-24 group-hover:bg-blue-600/10 transition-all duration-700" />
-                    
-                    <div className="flex flex-col mb-5 relative z-10">
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="px-2 py-0.5 rounded-md bg-blue-500/10 border border-blue-500/20">
-                          <span className="text-[8px] font-black uppercase tracking-[0.1em] text-blue-600 dark:text-blue-400">
-                            {new Date(exp.startDate).getFullYear()} — {exp.endDate ? new Date(exp.endDate).getFullYear() : 'Present'}
-                          </span>
+                {/* Visual Trajectory Node */}
+                <div className="absolute left-[-5px] sm:left-[35px] top-4 w-3 h-3 bg-white border-2 border-blue-600 rounded-full z-20 shadow-[0_0_15px_rgba(37,99,235,0.4)]" />
+                
+                <div className={`group relative p-6 sm:p-10 rounded-[2.5rem] border transition-all duration-700 ${
+                  theme.theme === 'light' 
+                    ? 'bg-white border-gray-100 shadow-xl shadow-blue-500/5 hover:border-blue-200' 
+                    : 'bg-white/5 border-white/5 backdrop-blur-3xl hover:border-blue-500/20'
+                }`}>
+                  {/* Decorative Gradient Accent */}
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 blur-[100px] rounded-full -mr-32 -mt-32 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  
+                  <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 relative z-10">
+                    <div className="space-y-4">
+                      <div className="flex flex-wrap items-center gap-4">
+                        <div className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider border ${
+                          theme.theme === 'light' 
+                            ? 'bg-blue-50 border-blue-100 text-blue-600' 
+                            : 'bg-blue-500/10 border-blue-500/20 text-blue-400'
+                        }`}>
+                          {formatDate(exp.startDate)} — {formatDate(exp.endDate)}
                         </div>
-                        <div className="h-[1px] w-6 bg-blue-200 dark:bg-white/10" />
-                        <div className="flex items-center gap-2 text-[8px] font-bold text-gray-400 uppercase tracking-widest">
-                          {exp.company}
+                        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-gray-100/50 dark:bg-white/5 border border-transparent dark:border-white/5">
+                           <MapPin size={12} className="text-blue-500" />
+                           <span className={`text-[10px] font-bold uppercase tracking-widest ${
+                             theme.theme === 'light' ? 'text-gray-800' : 'text-gray-300'
+                           }`}>
+                             {exp.location}
+                           </span>
                         </div>
                       </div>
                       
-                      <h3 className={`text-xl sm:text-2xl font-black tracking-tight leading-[1.2] transition-colors duration-300 ${
-                        theme.theme === 'light' ? 'text-gray-900' : 'text-white'
-                      }`}>
-                        {exp.title}
-                      </h3>
-                    </div>
-
-                    <div className={`p-5 rounded-2xl border border-dashed mb-8 relative z-10 ${
-                      theme.theme === 'light' ? 'border-blue-100 bg-blue-50/30' : 'border-white/5 bg-white/5'
-                    }`}>
-                      <p className={`text-base font-medium leading-relaxed ${
-                        theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
-                      }`}>
-                        {exp.description}
-                      </p>
-                    </div>
-
-                    <div className="flex flex-wrap gap-2 relative z-10">
-                      {exp.technologies.map((tech) => (
-                        <span key={tech} className={`px-4 py-2 text-[9px] font-black uppercase tracking-[0.1em] rounded-xl border transition-all ${
-                          theme.theme === 'light' 
-                            ? 'bg-white border-blue-100 text-blue-600 shadow-sm' 
-                            : 'bg-gray-800/80 border-white/10 text-gray-300 hover:border-blue-500/40'
+                      <div className="space-y-2">
+                        <h3 className={`text-2xl sm:text-3xl font-black tracking-tight leading-tight ${
+                          theme.theme === 'light' ? 'text-gray-950' : 'text-white'
                         }`}>
-                          {tech}
-                        </span>
-                      ))}
+                          {exp.title}
+                        </h3>
+                        <div className="flex items-center gap-2">
+                          <Briefcase size={16} className="text-blue-500" />
+                          <span className={`text-base font-bold tracking-wide ${
+                            theme.theme === 'light' ? 'text-blue-700' : 'text-blue-400'
+                          }`}>
+                            {exp.company}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </motion.div>
+
+                    <div className="lg:max-w-md">
+                       <p className={`text-base font-medium leading-relaxed mb-6 ${
+                         theme.theme === 'light' ? 'text-gray-700' : 'text-gray-400'
+                       }`}>
+                         {exp.description}
+                       </p>
+                       
+                       <div className="flex flex-wrap gap-2">
+                         {exp.technologies.map((tech) => (
+                           <span key={tech} className={`px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.1em] rounded-lg border transition-all ${
+                             theme.theme === 'light' 
+                               ? 'bg-gray-50 border-gray-200 text-gray-700' 
+                               : 'bg-white/5 border-white/5 text-gray-400 hover:border-blue-500/40 hover:text-white'
+                           }`}>
+                             {tech}
+                           </span>
+                         ))}
+                       </div>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -152,9 +172,9 @@ const Experience = () => {
         </div>
         ) : (
           <div className={`text-center py-24 rounded-[3.5rem] border-2 border-dashed ${
-            theme.theme === 'light' ? 'border-gray-100 bg-gray-50' : 'border-white/5 bg-gray-900'
+            theme.theme === 'light' ? 'border-gray-200 bg-gray-50' : 'border-white/5 bg-gray-900'
           }`}>
-            <p className="text-xl font-black text-gray-300 uppercase tracking-widest">Assembling History...</p>
+            <p className="text-xl font-black text-gray-300 uppercase tracking-widest">Architecting History...</p>
           </div>
         )}
       </div>
