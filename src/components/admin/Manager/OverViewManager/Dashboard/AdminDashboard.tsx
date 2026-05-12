@@ -113,7 +113,7 @@ const AdminDashboard: React.FC = () => {
   const currentTab = tabs.find((tab) => tab.id === activeTab);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-100">
       {/* Mobile Backdrop */}
       {sidebarOpen && (
         <div
@@ -148,8 +148,8 @@ const AdminDashboard: React.FC = () => {
 
       {/* Sidebar */}
       <aside
-        className={`w-72 bg-white shadow-lg border-r border-gray-200 fixed md:static h-full z-50 transition-transform duration-300 ease-in-out ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+        className={`bg-white shadow-lg border-r border-gray-200 fixed md:static h-full z-50 transition-transform duration-300 ease-in-out ${
+          sidebarOpen ? 'translate-x-0 w-72' : '-translate-x-full w-0 md:w-72 md:translate-x-0'
         } flex flex-col overflow-y-auto`}
       >
         {/* Sidebar Header */}

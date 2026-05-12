@@ -86,7 +86,7 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className={`min-h-screen flex items-start sm:items-center justify-center relative overflow-hidden transition-colors duration-500 pt-14 sm:pt-20 ${
+    <section id="home" className={`min-h-screen flex items-center justify-center relative overflow-hidden transition-colors duration-500 pt-10 sm:pt-20 ${
       theme.theme === 'light' ? 'bg-[#fcfdfe]' : 'bg-[#020617]'
     }`}>
       {/* Dynamic Background Elements */}
@@ -119,12 +119,12 @@ const Hero = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto w-full pt-2 sm:pt-0 pb-12 sm:pb-20"
+        className="relative z-10 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto w-full -mt-10 sm:mt-0"
       >
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-20">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-20">
           
           {/* Content Left */}
-          <div className="flex-1 space-y-8 sm:space-y-10 text-center lg:text-left order-2 lg:order-1">
+          <div className="flex-1 space-y-6 sm:space-y-10 text-center lg:text-left order-2 lg:order-1">
             <div className="space-y-6 sm:space-y-8">
               <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-blue-500/20 bg-blue-500/5 backdrop-blur-md">
                 <span className="relative flex h-2.5 w-2.5">
@@ -215,9 +215,9 @@ const Hero = () => {
           {/* Visual Right */}
           <motion.div 
             variants={itemVariants}
-            className="flex-1 relative order-1 lg:order-2 mb-10 lg:mb-0"
+            className="flex-1 relative order-1 lg:order-2 mb-6 lg:mb-0"
           >
-            <div className="relative w-full max-w-[220px] sm:max-w-[320px] lg:max-w-[380px] mx-auto">
+            <div className="relative w-full max-w-[200px] sm:max-w-[320px] lg:max-w-[380px] mx-auto">
               {/* Complex Architectural Background */}
               <div className="absolute inset-0 bg-blue-600/10 rounded-[4rem] sm:rounded-[5rem] blur-[50px] sm:blur-[80px] animate-pulse" />
               
