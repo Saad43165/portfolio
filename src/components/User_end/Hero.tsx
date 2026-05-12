@@ -217,44 +217,44 @@ const Hero = () => {
             variants={itemVariants}
             className="flex-1 relative order-1 lg:order-2"
           >
-            <div className="relative w-full max-w-[450px] mx-auto">
+            <div className="relative w-full max-w-[320px] lg:max-w-[350px] mx-auto">
               {/* Complex Architectural Background */}
-              <div className="absolute inset-0 bg-blue-600/20 rounded-[4rem] blur-[100px] animate-pulse" />
+              <div className="absolute inset-0 bg-blue-600/15 rounded-[4rem] blur-[80px] animate-pulse" />
               
               <motion.div
                 animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute -inset-8 border border-dashed border-blue-500/20 rounded-full"
+                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                className="absolute -inset-6 border border-dashed border-blue-500/10 rounded-full"
               />
               
-              <div className={`relative aspect-square rounded-[3.5rem] lg:rounded-[5rem] overflow-hidden border-[1px] p-2 ${
-                theme.theme === 'light' ? 'border-gray-200 bg-white shadow-2xl' : 'border-white/10 bg-white/5 backdrop-blur-2xl'
+              <div className={`relative aspect-square rounded-[3rem] lg:rounded-[4rem] overflow-hidden border-[1px] p-1.5 ${
+                theme.theme === 'light' ? 'border-gray-200 bg-white shadow-xl' : 'border-white/10 bg-white/5 backdrop-blur-2xl'
               }`}>
-                <div className="w-full h-full rounded-[3rem] lg:rounded-[4.5rem] overflow-hidden relative group">
+                <div className="w-full h-full rounded-[2.5rem] lg:rounded-[3.5rem] overflow-hidden relative group">
                   <img
                     src={portfolioInfo.profileImage || "/image.png"}
                     alt={portfolioInfo.name}
-                    className="w-full h-full object-cover transition-all duration-1000 transform group-hover:scale-110 grayscale-[30%] group-hover:grayscale-0"
+                    className="w-full h-full object-cover transition-all duration-1000 transform group-hover:scale-105 grayscale-[20%] group-hover:grayscale-0"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-blue-600/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-blue-600/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 </div>
               </div>
 
-              {/* Floating Status Cards */}
+              {/* Floating Status Cards - Scaled Down */}
               <motion.div 
-                animate={{ y: [0, -15, 0] }}
+                animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className={`absolute -bottom-6 -right-6 p-6 rounded-3xl shadow-2xl border ${
+                className={`absolute -bottom-4 -right-4 p-4 rounded-2xl shadow-xl border ${
                   theme.theme === 'light' ? 'bg-white border-gray-100' : 'bg-gray-950 border-white/10'
                 }`}
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
-                    <Code size={24} />
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white">
+                    <Code size={16} />
                   </div>
                   <div className="text-left">
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500">Portfolio Status</p>
-                    <p className={`text-xl font-black ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Live & Active</p>
+                    <p className="text-[8px] font-black uppercase tracking-tight text-blue-500 leading-none mb-1">Status</p>
+                    <p className={`text-sm font-black ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'} leading-none`}>Active</p>
                   </div>
                 </div>
               </motion.div>
@@ -262,19 +262,19 @@ const Hero = () => {
               <motion.div 
                 animate={{ y: [0, 15, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className={`absolute -top-6 -left-6 p-5 rounded-3xl shadow-2xl border ${
+                className={`absolute -top-4 -left-4 p-4 rounded-2xl shadow-xl border ${
                   theme.theme === 'light' ? 'bg-white border-gray-100' : 'bg-gray-950 border-white/10'
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <div className="flex -space-x-3">
+                  <div className="flex -space-x-2">
                     {[1, 2, 3].map(i => (
-                      <div key={i} className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-950 bg-gradient-to-br from-gray-200 to-gray-400" />
+                      <div key={i} className="w-6 h-6 rounded-full border-2 border-white dark:border-gray-950 bg-gradient-to-br from-gray-200 to-gray-400" />
                     ))}
                   </div>
                   <div className="text-left">
-                    <p className="text-[10px] font-black uppercase tracking-tight text-gray-500">Collaboration</p>
-                    <p className={`text-xs font-bold ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Open to Projects</p>
+                    <p className="text-[8px] font-black uppercase tracking-tight text-gray-500 leading-none mb-1">Collaboration</p>
+                    <p className={`text-[10px] font-bold ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'} leading-none`}>Open</p>
                   </div>
                 </div>
               </motion.div>

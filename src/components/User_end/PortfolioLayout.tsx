@@ -240,7 +240,7 @@ const PortfolioLayout = () => {
     document.documentElement.className = theme;
   }, [theme]);
 
-  // Continuous progress animation logic
+  // Continuous progress animation logic - Optimized for speed and clarity
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
@@ -249,30 +249,29 @@ const PortfolioLayout = () => {
         setDisplayProgress(prev => {
           if (prev >= 100) return 100;
           
-          // Determine increment based on current status
+          // Optimized increments for professional feel
           let increment = 1;
-          if (prev < 30) increment = 2; // Fast start
-          else if (prev < 70) increment = 0.5; // Slow middle (simulating load)
+          if (prev < 40) increment = 4; // Rapid start
+          else if (prev < 85) increment = 2; // steady middle
           else if (prev < 99) {
-            // Very slow towards the end if still loading
-            if (isDataLoading || isAssetsLoading) increment = 0.1;
-            else increment = 2; // Finish fast if ready
+            // Wait slightly for assets but don't stall
+            if (isDataLoading || isAssetsLoading) increment = 0.5;
+            else increment = 5; 
           }
 
           const next = prev + increment;
-          return next >= 100 ? 100 : parseFloat(next.toFixed(1));
+          return next >= 100 ? 100 : Math.floor(next);
         });
-      }, 50);
+      }, 20); // Faster interval
     }
 
     return () => clearInterval(interval);
   }, [displayProgress, isDataLoading, isAssetsLoading]);
 
   useEffect(() => {
-    // Jump to 100 when ready
+    // Immediate completion when ready
     if (!isDataLoading && !isAssetsLoading) {
-      const timer = setTimeout(() => setDisplayProgress(100), 500);
-      return () => clearTimeout(timer);
+      setDisplayProgress(100);
     }
   }, [isDataLoading, isAssetsLoading]);
 

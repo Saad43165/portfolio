@@ -268,13 +268,13 @@ const Contact = () => {
                   whileTap={{ scale: 0.99 }}
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black uppercase tracking-[0.3em] shadow-xl shadow-blue-600/20 flex items-center justify-center gap-4 group disabled:opacity-50 transition-all"
+                  className="w-full py-5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black uppercase tracking-[0.2em] shadow-xl shadow-blue-600/20 flex items-center justify-center gap-4 group disabled:opacity-50 transition-all"
                 >
                   {isSubmitting ? (
                     <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
                   ) : (
                     <>
-                      <span className="text-[11px] sm:text-xs">Transmit Message</span>
+                      <span className="text-sm">Submit Inquiry</span>
                       <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                     </>
                   )}
