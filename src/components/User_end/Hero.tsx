@@ -86,37 +86,32 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className={`h-screen min-h-[600px] flex items-center justify-center relative overflow-hidden transition-colors duration-500 ${
+    <section id="home" className={`min-h-screen flex items-center justify-center relative overflow-hidden transition-colors duration-500 pt-20 ${
       theme.theme === 'light' ? 'bg-[#fcfdfe]' : 'bg-[#020617]'
     }`}>
-      {/* Background Decor - Refined */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      {/* Dynamic Background Elements */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <motion.div 
           animate={{ 
-            scale: [1, 1.05, 1],
-            x: [0, 20, 0],
-            y: [0, -20, 0]
+            scale: [1, 1.2, 1],
+            rotate: [0, 90, 0],
+            opacity: [0.1, 0.2, 0.1]
           }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className={`absolute top-0 -left-1/4 w-[600px] h-[600px] rounded-full blur-[100px] ${
-            theme.theme === 'light' ? 'bg-blue-100/30' : 'bg-blue-900/5'
-          }`}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute -top-[10%] -left-[10%] w-[60%] h-[60%] rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-[120px]"
         />
         <motion.div 
           animate={{ 
-            scale: [1.05, 1, 1.05],
-            x: [0, -20, 0],
-            y: [0, 20, 0]
+            scale: [1.2, 1, 1.2],
+            rotate: [0, -90, 0],
+            opacity: [0.1, 0.2, 0.1]
           }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-          className={`absolute bottom-0 -right-1/4 w-[600px] h-[600px] rounded-full blur-[100px] ${
-            theme.theme === 'light' ? 'bg-blue-50/50' : 'bg-purple-900/5'
-          }`}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          className="absolute -bottom-[10%] -right-[10%] w-[60%] h-[60%] rounded-full bg-gradient-to-tl from-indigo-500/20 to-cyan-500/20 blur-[120px]"
         />
-        <div 
-          className={`absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px] ${
-            theme.theme === 'light' ? 'bg-indigo-50/40' : 'bg-blue-900/5'
-          }`}
+        {/* Subtle Grid Pattern */}
+        <div className={`absolute inset-0 opacity-[0.03] ${theme.theme === 'light' ? 'invert' : ''}`} 
+          style={{ backgroundImage: `linear-gradient(#3b82f6 1px, transparent 1px), linear-gradient(90deg, #3b82f6 1px, transparent 1px)`, backgroundSize: '40px 40px' }} 
         />
       </div>
 
@@ -124,93 +119,81 @@ const Hero = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full pt-20 lg:pt-0"
+        className="relative z-10 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto w-full"
       >
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20">
           
-          {/* Main Info Section */}
-          <div className="order-2 lg:order-1 space-y-2 lg:space-y-4 text-center lg:text-left">
-            <div className="space-y-2">
-              <motion.div variants={itemVariants} className="flex items-center justify-center lg:justify-start gap-4 mb-2">
-                <div className="h-[2px] w-8 bg-blue-600 rounded-full" />
-                <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-blue-600">Personal Overview</span>
+          {/* Content Left */}
+          <div className="flex-1 space-y-8 text-center lg:text-left order-2 lg:order-1">
+            <div className="space-y-4">
+              <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-blue-500/20 bg-blue-500/5 backdrop-blur-md">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                </span>
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-500">Available for Innovation</span>
               </motion.div>
               
-              <motion.h1 
-                variants={itemVariants} 
-                className={`text-4xl sm:text-6xl lg:text-7xl font-black leading-tight tracking-tighter text-center lg:text-left relative group ${
-                  theme.theme === 'light' ? 'text-gray-900' : 'text-white'
-                }`}
-              >
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 transition-all duration-700">
-                  {portfolioInfo.name}
-                </span>
-                {/* Architectural Underline */}
-                <div className="absolute -bottom-2 left-1/2 lg:left-0 w-20 h-[3px] bg-gradient-to-r from-blue-600 to-transparent rounded-full transform -translate-x-1/2 lg:translate-x-0" />
-              </motion.h1>
-              
-              <motion.div 
-                variants={itemVariants} 
-                className="flex items-center justify-center lg:justify-start gap-4"
-              >
-                <div className="h-[2px] w-8 bg-blue-600 rounded-full" />
-                <p className={`text-lg sm:text-xl font-bold tracking-widest uppercase ${
-                  theme.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+              <div className="space-y-2">
+                <motion.h1 
+                  variants={itemVariants} 
+                  className={`text-5xl sm:text-7xl lg:text-8xl font-black leading-[0.9] tracking-tighter ${
+                    theme.theme === 'light' ? 'text-gray-950' : 'text-white'
+                  }`}
+                >
+                  Saad <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600">Ikram</span>
+                </motion.h1>
+                
+                <motion.div variants={itemVariants} className="h-1 w-24 bg-gradient-to-r from-blue-600 to-transparent rounded-full mx-auto lg:mx-0" />
+              </div>
+
+              <motion.div variants={itemVariants}>
+                <h2 className={`text-xl sm:text-2xl font-bold tracking-tight ${
+                  theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
                 }`}>
-                  {portfolioInfo.roles[0]}
-                </p>
+                  Crafting Digital Excellence through <br className="hidden sm:block" />
+                  <span className="text-blue-500 font-black italic">{displayText}</span>
+                  <span className="animate-pulse inline-block w-1 h-8 bg-blue-500 ml-1 align-middle" />
+                </h2>
               </motion.div>
             </div>
 
-            <motion.p variants={itemVariants} className={`text-base sm:text-xl leading-relaxed font-medium max-w-xl mx-auto lg:mx-0 text-center lg:text-left ${
-              theme.theme === 'light' ? 'text-gray-700' : 'text-gray-400'
+            <motion.p variants={itemVariants} className={`text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium ${
+              theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
             }`}>
-              Engineering high-performance applications with a focus on seamless user experiences. 
-              Currently based in <span className={`font-bold ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>{portfolioInfo.location}</span>.
+              I specialize in bridging the gap between <span className="text-blue-500 font-bold">Aesthetic Design</span> and <span className="text-purple-500 font-bold">Engineering Robustness</span>. Currently architecting software in {portfolioInfo.location}.
             </motion.p>
 
-            {/* Benchmark Skill Tags */}
-            <motion.div variants={itemVariants} className="flex flex-wrap justify-center lg:justify-start gap-3 pt-2">
-              {['React', 'Node.js', 'TypeScript', 'Tailwind'].map((skill) => (
-                <span key={skill} className="px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest border border-blue-500/20 bg-blue-500/5 text-blue-400">
-                  {skill}
-                </span>
-              ))}
-            </motion.div>
-
-            {/* CTA Buttons - More compact */}
-            <motion.div variants={itemVariants} className="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
+            <motion.div variants={itemVariants} className="flex flex-wrap justify-center lg:justify-start gap-4 pt-4">
               <motion.button 
                 onClick={handleExploreClick}
-                whileHover={{ y: -3, scale: 1.02 }}
+                whileHover={{ y: -5, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`px-8 py-4 rounded-xl text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-3 shadow-lg transition-all ${
+                className={`px-10 py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] flex items-center gap-3 shadow-[0_20px_50px_rgba(59,130,246,0.3)] transition-all ${
                   theme.theme === 'light' ? 'bg-gray-950 text-white' : 'bg-white text-gray-950'
                 }`}
               >
-                Explore Work
-                <Code size={16} />
+                Explore Works
+                <Code size={18} />
               </motion.button>
               
-              {portfolioInfo.resumeUrl && (
-                <a href={portfolioInfo.resumeUrl} download>
-                  <motion.button 
-                    whileHover={{ y: -3, scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className={`px-8 py-4 rounded-xl text-xs font-bold uppercase tracking-widest border flex items-center justify-center gap-3 transition-all ${
-                      theme.theme === 'light' 
-                        ? 'bg-white border-gray-200 text-gray-900 hover:bg-gray-50' 
-                        : 'bg-gray-900 border-white/10 text-white hover:bg-gray-800'
-                    }`}
-                  >
-                    <Download size={16} />
-                    Resume
-                  </motion.button>
-                </a>
-              )}
+              <motion.a 
+                href={portfolioInfo.resumeUrl} 
+                download
+                whileHover={{ y: -5, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`px-10 py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] border flex items-center gap-3 transition-all ${
+                  theme.theme === 'light' 
+                    ? 'bg-white border-gray-200 text-gray-900 hover:bg-gray-50' 
+                    : 'bg-white/5 border-white/10 text-white hover:bg-white/10 shadow-xl'
+                }`}
+              >
+                <Download size={18} />
+                Download CV
+              </motion.a>
             </motion.div>
 
-            <div className="pt-6 flex justify-center lg:justify-start gap-6">
+            <motion.div variants={itemVariants} className="flex justify-center lg:justify-start gap-8 pt-8">
               {portfolioInfo.socialLinks.map((social) => {
                 const Icon = getSocialIcon(social.platform);
                 return (
@@ -219,65 +202,79 @@ const Hero = () => {
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ scale: 1.1, y: -3 }}
-                    className={`${theme.theme === 'light' ? 'text-gray-400 hover:text-blue-600' : 'text-gray-600 hover:text-white'} transition-all`}
+                    whileHover={{ scale: 1.2, y: -5, color: '#3b82f6' }}
+                    className={`${theme.theme === 'light' ? 'text-gray-400' : 'text-gray-600'} transition-all`}
                   >
-                    <Icon size={22} />
+                    <Icon size={24} />
                   </motion.a>
                 );
               })}
-            </div>
+            </motion.div>
           </div>
 
+          {/* Visual Right */}
           <motion.div 
             variants={itemVariants}
-            className="order-1 lg:order-2 flex justify-center w-full"
+            className="flex-1 relative order-1 lg:order-2"
           >
-            <div className="relative group max-w-[160px] sm:max-w-[340px] lg:max-w-[340px] w-full">
-              {/* Magical Aurora Glow */}
-              <div className="absolute -inset-10 bg-gradient-to-tr from-blue-600/30 via-indigo-600/20 to-purple-600/30 rounded-full blur-[80px] opacity-40 group-hover:opacity-70 transition-opacity duration-1000" />
+            <div className="relative w-full max-w-[450px] mx-auto">
+              {/* Complex Architectural Background */}
+              <div className="absolute inset-0 bg-blue-600/20 rounded-[4rem] blur-[100px] animate-pulse" />
               
-              {/* Rotating Architectural Ring */}
-              <div className="absolute -inset-4 border border-blue-500/20 rounded-[3rem] animate-[spin_12s_linear_infinite] group-hover:border-blue-500/50 transition-colors" />
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="absolute -inset-8 border border-dashed border-blue-500/20 rounded-full"
+              />
               
-              <div className={`relative aspect-square rounded-[2.5rem] sm:rounded-[3.5rem] lg:rounded-[4rem] p-[3px] overflow-hidden transition-all duration-700 ${
-                theme.theme === 'light' 
-                  ? 'bg-blue-600 shadow-2xl shadow-blue-500/20' 
-                  : 'bg-gradient-to-tr from-blue-600 via-white/20 to-indigo-600'
+              <div className={`relative aspect-square rounded-[3.5rem] lg:rounded-[5rem] overflow-hidden border-[1px] p-2 ${
+                theme.theme === 'light' ? 'border-gray-200 bg-white shadow-2xl' : 'border-white/10 bg-white/5 backdrop-blur-2xl'
               }`}>
-                {/* Inner Container */}
-                <div className={`w-full h-full rounded-[2.3rem] sm:rounded-[3.3rem] lg:rounded-[3.8rem] overflow-hidden relative ${
-                  theme.theme === 'light' ? 'bg-white' : 'bg-[#01040f]'
-                }`}>
+                <div className="w-full h-full rounded-[3rem] lg:rounded-[4.5rem] overflow-hidden relative group">
                   <img
                     src={portfolioInfo.profileImage || "/image.png"}
                     alt={portfolioInfo.name}
-                    className="w-full h-full object-cover transition-all duration-1000 transform group-hover:scale-105 group-hover:rotate-1"
-                    onError={(e) => {
-                      const img = e.target as HTMLImageElement;
-                      img.style.display = 'none';
-                      img.parentElement?.classList.add('bg-gradient-to-br', 'from-blue-600', 'to-purple-600');
-                    }}
+                    className="w-full h-full object-cover transition-all duration-1000 transform group-hover:scale-110 grayscale-[30%] group-hover:grayscale-0"
                   />
-                  
-                  {/* Glass Shimmer Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-blue-600/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 </div>
               </div>
-              
-              {/* Floating Element - Subtle */}
+
+              {/* Floating Status Cards */}
               <motion.div 
-                animate={{ y: [0, -10, 0] }}
+                animate={{ y: [0, -15, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-4 -right-4 p-4 rounded-2xl bg-white dark:bg-gray-800 shadow-xl border border-gray-100 dark:border-gray-700 hidden sm:block"
+                className={`absolute -bottom-6 -right-6 p-6 rounded-3xl shadow-2xl border ${
+                  theme.theme === 'light' ? 'bg-white border-gray-100' : 'bg-gray-950 border-white/10'
+                }`}
               >
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
-                    <Code size={16} />
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+                    <Code size={24} />
                   </div>
                   <div className="text-left">
-                    <p className="text-[8px] font-bold uppercase tracking-widest text-gray-400">Works</p>
-                    <p className="text-sm font-bold text-gray-900 dark:text-white leading-none">{projects.length}+</p>
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500">Portfolio Status</p>
+                    <p className={`text-xl font-black ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Live & Active</p>
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div 
+                animate={{ y: [0, 15, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                className={`absolute -top-6 -left-6 p-5 rounded-3xl shadow-2xl border ${
+                  theme.theme === 'light' ? 'bg-white border-gray-100' : 'bg-gray-950 border-white/10'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex -space-x-3">
+                    {[1, 2, 3].map(i => (
+                      <div key={i} className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-950 bg-gradient-to-br from-gray-200 to-gray-400" />
+                    ))}
+                  </div>
+                  <div className="text-left">
+                    <p className="text-[10px] font-black uppercase tracking-tight text-gray-500">Collaboration</p>
+                    <p className={`text-xs font-bold ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Open to Projects</p>
                   </div>
                 </div>
               </motion.div>
@@ -286,21 +283,17 @@ const Hero = () => {
         </div>
       </motion.div>
 
-      {/* Scroll Indicator - Refined */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
-      >
-        <div className="w-0.5 h-10 bg-gray-100 dark:bg-gray-900 rounded-full overflow-hidden relative">
+      {/* Modern Scroll Indicator */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+        <span className={`text-[10px] font-bold uppercase tracking-[0.4em] ${theme.theme === 'light' ? 'text-gray-400' : 'text-gray-600'}`}>Scroll</span>
+        <div className={`w-px h-16 relative overflow-hidden ${theme.theme === 'light' ? 'bg-gray-200' : 'bg-gray-800'}`}>
           <motion.div 
-            animate={{ y: [-40, 40] }}
-            transition={{ repeat: Infinity, duration: 2 }}
+            animate={{ y: [-64, 64] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             className="absolute top-0 left-0 w-full h-1/2 bg-blue-500"
           />
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };

@@ -28,57 +28,115 @@ const Contact = lazyWithPrefetch(() => import('./Contact'));
 const Footer = lazyWithPrefetch(() => import('./Footer'));
 
 // Improved loading component with smooth progress animation
-// Improved loading component with professional premium aesthetic
+// Improved loading component with Engineering AI theme and rotating orbits
 const LoadingIndicator = ({ progress }: { progress: number }) => {
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-white dark:bg-gray-950 z-[100] overflow-hidden"
+      className="fixed inset-0 flex items-center justify-center bg-[#020617] z-[100] overflow-hidden"
       role="status"
       aria-live="polite"
       aria-busy="true"
     >
-      {/* Dynamic Background Orbs */}
+      {/* Circuit Pattern Overlay */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
+        style={{ backgroundImage: `radial-gradient(#3b82f6 1px, transparent 1px)`, backgroundSize: '30px 30px' }} 
+      />
+
+      {/* Rotating Orbits */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          className="absolute w-[300px] h-[300px] border border-blue-500/20 rounded-full"
+        >
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-blue-500 rounded-full shadow-[0_0_10px_#3b82f6]" />
+        </motion.div>
+        
+        <motion.div
+          animate={{ rotate: -360 }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          className="absolute w-[450px] h-[450px] border border-purple-500/10 rounded-full"
+        >
+          <div className="absolute bottom-0 right-1/2 translate-x-1/2 translate-y-1/2 w-3 h-3 bg-purple-500 rounded-full shadow-[0_0_15px_#a855f7]" />
+        </motion.div>
+
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          className="absolute w-[600px] h-[600px] border border-cyan-500/5 rounded-full"
+        >
+          <div className="absolute top-1/4 right-0 -translate-y-1/2 translate-x-1/2 w-1.5 h-1.5 bg-cyan-400 rounded-full shadow-[0_0_8px_#22d3ee]" />
+        </motion.div>
+      </div>
+
+      {/* Pulsing Core Glow */}
       <motion.div
         animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.1, 0.2, 0.1],
-          x: [0, 50, 0],
-          y: [0, -50, 0]
+          scale: [1, 1.1, 1],
+          opacity: [0.3, 0.5, 0.3],
         }}
-        className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[120px]"
+        transition={{ duration: 4, repeat: Infinity }}
+        className="absolute w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[100px]"
       />
 
       <div className="relative z-10 w-full max-w-sm px-8 flex flex-col items-center">
-        <div className="w-full space-y-6">
-          <div className="flex justify-between items-end">
+        <div className="w-full space-y-8">
+          <div className="flex flex-col items-center text-center space-y-4">
+            <motion.div 
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-[10px] font-bold text-blue-400 uppercase tracking-[0.3em]"
+            >
+              System Neural Link
+            </motion.div>
+            
             <div className="space-y-1">
-              <h2 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">
-                {progress < 100 ? 'Initialising' : 'Finalising'}
+              <h2 className="text-3xl font-black text-white tracking-tighter uppercase italic">
+                {progress < 100 ? 'Neural Synthesis' : 'Core Ready'}
               </h2>
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em]">
-                {progress < 40 ? 'Database handshake' : progress < 80 ? 'Syncing assets' : 'Polishing interface'}
-              </p>
+              <div className="flex items-center justify-center gap-3">
+                <div className="h-px w-8 bg-gradient-to-r from-transparent to-blue-500" />
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.4em]">
+                  {progress < 30 ? 'Matrix Init' : progress < 60 ? 'Syncing Neurons' : 'Finalizing Core'}
+                </p>
+                <div className="h-px w-8 bg-gradient-to-l from-transparent to-blue-500" />
+              </div>
             </div>
-            <span className="text-3xl font-black text-blue-600 dark:text-blue-400 tabular-nums">{progress}%</span>
           </div>
 
-          <div className="h-1.5 w-full bg-gray-100 dark:bg-gray-900 rounded-full overflow-hidden">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ type: "spring", bounce: 0, duration: 0.5 }}
-              className="h-full bg-gradient-to-r from-blue-600 to-purple-600"
-            />
+          <div className="relative pt-2">
+            <div className="flex justify-between items-end mb-2">
+              <span className="text-[10px] font-bold text-blue-500 uppercase tracking-widest">Efficiency 0.98</span>
+              <span className="text-4xl font-black text-white tabular-nums tracking-tighter">
+                {progress}<span className="text-blue-500 text-xl">%</span>
+              </span>
+            </div>
+            
+            <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${progress}%` }}
+                transition={{ type: "spring", bounce: 0, duration: 0.5 }}
+                className="h-full bg-gradient-to-r from-blue-600 via-cyan-400 to-purple-600 relative shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+              >
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.3)_50%,transparent_100%)] animate-shimmer" 
+                  style={{ backgroundSize: '200% 100%' }} />
+              </motion.div>
+            </div>
           </div>
         </div>
 
         <motion.div
           animate={{ opacity: [0.4, 1, 0.4] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="mt-12 flex items-center gap-2"
+          transition={{ duration: 1.5, repeat: Infinity }}
+          className="mt-16 flex items-center gap-3 px-4 py-2 rounded-lg bg-white/5 border border-white/10"
         >
-          <div className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
-          <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">Secure Session Active</span>
+          <div className="flex gap-1">
+            <div className="w-1 h-3 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
+            <div className="w-1 h-3 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+            <div className="w-1 h-3 bg-blue-300 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
+          </div>
+          <span className="text-[9px] font-black text-blue-400 uppercase tracking-[0.2em]">Data Stream Encrypted</span>
         </motion.div>
       </div>
     </div>
@@ -182,35 +240,40 @@ const PortfolioLayout = () => {
     document.documentElement.className = theme;
   }, [theme]);
 
-  // Smooth progress animation logic with safety timeout
+  // Continuous progress animation logic
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    let safetyTimeout: NodeJS.Timeout;
 
-    if (isDataLoading) {
-      // Fast climb to 40% while waiting for data
+    if (displayProgress < 100) {
       interval = setInterval(() => {
-        setDisplayProgress(prev => prev < 40 ? prev + 2 : prev);
-      }, 30);
+        setDisplayProgress(prev => {
+          if (prev >= 100) return 100;
+          
+          // Determine increment based on current status
+          let increment = 1;
+          if (prev < 30) increment = 2; // Fast start
+          else if (prev < 70) increment = 0.5; // Slow middle (simulating load)
+          else if (prev < 99) {
+            // Very slow towards the end if still loading
+            if (isDataLoading || isAssetsLoading) increment = 0.1;
+            else increment = 2; // Finish fast if ready
+          }
 
-      // Force progress forward if stuck for > 7s
-      safetyTimeout = setTimeout(() => {
-        setForceComplete(true);
-      }, 7000);
-    } else if (isAssetsLoading) {
-      // Rapid climb to 95% while prefetching
-      interval = setInterval(() => {
-        setDisplayProgress(prev => prev < 95 ? prev + 4 : prev);
-      }, 20);
-    } else {
-      // Instant completion
-      setDisplayProgress(100);
+          const next = prev + increment;
+          return next >= 100 ? 100 : parseFloat(next.toFixed(1));
+        });
+      }, 50);
     }
 
-    return () => {
-      clearInterval(interval);
-      clearTimeout(safetyTimeout);
-    };
+    return () => clearInterval(interval);
+  }, [displayProgress, isDataLoading, isAssetsLoading]);
+
+  useEffect(() => {
+    // Jump to 100 when ready
+    if (!isDataLoading && !isAssetsLoading) {
+      const timer = setTimeout(() => setDisplayProgress(100), 500);
+      return () => clearTimeout(timer);
+    }
   }, [isDataLoading, isAssetsLoading]);
 
   useEffect(() => {
