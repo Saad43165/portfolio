@@ -202,13 +202,15 @@ const Projects = () => {
                             <div className={`w-2 h-2 rounded-full ${project.status === 'completed' ? 'bg-green-500' : 'bg-blue-500 animate-pulse'}`} />
                             <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">{project.status}</span>
                           </div>
-                          <motion.button 
+                          <motion.a 
                             whileHover={{ x: 5 }}
-                            onClick={() => project.videoUrl && handleViewVideo(project.videoUrl)}
+                            href={project.liveUrl || project.githubUrl || '#'}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="flex items-center gap-2 text-xs font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest"
                           >
                             Details <ExternalLink size={14} />
-                          </motion.button>
+                          </motion.a>
                         </div>
                       </div>
                     </div>

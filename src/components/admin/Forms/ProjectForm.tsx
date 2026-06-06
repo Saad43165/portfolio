@@ -6,7 +6,7 @@ const UPLOAD_PRESET = 'unsigned_preset'; // <-- REPLACE with your unsigned uploa
 
 import {Project} from '../../../types';
 import { X, Upload, Video, Github, ExternalLink } from 'lucide-react';
-import { addProjectToFirestore,updateProjectInFirestore } from '../../Helpers/firebasehelpers';
+import { useData } from '../../../context/DataContext';
 
 interface ProjectFormProps {
   project?: Project | null;
@@ -14,6 +14,7 @@ interface ProjectFormProps {
 }
 
 const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose }) => {
+  const { addProject, updateProject } = useData();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
@@ -138,9 +139,9 @@ const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const validatedData = validateFormData(formData);
 
     if (project) {
-      await updateProjectInFirestore(project.id, validatedData);
+      updateProject(project.id, validatedData);
     } else {
-      await addProjectToFirestore(validatedData);
+      addProject(validatedData);
     }
 
     onClose();

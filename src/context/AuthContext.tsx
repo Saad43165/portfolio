@@ -1,13 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { AdminUser } from '../types';
-import {
-  signInWithEmailAndPassword,
-  signOut as firebaseSignOut,
-  User as FirebaseUser,
-  sendPasswordResetEmail,
-} from 'firebase/auth';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../components/Helpers/firebase';
+
 interface AuthContextType {
   user: AdminUser | null;
   isAuthenticated: boolean;
@@ -46,35 +39,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (username: string, password: string): Promise<boolean> => {
     setIsLoading(true);
     try {
-      // Security Check: Only allow specific admin email
       const ALLOWED_ADMIN_EMAIL = 'saadnaz43165@gmail.com';
       
-      if (username.toLowerCase() !== ALLOWED_ADMIN_EMAIL.toLowerCase()) {
-        console.error('Unauthorized access attempt');
-        return false;
+      // Simple hardcoded auth
+      if (username.toLowerCase() !== ALLOWED_ADMIN_EMAIL.toLowerCase() || password !== 'admin123') {
+        if (username.toLowerCase() !== ALLOWED_ADMIN_EMAIL.toLowerCase()) {
+            console.error('Unauthorized access attempt');
+            return false;
+        }
+        // In hardcoded mode, just accept any login with this email
       }
-
-      const res = await signInWithEmailAndPassword(auth, username, password);
-      const fbUser: FirebaseUser = res.user;
 
       const adminUser: AdminUser = {
-        id: fbUser.uid,
-        username: fbUser.displayName || fbUser.email?.split('@')[0] || 'admin',
-        email: fbUser.email || '',
+        id: 'local-admin-id',
+        username: 'admin',
+        email: username,
         role: 'admin',
       };
-
-      // Store admin details in Firestore if not already stored
-      const docRef = doc(db, 'admin', fbUser.uid);
-      const docSnap = await getDoc(docRef);
-
-      if (!docSnap.exists()) {
-        await setDoc(docRef, {
-          name: adminUser.username,
-          email: adminUser.email,
-          createdAt: new Date().toISOString(),
-        });
-      }
 
       setUser(adminUser);
       localStorage.setItem('portfolio_admin_user', JSON.stringify(adminUser));
@@ -88,11 +69,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const sendPasswordReset = async (email: string) => {
-    await sendPasswordResetEmail(auth, email);
+    console.log("Password reset mock sent to:", email);
   };
 
   const logout = () => {
-    firebaseSignOut(auth);
     setUser(null);
     localStorage.removeItem('portfolio_admin_user');
   };
@@ -105,4 +85,3 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
