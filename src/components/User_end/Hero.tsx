@@ -253,7 +253,7 @@ const Hero = () => {
               >
                 <div className="w-full h-full rounded-[3.2rem] sm:rounded-[4.2rem] lg:rounded-[5.2rem] overflow-hidden relative group bg-gray-50 dark:bg-gray-900/50">
                   <motion.img
-                    src={portfolioInfo.profileImage || "/image.png"}
+                    src={portfolioInfo.profileImage || "/main_image.png"}
                     alt={portfolioInfo.name}
                     className="w-full h-full object-cover transition-all duration-1000 transform group-hover:scale-105"
                   />
