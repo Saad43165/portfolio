@@ -1,11 +1,49 @@
 {
   "projects": [
     {
+      "id": "project-signbridge",
+      "title": "SignBridge: Two-Way AI Sign Language Translation",
+      "description": "Dual-direction cross-platform mobile translation application bridging communication barriers between the deaf-mute community and the hearing public.",
+      "longDescription": "SignBridge is a dual-direction translation mobile application engineered to solve communication barriers between the deaf-mute community and the hearing public. Unlike basic one-way translation systems, SignBridge provides a two-way bridge:\n\n1. Receptive Mode (Sign-to-Text): Translates live camera-captured physical gestures into real-time text and speech.\n2. Expressive Mode (Text-to-Sign): Translates spoken voice or typed sentences into immediate skeletal animations on a rigged 3D avatar.",
+      "image": "/signbridge.jpeg",
+      "technologies": ["Flutter", "Dart", "Google ML Kit", "TensorFlow Lite", "Three.js", "Drift (SQLite)", "TTS & STT"],
+      "features": ["Real-time Camera Classification", "Interactive 3D Avatar Animations", "Daily Progress & Gamification", "Bilingual Support (English & Urdu)", "Smart Simulator Panel"],
+      "githubUrl": "https://github.com/saad43165/signbridge",
+      "liveUrl": "",
+      "videoUrl": "", 
+      "category": "Mobile Application / AI",
+      "status": "completed",
+      "startDate": "2025-09-01",
+      "endDate": "2026-02-15",
+      "createdAt": "2026-02-15T00:00:00.000Z",
+      "updatedAt": "2026-02-15T00:00:00.000Z",
+      "role": "Lead Mobile & AI Engineer",
+      "platforms": ["iOS", "Android"],
+      "problemsSolved": [
+        {
+          "title": "Camera Stream Buffer Concatenation",
+          "description": "Fixed native Android camera crashes by concatenating multiple planes (Y, U, V channels) from the camera stream (YUV420/NV21) using a custom BytesBuilder before passing it to ML Kit."
+        },
+        {
+          "title": "WebGL Memory Optimization",
+          "description": "Solved WebView memory bloat and model load lag in Flutter by implementing a single-instance dynamic ValueKey listener, which re-initializes and plays WebGL animations instantly on model swap."
+        },
+        {
+          "title": "False Classifier Suppression",
+          "description": "Developed a Wrist Proximity Filter check. It calculates the likelihood score of left and right wrists and suspends model classification if hands are out of frame, reducing erratic prediction noise to zero."
+        },
+        {
+          "title": "Greedy Text Tokenizer",
+          "description": "Engineered a regex phrase matcher with a stop-words filter to convert conversational sentences (like \"how r u\") to root signs (like \"how\") while ignoring grammatical filler words, preventing character-by-character fingerspelling."
+        }
+      ]
+    },
+    {
       "id": "project-agriguard",
       "title": "AgriGuard: AI-Powered Plant Disease Detection (FYP)",
       "description": "Cross-platform mobile app providing offline, real-time plant disease identification for remote farmers.",
       "longDescription": "Engineered a hybrid deep learning framework using EfficientNetB3 and TFLite, achieving 94.8% classification accuracy within a 3.1 MB model optimised for low-end Android devices. Implemented a 5-part diagnostic system: severity quantification via pixel-ratio analysis, localised remediation guidance, and multimodal API for out-of-distribution (OOD) species detection. Integrated Firebase for cloud-based Advanced AI scan mode, enabling seamless online/offline fallback for farmers with intermittent connectivity.",
-      "image": "https://images.pexels.com/photos/2132227/pexels-photo-2132227.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "image": "/agri.png",
       "technologies": ["Flutter", "TensorFlow Lite", "EfficientNetB3", "Firebase", "Python", "Dart"],
       "features": ["Offline AI Detection", "Severity Quantification", "Remediation Guidance", "Cloud Fallback Mode"],
       "githubUrl": "https://github.com/saad43165/agriguard",
@@ -16,7 +54,19 @@
       "startDate": "2025-08-01",
       "endDate": "2026-05-01",
       "createdAt": "2026-01-01T00:00:00.000Z",
-      "updatedAt": "2026-01-01T00:00:00.000Z"
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "role": "Lead Mobile & AI Engineer",
+      "platforms": ["Android"],
+      "problemsSolved": [
+        {
+          "title": "Low-End Classifier Optimization",
+          "description": "Optimized a heavy EfficientNetB3 architecture into a 3.1 MB TFLite model, achieving 94.8% classification accuracy on low-end Android devices without latency spikes."
+        },
+        {
+          "title": "Pixel-Ratio Severity Quantification",
+          "description": "Developed custom computer vision algorithms in Python/Dart to calculate pixel-ratio leaf damage areas, delivering precise severity quantification."
+        }
+      ]
     },
     {
       "id": "project-medivision",
@@ -92,12 +142,12 @@
     },
     {
       "id": "project-naheed",
-      "title": "Naheed and Sons - Construction & Builders",
-      "description": "A professional, high-performance corporate website for a leading construction and builders firm.",
-      "longDescription": "Developed a comprehensive digital presence for Naheed and Sons. The platform serves as a modern portfolio and business acquisition tool, built with Next.js for SSR and SEO optimization, styled with Tailwind CSS, and powered by Supabase for real-time data management. It features an administrative dashboard for managing construction portfolios, client testimonials, and service inquiries.",
-      "image": "https://images.pexels.com/photos/224471/pexels-photo-224471.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "technologies": ["Next.js", "React", "Tailwind CSS", "Supabase", "TypeScript"],
-      "features": ["Dynamic Project Portfolio", "Admin Content Management", "Real-time Database", "SEO Optimized"],
+      "title": "Naheed & Sons: Building Excellence, Engineering the Future",
+      "description": "Corporate web platform for an established construction firm, showcasing landmark structures, bespoke interiors, and architectural masterworks.",
+      "longDescription": "Designed and developed a premium, high-performance corporate web presence for Naheed & Sons, a trusted construction firm since 2001. Built with Next.js for Server-Side Rendering (SSR) and advanced SEO optimization, styled with high-fidelity custom animations and tailwind typography. Features an administrative portal for dynamic project portfolio curation, client testimonial management, and real-time lead capture powered by a secure Supabase backend database.",
+      "image": "/naheed.png",
+      "technologies": ["Next.js", "React", "Tailwind CSS", "Supabase", "TypeScript", "Framer Motion"],
+      "features": ["Dynamic Project Portfolio", "Admin Portal & Content Manager", "Real-Time Lead Acquisition", "High-Performance SSR & SEO Optimization", "Interactive Construction Calculator"],
       "githubUrl": "https://github.com/saad43165",
       "liveUrl": "https://www.naheedandsons.com.pk/",
       "videoUrl": "", 
@@ -106,7 +156,15 @@
       "startDate": "2024-03-01",
       "endDate": "2024-05-30",
       "createdAt": "2024-05-30T00:00:00.000Z",
-      "updatedAt": "2024-05-30T00:00:00.000Z"
+      "updatedAt": "2024-05-30T00:00:00.000Z",
+      "role": "Lead Full-Stack Engineer",
+      "platforms": ["Web"],
+      "problemsSolved": [
+        {
+          "title": "SEO & SSR Performance Optimization",
+          "description": "Leveraged Next.js App Router and dynamic pre-rendering to achieve perfect 100/100 Lighthouse SEO and Performance scores, ensuring rapid load times for clients on slow cellular networks."
+        }
+      ]
     }
   ],
   "skills": [

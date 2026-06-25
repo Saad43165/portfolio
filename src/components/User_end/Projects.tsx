@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useContext } from 'react';
 import { useData } from '../../context/DataContext';
-import { ExternalLink, Github, Zap, Shield, Smartphone, Globe, X, Play, Code as CodeIcon } from 'lucide-react';
+import { ExternalLink, Github, Zap, Shield, Smartphone, Globe, X, Play, Code as CodeIcon, Cpu, Layers, Calendar, User } from 'lucide-react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { ThemeContext } from './PortfolioLayout';
 
@@ -12,6 +12,8 @@ const Projects = () => {
   const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [selectedVideoUrl, setSelectedVideoUrl] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState('All');
+  const [detailModalOpen, setDetailModalOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<any | null>(null);
 
   const categories = ['All', ...new Set(projects.map(p => p.category))];
   const filteredProjects = activeCategory === 'All' 
@@ -202,15 +204,16 @@ const Projects = () => {
                             <div className={`w-2 h-2 rounded-full ${project.status === 'completed' ? 'bg-green-500' : 'bg-blue-500 animate-pulse'}`} />
                             <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">{project.status}</span>
                           </div>
-                          <motion.a 
+                          <motion.button 
                             whileHover={{ x: 5 }}
-                            href={project.liveUrl || project.githubUrl || '#'}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-xs font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest"
+                            onClick={() => {
+                              setSelectedProject(project);
+                              setDetailModalOpen(true);
+                            }}
+                            className="flex items-center gap-2 text-xs font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest cursor-pointer hover:underline"
                           >
                             Details <ExternalLink size={14} />
-                          </motion.a>
+                          </motion.button>
                         </div>
                       </div>
                     </div>
@@ -252,6 +255,222 @@ const Projects = () => {
                   <X size={24} />
                 </button>
                 <video src={selectedVideoUrl} className="w-full h-full object-contain" controls autoPlay />
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
+        {/* Project Details Modal */}
+        <AnimatePresence>
+          {detailModalOpen && selectedProject && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-gray-950/80 backdrop-blur-md" 
+                onClick={() => setDetailModalOpen(false)}
+              />
+              <motion.div 
+                initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                transition={{ type: "spring", duration: 0.5 }}
+                className={`relative w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl border my-8 flex flex-col ${
+                  theme.theme === 'light' 
+                    ? 'bg-white border-gray-200 text-gray-900' 
+                    : 'bg-gray-900 border-white/10 text-white'
+                }`}
+                style={{ maxHeight: 'calc(100vh - 3rem)' }}
+              >
+                {/* Header/Close Button */}
+                <button
+                  onClick={() => setDetailModalOpen(false)}
+                  className={`absolute top-4 right-4 z-50 p-2.5 rounded-xl border backdrop-blur-md transition-all ${
+                    theme.theme === 'light'
+                      ? 'bg-white/80 border-gray-200 text-gray-700 hover:bg-gray-100'
+                      : 'bg-gray-800/80 border-white/10 text-gray-300 hover:bg-gray-700'
+                  }`}
+                >
+                  <X size={18} />
+                </button>
+
+                <div className="overflow-y-auto p-6 sm:p-8 space-y-8">
+                  {/* Hero Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+                    {/* Media */}
+                    <div className={`md:col-span-5 relative rounded-2xl overflow-hidden border ${
+                      theme.theme === 'light' ? 'border-gray-200 bg-gray-50' : 'border-white/10 bg-gray-950'
+                    } ${
+                      selectedProject.category.toLowerCase().includes('mobile') 
+                        ? 'aspect-[9/16] max-w-[220px] mx-auto' 
+                        : 'aspect-video w-full'
+                    }`}>
+                      <img 
+                        src={selectedProject.image} 
+                        alt={selectedProject.title} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+
+                    {/* Meta info */}
+                    <div className="md:col-span-7 space-y-4">
+                      <div className="flex items-center gap-2">
+                        <span className="px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-lg bg-blue-600/10 text-blue-600 dark:text-blue-400 border border-blue-600/20">
+                          {selectedProject.category}
+                        </span>
+                        <span className={`px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-lg border ${
+                          selectedProject.status === 'completed' 
+                            ? 'bg-green-600/10 text-green-600 dark:text-green-400 border-green-600/20' 
+                            : 'bg-blue-600/10 text-blue-600 dark:text-blue-400 border-blue-600/20'
+                        }`}>
+                          {selectedProject.status}
+                        </span>
+                      </div>
+
+                      <h3 className="text-2xl sm:text-3xl font-black tracking-tight leading-tight">
+                        {selectedProject.title}
+                      </h3>
+
+                      {selectedProject.role && (
+                        <div className="flex items-center gap-2 text-sm font-semibold">
+                          <User size={16} className="text-blue-600 dark:text-blue-400" />
+                          <span className={theme.theme === 'light' ? 'text-gray-600' : 'text-gray-300'}>
+                            Role: <span className="font-bold">{selectedProject.role}</span>
+                          </span>
+                        </div>
+                      )}
+
+                      {selectedProject.platforms && selectedProject.platforms.length > 0 && (
+                        <div className="flex items-center gap-2 text-sm font-semibold">
+                          <Layers size={16} className="text-blue-600 dark:text-blue-400" />
+                          <span className={theme.theme === 'light' ? 'text-gray-600' : 'text-gray-300'}>
+                            Platforms: <span className="font-bold">{selectedProject.platforms.join(', ')}</span>
+                          </span>
+                        </div>
+                      )}
+
+                      <div className="flex items-center gap-2 text-sm font-semibold">
+                        <Calendar size={16} className="text-blue-600 dark:text-blue-400" />
+                        <span className={theme.theme === 'light' ? 'text-gray-600' : 'text-gray-300'}>
+                          Timeline: <span className="font-bold">{selectedProject.startDate} {selectedProject.endDate ? `to ${selectedProject.endDate}` : ''}</span>
+                        </span>
+                      </div>
+
+                      {/* External Links */}
+                      <div className="flex flex-wrap gap-3 pt-2">
+                        {selectedProject.githubUrl && (
+                          <a 
+                            href={selectedProject.githubUrl} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 px-4.5 py-2 rounded-xl text-xs font-black uppercase tracking-widest border transition-colors bg-black border-black text-white hover:bg-gray-900"
+                          >
+                            <Github size={14} /> View Code
+                          </a>
+                        )}
+                        {selectedProject.liveUrl && (
+                          <a 
+                            href={selectedProject.liveUrl} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 px-4.5 py-2 rounded-xl text-xs font-black uppercase tracking-widest border transition-colors bg-blue-600 border-blue-600 text-white hover:bg-blue-700 shadow-md shadow-blue-500/10"
+                          >
+                            <Globe size={14} /> Live Project
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Divider */}
+                  <div className={`h-[1px] w-full ${theme.theme === 'light' ? 'bg-gray-100' : 'bg-white/5'}`} />
+
+                  {/* Tabs/Sections */}
+                  <div className="space-y-6">
+                    {/* Long description */}
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-black uppercase tracking-wider text-blue-600 dark:text-blue-400">Project Overview</h4>
+                      <p className={`text-sm sm:text-base leading-relaxed whitespace-pre-line font-medium ${
+                        theme.theme === 'light' ? 'text-gray-600' : 'text-gray-300'
+                      }`}>
+                        {selectedProject.longDescription || selectedProject.description}
+                      </p>
+                    </div>
+
+                    {/* Features */}
+                    <div className="space-y-3">
+                      <h4 className="text-sm font-black uppercase tracking-wider text-blue-600 dark:text-blue-400">Key Features</h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {selectedProject.features.map((feature: string, i: number) => (
+                          <div 
+                            key={i} 
+                            className={`flex items-start gap-2.5 p-3 rounded-xl border ${
+                              theme.theme === 'light' 
+                                ? 'bg-gray-50 border-gray-100 text-gray-700' 
+                                : 'bg-gray-800/40 border-white/5 text-gray-300'
+                            }`}
+                          >
+                            <div className="h-5 w-5 rounded-md bg-blue-600/10 flex items-center justify-center text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5">
+                              <Zap size={12} fill="currentColor" />
+                            </div>
+                            <span className="text-xs font-semibold leading-normal">{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Technologies */}
+                    <div className="space-y-3">
+                      <h4 className="text-sm font-black uppercase tracking-wider text-blue-600 dark:text-blue-400">Tech Stack</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedProject.technologies.map((tech: string) => (
+                          <span 
+                            key={tech} 
+                            className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest rounded-lg border ${
+                              theme.theme === 'light' 
+                                ? 'bg-gray-50 border-gray-100 text-gray-600' 
+                                : 'bg-gray-800 border-white/5 text-gray-400'
+                            }`}
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Complex Problems Solved */}
+                    {selectedProject.problemsSolved && selectedProject.problemsSolved.length > 0 && (
+                      <div className="space-y-4 pt-2">
+                        <h4 className="text-sm font-black uppercase tracking-wider text-blue-600 dark:text-blue-400 flex items-center gap-2">
+                          <Cpu size={16} /> Complex Engineering Problems Solved
+                        </h4>
+                        <div className="space-y-3">
+                          {selectedProject.problemsSolved.map((problem: { title: string; description: string }, i: number) => (
+                            <div 
+                              key={i} 
+                              className={`p-4.5 rounded-2xl border transition-all duration-300 ${
+                                theme.theme === 'light' 
+                                  ? 'bg-blue-50/30 border-blue-100 hover:bg-blue-50/50' 
+                                  : 'bg-blue-950/10 border-blue-500/10 hover:border-blue-500/20 hover:bg-blue-950/20'
+                              }`}
+                            >
+                              <h5 className="text-sm font-extrabold text-blue-700 dark:text-blue-300 flex items-center gap-2 mb-1.5">
+                                <span className="h-1.5 w-1.5 rounded-full bg-blue-600 dark:text-blue-400" />
+                                {problem.title}
+                              </h5>
+                              <p className={`text-xs sm:text-sm leading-relaxed font-medium ${
+                                theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                              }`}>
+                                {problem.description}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </motion.div>
             </div>
           )}

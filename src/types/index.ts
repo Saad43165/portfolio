@@ -17,7 +17,11 @@ export interface Project {
   endDate?: string;
   createdAt?: string;
   updatedAt?: string;
+  role?: string;
+  platforms?: string[];
+  problemsSolved?: { title: string; description: string }[];
 }
+
 
 export interface Skill {
   id: string;
