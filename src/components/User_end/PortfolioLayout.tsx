@@ -27,6 +27,10 @@ const Education = lazyWithPrefetch(() => import('./Education'));
 const Contact = lazyWithPrefetch(() => import('./Contact'));
 const Footer = lazyWithPrefetch(() => import('./Footer'));
 
+import { TerminalConsole } from './TerminalConsole';
+import { InteractiveBackgroundCanvas } from './InteractiveBackgroundCanvas';
+import { TelemetryDashboard } from './TelemetryDashboard';
+
 // Improved loading component with smooth progress animation
 // Improved loading component with Engineering AI theme and rotating orbits
 const LoadingIndicator = ({ progress }: { progress: number }) => {
@@ -182,6 +186,30 @@ const CustomCursor = () => {
   );
 };
 
+const MouseGlow = () => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const { theme } = React.useContext(ThemeContext);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setPosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  return (
+    <div
+      className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-1000"
+      style={{
+        background: theme === 'light'
+          ? `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(59, 130, 246, 0.04), transparent 80%)`
+          : `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.03) 50%, transparent 80%)`
+      }}
+    />
+  );
+};
+
 const BackToTop = () => {
   const [visible, setVisible] = useState(false);
 
@@ -229,12 +257,24 @@ const PortfolioLayout = () => {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [displayProgress, setDisplayProgress] = useState(0);
   const [forceComplete, setForceComplete] = useState(false);
+  const [isConsoleOpen, setIsConsoleOpen] = useState(false);
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === '`') {
+        e.preventDefault();
+        setIsConsoleOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   useEffect(() => {
     document.documentElement.className = theme;
@@ -286,6 +326,47 @@ const PortfolioLayout = () => {
   }, [portfolioInfo]);
 
   useEffect(() => {
+    // Console Easter Egg for developers
+    const labelStyle = 'color: #3b82f6; font-weight: bold; font-family: monospace; font-size: 11px;';
+    const valueStyle = 'color: #f8fafc; font-family: monospace; font-size: 11px;';
+    const titleStyle = 'background: linear-gradient(90deg, #3b82f6, #8b5cf6); color: white; padding: 4px 8px; font-weight: 900; border-radius: 4px; font-size: 12px; font-family: sans-serif; text-transform: uppercase;';
+
+    console.log('%c⚡ SAAD IKRAM - PORTFOLIO CONSOLE SYSTEM ⚡', titleStyle);
+    console.log('%cType %cSaad.help()%c to start neural interface.', labelStyle, 'color: #10b981; font-weight: bold; background: #064e3b; padding: 2px 4px; border-radius: 3px;', labelStyle);
+
+    (window as any).Saad = {
+      help: () => {
+        console.log('%cAvailable Commands:', titleStyle);
+        console.log('%cSaad.details() %c- Displays technical metadata.', 'color: #10b981;', valueStyle);
+        console.log('%cSaad.techStack() %c- Outputs classified technical arsenal.', 'color: #10b981;', valueStyle);
+        console.log('%cSaad.hire() %c- Returns contact instructions & secure transmission logs.', 'color: #10b981;', valueStyle);
+        return 'Neural link established.';
+      },
+      details: () => {
+        console.log('%c[Target Details]', 'color: #8b5cf6; font-weight: bold;');
+        console.log('%cName: %cSaad Ikram', labelStyle, valueStyle);
+        console.log('%cRole: %cLead Mobile & AI Developer', labelStyle, valueStyle);
+        console.log('%cLocation: %cChakwal, Punjab, Pakistan', labelStyle, valueStyle);
+        console.log('%cStatus: %cReady for Innovation & Core Architect tasks', labelStyle, 'color: #10b981; font-weight: bold;');
+        return 'Data retrieval completed.';
+      },
+      techStack: () => {
+        console.log('%c[Technical Arsenal Matrix]', 'color: #3b82f6; font-weight: bold;');
+        console.log('%cLanguages: %cDart (Flutter), Python (FastAPI), TypeScript, JavaScript', labelStyle, valueStyle);
+        console.log('%cPlatforms: %ciOS, Android, Web Ecosystems', labelStyle, valueStyle);
+        console.log('%cTesting: %cPlaywright E2E Testing, Unit & Integration tests', labelStyle, valueStyle);
+        console.log('%cCloud & DB: %cFirebase, Supabase, SQLite, PostgreSQL, GCP', labelStyle, valueStyle);
+        return 'Matrix analysis compiled.';
+      },
+      hire: () => {
+        console.log('%c[Secure Communication Protocols]', 'color: #ec4899; font-weight: bold;');
+        console.log('%cEmail: %csaadnaz43165@gmail.com', labelStyle, valueStyle);
+        console.log('%cPhone: %c+92-314-5459961', labelStyle, valueStyle);
+        console.log('%cResume: %cRefer to UI download button or execute: window.open("/Saad_Ikram_CV.pdf")', labelStyle, valueStyle);
+        return 'Transmission portal active.';
+      }
+    };
+
     console.log("Portfolio Version: 2.0.1 - Redesign Applied");
     // Scroll to top on route change
     window.scrollTo(0, 0);
@@ -333,7 +414,11 @@ const PortfolioLayout = () => {
         aria-label="Portfolio website content"
       >
         <CustomCursor />
+        <MouseGlow />
+        <InteractiveBackgroundCanvas />
         <BackToTop />
+        <TelemetryDashboard onToggleConsole={() => setIsConsoleOpen(prev => !prev)} />
+        <TerminalConsole isOpen={isConsoleOpen} onClose={() => setIsConsoleOpen(false)} />
         {isLoading && <LoadingIndicator progress={displayProgress} />}
 
         <Suspense fallback={null}>

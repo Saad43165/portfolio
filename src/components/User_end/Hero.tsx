@@ -161,12 +161,15 @@ const Hero = () => {
                 <motion.div variants={itemVariants} className="h-1.5 w-32 bg-gradient-to-r from-blue-600 to-transparent rounded-full mx-auto lg:mx-0" />
               </div>
 
-              <motion.div variants={itemVariants}>
+              <motion.div 
+                variants={itemVariants}
+                className="min-h-[80px] sm:min-h-[96px] lg:min-h-[80px] flex flex-col justify-end"
+              >
                 <h2 className={`text-2xl sm:text-3xl lg:text-2xl font-bold tracking-tight leading-relaxed ${theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
                   }`}>
                   Crafting Digital Excellence through <br className="hidden sm:block" />
-                  <span className="text-blue-500 font-black italic">{displayText}</span>
-                  <span className="animate-pulse inline-block w-1.5 h-10 lg:h-8 bg-blue-500 ml-1 align-middle" />
+                  <span className="text-blue-500 font-black italic">{displayText || '\u00A0'}</span>
+                  <span className="animate-pulse inline-block w-1.5 h-8 lg:h-6 bg-blue-500 ml-1 align-middle" />
                 </h2>
               </motion.div>
             </div>

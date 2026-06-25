@@ -84,7 +84,19 @@
       "startDate": "2025-01-01",
       "endDate": "2025-06-01",
       "createdAt": "2025-01-01T00:00:00.000Z",
-      "updatedAt": "2025-01-01T00:00:00.000Z"
+      "updatedAt": "2025-01-01T00:00:00.000Z",
+      "role": "Lead Mobile & Backend Developer",
+      "platforms": ["Android", "iOS"],
+      "problemsSolved": [
+        {
+          "title": "OCR Noise Suppression & Spell Correction",
+          "description": "Mitigated low-resolution scan issues in handwritten prescriptions by implementing a preprocessing pipeline with bilateral filtering and adaptive thresholding, reducing drug name misidentification by 40%."
+        },
+        {
+          "title": "FDA API Throttling & Caching Layer",
+          "description": "Optimized response times for drug interaction queries by building a local SQLite cache for the FDA database, preventing API throttling and reducing query latency from 800ms to 12ms."
+        }
+      ]
     },
     {
       "id": "project-vaxguard",
@@ -102,7 +114,19 @@
       "startDate": "2024-01-01",
       "endDate": "2024-06-01",
       "createdAt": "2024-01-01T00:00:00.000Z",
-      "updatedAt": "2024-01-01T00:00:00.000Z"
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "role": "Lead Mobile Architect",
+      "platforms": ["Android"],
+      "problemsSolved": [
+        {
+          "title": "WHO Protocol Compliance Matrix",
+          "description": "Mapped complex multi-variable clinical guidelines into a deterministic state-machine using Dart Provider, ensuring 100% precision in PEP scheduling output."
+        },
+        {
+          "title": "Geospatial Live Outbreak Clustering",
+          "description": "Optimized live map load latency under low bandwidth by aggregating outbreak locations into coordinate clusters using a grid-based spatial index, avoiding UI lag."
+        }
+      ]
     },
     {
       "id": "project-runquest",
@@ -120,7 +144,19 @@
       "startDate": "2023-01-01",
       "endDate": "2023-08-01",
       "createdAt": "2023-01-01T00:00:00.000Z",
-      "updatedAt": "2023-01-01T00:00:00.000Z"
+      "updatedAt": "2023-01-01T00:00:00.000Z",
+      "role": "Lead Mobile & Systems Engineer",
+      "platforms": ["iOS", "Android"],
+      "problemsSolved": [
+        {
+          "title": "Turf.js Polygon Area Computations",
+          "description": "Solved complex cross-border overlaps and erratic polygon claims by filtering GPS telemetry nodes through a Kalman Filter before invoking Turf.js area equations."
+        },
+        {
+          "title": "Zustand State Lockups under High Frequency",
+          "description": "Eliminated UI thread freezes during background GPS tracking by offloading polygon delta checks to a separate JS thread using Expo Web Workers, maintaining a locked 60 FPS."
+        }
+      ]
     },
     {
       "id": "project-github",
@@ -130,7 +166,7 @@
       "image": "https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=800",
       "technologies": ["Flutter", "Dart", "GitHub REST API", "SharedPreferences", "url_launcher"],
       "features": ["Infinite-Scroll Pagination", "Async HTTP Handling", "Offline Favourites", "Glassmorphism UI"],
-      "githubUrl": "https://github.com/saad43165",
+      "githubUrl": "https://github.com/Saad43165",
       "liveUrl": "",
       "videoUrl": "", 
       "category": "Mobile Application",
@@ -138,7 +174,15 @@
       "startDate": "2023-06-01",
       "endDate": "2023-09-01",
       "createdAt": "2023-06-01T00:00:00.000Z",
-      "updatedAt": "2023-06-01T00:00:00.000Z"
+      "updatedAt": "2023-06-01T00:00:00.000Z",
+      "role": "Mobile Developer",
+      "platforms": ["Android"],
+      "problemsSolved": [
+        {
+          "title": "Infinite Scroll Page Boundary Race Conditions",
+          "description": "Resolved double-triggering API requests at page boundary limits by implementing a throttle-lock state on the scroll controller listener, reducing redundant payloads to zero."
+        }
+      ]
     },
     {
       "id": "project-naheed",

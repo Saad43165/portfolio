@@ -158,3 +158,17 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+/* GPU Hardware Acceleration for smooth animations */
+.card-gpu-accelerate {
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+}
+
+/* Optimize scroll experience globally */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}

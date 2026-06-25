@@ -4,6 +4,132 @@ import { Code, Palette, Database, Smartphone, Zap, CheckCircle2, Cpu, Cloud, Ter
 import { motion, Variants } from 'framer-motion';
 import { ThemeContext } from './PortfolioLayout';
 
+const SkillCard = ({ skill, index, theme, isVisible, getSkillVariants }: {
+  skill: any;
+  index: number;
+  theme: { theme: string; toggleTheme: () => void };
+  isVisible: boolean;
+  getSkillVariants: (idx: number) => any;
+}) => {
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const [hovered, setHovered] = useState(false);
+  const [rotate, setRotate] = useState({ x: 0, y: 0 });
+  const [gloss, setGloss] = useState({ x: 50, y: 50 });
+  const cardRef = useRef<HTMLDivElement>(null);
+  const rectRef = useRef<DOMRect | null>(null);
+
+  const handleMouseEnter = () => {
+    setHovered(true);
+    if (cardRef.current) {
+      rectRef.current = cardRef.current.getBoundingClientRect();
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!rectRef.current && cardRef.current) {
+      rectRef.current = cardRef.current.getBoundingClientRect();
+    }
+    if (!rectRef.current) return;
+    
+    const width = rectRef.current.width;
+    const height = rectRef.current.height;
+    const mouseX = e.clientX - rectRef.current.left;
+    const mouseY = e.clientY - rectRef.current.top;
+
+    setCoords({ x: mouseX, y: mouseY });
+    setRotate({
+      x: ((mouseY / height) - 0.5) * -10,
+      y: ((mouseX / width) - 0.5) * 10
+    });
+    setGloss({
+      x: (mouseX / width) * 100,
+      y: (mouseY / height) * 100
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+    rectRef.current = null;
+    setRotate({ x: 0, y: 0 });
+  };
+
+  return (
+    <motion.div 
+      ref={cardRef}
+      variants={getSkillVariants(index)}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform: hovered 
+          ? `perspective(800px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) translate3d(0, -4px, 0)` 
+          : `perspective(800px) rotateX(0deg) rotateY(0deg) translate3d(0, 0, 0)`,
+        transition: hovered ? 'none' : 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)'
+      }}
+      className={`p-4 rounded-xl border transition-all duration-500 group/skill relative overflow-hidden card-gpu-accelerate cursor-pointer ${
+        theme.theme === 'light' 
+          ? 'bg-white border-gray-100 shadow-lg shadow-blue-500/5' 
+          : 'bg-gray-900 border-white/5 hover:border-blue-500/30 shadow-2xl'
+      }`}
+    >
+      {/* Dynamic Hover Glow */}
+      {hovered && (
+        <div 
+          className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-300"
+          style={{
+            background: `radial-gradient(150px circle at ${coords.x}px ${coords.y}px, rgba(59, 130, 246, 0.12), transparent 80%)`
+          }}
+        />
+      )}
+
+      {/* Gloss Reflection Overlay */}
+      {hovered && (
+        <div 
+          className="pointer-events-none absolute inset-0 z-20 transition-opacity duration-300 opacity-20 mix-blend-color-dodge"
+          style={{
+            background: `radial-gradient(circle at ${gloss.x}% ${gloss.y}%, rgba(255, 255, 255, 0.45) 0%, transparent 60%)`
+          }}
+        />
+      )}
+      
+      {/* Interactive Aurora Glow */}
+      <div className="absolute top-0 right-0 w-24 h-24 bg-blue-600/5 blur-[40px] rounded-full -mr-12 -mt-12 group-hover/skill:bg-blue-600/10 transition-all duration-700 pointer-events-none" />
+      
+      <div className="relative z-10">
+        <div className="flex justify-between items-center mb-3">
+          <span className={`font-bold text-sm tracking-tight ${
+            theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+          }`}>
+            {skill.name}
+          </span>
+          <span className="text-[8px] font-black text-blue-600 bg-blue-500/10 px-1.5 py-0.5 rounded-full border border-blue-500/20">
+            {skill.level}%
+          </span>
+        </div>
+        
+        <div className="space-y-4">
+          <div className="w-full bg-gray-100 dark:bg-white/5 h-1.5 rounded-full overflow-hidden relative">
+            <motion.div 
+              initial={{ width: 0 }}
+              animate={isVisible ? { width: `${skill.level}%` } : {}}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              className="h-full bg-gradient-to-r from-blue-600 to-indigo-500 rounded-full"
+            />
+          </div>
+          
+          <div className="flex items-center justify-between">
+            <div className="flex items-center text-[9px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
+              <CheckCircle2 size={12} className="mr-1.5 text-blue-500" />
+              {skill.yearsOfExperience > 0 ? `${skill.yearsOfExperience}Y Mastery` : 'Expertise'}
+            </div>
+            <Zap size={10} className="text-blue-500 opacity-0 group-hover/skill:opacity-100 transition-opacity" />
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const Skills = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { skills } = useData();
@@ -149,49 +275,14 @@ const Skills = () => {
 
                   <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                     {categorySkills.map((skill, index) => (
-                      <motion.div 
+                      <SkillCard
                         key={skill.id}
-                        variants={getSkillVariants(index)}
-                        whileHover={{ y: -3, scale: 1.02 }}
-                        className={`p-4 rounded-xl border transition-all duration-500 group/skill relative overflow-hidden ${
-                          theme.theme === 'light' 
-                            ? 'bg-white border-gray-100 shadow-lg shadow-blue-500/5' 
-                            : 'bg-gray-900 border-white/5 hover:border-blue-500/30 shadow-2xl'
-                        }`}
-                      >
-                        {/* Interactive Aurora Glow */}
-                        <div className="absolute top-0 right-0 w-24 h-24 bg-blue-600/5 blur-[40px] rounded-full -mr-12 -mt-12 group-hover/skill:bg-blue-600/10 transition-all duration-700" />
-                        
-                        <div className="flex justify-between items-center mb-3">
-                          <span className={`font-bold text-sm tracking-tight ${
-                            theme.theme === 'light' ? 'text-gray-900' : 'text-white'
-                          }`}>
-                            {skill.name}
-                          </span>
-                          <span className="text-[8px] font-black text-blue-600 bg-blue-500/10 px-1.5 py-0.5 rounded-full border border-blue-500/20">
-                            {skill.level}%
-                          </span>
-                        </div>
-                        
-                        <div className="space-y-4">
-                          <div className="w-full bg-gray-100 dark:bg-white/5 h-1.5 rounded-full overflow-hidden relative">
-                            <motion.div 
-                              initial={{ width: 0 }}
-                              animate={isVisible ? { width: `${skill.level}%` } : {}}
-                              transition={{ duration: 1.5, ease: "easeOut" }}
-                              className="h-full bg-gradient-to-r from-blue-600 to-indigo-500 rounded-full"
-                            />
-                          </div>
-                          
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center text-[9px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
-                              <CheckCircle2 size={12} className="mr-1.5 text-blue-500" />
-                              {skill.yearsOfExperience > 0 ? `${skill.yearsOfExperience}Y Mastery` : 'Expertise'}
-                            </div>
-                            <Zap size={10} className="text-blue-500 opacity-0 group-hover/skill:opacity-100 transition-opacity" />
-                          </div>
-                        </div>
-                      </motion.div>
+                        skill={skill}
+                        index={index}
+                        theme={theme}
+                        isVisible={isVisible}
+                        getSkillVariants={getSkillVariants}
+                      />
                     ))}
                   </div>
                 </motion.div>

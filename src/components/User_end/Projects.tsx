@@ -4,6 +4,204 @@ import { ExternalLink, Github, Zap, Shield, Smartphone, Globe, X, Play, Code as 
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { ThemeContext } from './PortfolioLayout';
 
+const ProjectCard = ({ 
+  project, 
+  index, 
+  theme, 
+  itemVariants, 
+  getProjectIcon, 
+  handleViewVideo, 
+  setSelectedProject, 
+  setDetailModalOpen 
+}: {
+  project: any;
+  index: number;
+  theme: any;
+  itemVariants: any;
+  getProjectIcon: (cat: string) => any;
+  handleViewVideo: (url: string) => void;
+  setSelectedProject: (proj: any) => void;
+  setDetailModalOpen: (open: boolean) => void;
+}) => {
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const [hovered, setHovered] = useState(false);
+  const [rotate, setRotate] = useState({ x: 0, y: 0 });
+  const [gloss, setGloss] = useState({ x: 50, y: 50 });
+  const cardRef = useRef<HTMLDivElement>(null);
+  const rectRef = useRef<DOMRect | null>(null);
+
+  const handleMouseEnter = () => {
+    setHovered(true);
+    if (cardRef.current) {
+      rectRef.current = cardRef.current.getBoundingClientRect();
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!rectRef.current && cardRef.current) {
+      rectRef.current = cardRef.current.getBoundingClientRect();
+    }
+    if (!rectRef.current) return;
+    
+    const width = rectRef.current.width;
+    const height = rectRef.current.height;
+    const mouseX = e.clientX - rectRef.current.left;
+    const mouseY = e.clientY - rectRef.current.top;
+    
+    setCoords({ x: mouseX, y: mouseY });
+    setRotate({
+      x: ((mouseY / height) - 0.5) * -12,
+      y: ((mouseX / width) - 0.5) * 12
+    });
+    setGloss({
+      x: (mouseX / width) * 100,
+      y: (mouseY / height) * 100
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+    rectRef.current = null;
+    setRotate({ x: 0, y: 0 });
+  };
+
+  const ProjectIcon = getProjectIcon(project.category);
+  const isMobileApp = 
+    project.category.toLowerCase().includes('mobile') || 
+    ['project-signbridge', 'project-agriguard', 'project-vaxguard', 'project-runquest', 'project-naheed'].includes(project.id);
+
+  return (
+    <motion.div
+      ref={cardRef}
+      layout
+      variants={itemVariants}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform: hovered 
+          ? `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) translate3d(0, -6px, 0)` 
+          : `perspective(1000px) rotateX(0deg) rotateY(0deg) translate3d(0, 0, 0)`,
+        transition: hovered ? 'none' : 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)'
+      }}
+      className={`group relative rounded-2xl p-5 transition-all duration-700 border flex flex-col h-full overflow-hidden card-gpu-accelerate cursor-pointer ${
+        theme.theme === 'light'
+          ? 'bg-white border-gray-200 shadow-sm hover:shadow-md'
+          : 'bg-gray-900 border-white/10 hover:border-blue-500/30 shadow-2xl'
+      }`}
+    >
+      {/* Dynamic Hover Glow */}
+      {hovered && (
+        <div 
+          className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-300"
+          style={{
+            background: `radial-gradient(250px circle at ${coords.x}px ${coords.y}px, rgba(59, 130, 246, 0.12), transparent 80%)`
+          }}
+        />
+      )}
+      
+      {/* Gloss Reflection Overlay */}
+      {hovered && (
+        <div 
+          className="pointer-events-none absolute inset-0 z-20 transition-opacity duration-300 opacity-20 mix-blend-color-dodge"
+          style={{
+            background: `radial-gradient(circle at ${gloss.x}% ${gloss.y}%, rgba(255, 255, 255, 0.45) 0%, transparent 60%)`
+          }}
+        />
+      )}
+      
+      <div className="relative z-10 flex flex-col h-full pointer-events-auto">
+        {/* Media Container */}
+        <div className={`relative rounded-[2rem] overflow-hidden mb-8 transition-all duration-700 ${
+          isMobileApp ? 'aspect-[9/16] max-w-[240px] mx-auto border-[6px] border-gray-900 shadow-2xl' : 'aspect-video'
+        }`}>
+          <img
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center gap-4 z-20">
+            {project.videoUrl && (
+              <motion.button 
+                whileHover={{ scale: 1.1 }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleViewVideo(project.videoUrl!);
+                }}
+                className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-white cursor-pointer"
+              >
+                <Play size={24} fill="currentColor" />
+              </motion.button>
+            )}
+            {project.githubUrl && (
+              <motion.a 
+                whileHover={{ scale: 1.1 }}
+                href={project.githubUrl}
+                target="_blank"
+                onClick={(e) => e.stopPropagation()}
+                className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-white cursor-pointer"
+              >
+                <Github size={24} />
+              </motion.a>
+            )}
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-grow flex flex-col">
+          <div className="flex items-center gap-3 mb-4">
+            <div className={`p-3 rounded-xl ${
+              theme.theme === 'light' ? 'bg-blue-50 text-blue-600' : 'bg-blue-900/30 text-blue-400'
+            }`}>
+              <ProjectIcon size={20} />
+            </div>
+            <h3 className={`text-2xl font-bold tracking-tight transition-colors duration-300 ${
+              theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+            }`}>
+              {project.title}
+            </h3>
+          </div>
+
+          <p className={`text-base font-medium leading-relaxed mb-8 line-clamp-3 group-hover:line-clamp-none transition-all duration-500 ${
+            theme.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+          }`}>
+            {project.description}
+          </p>
+
+          <div className="mt-auto pt-6 border-t border-gray-100 dark:border-white/5 space-y-6">
+            <div className="flex flex-wrap gap-2">
+              {project.technologies.slice(0, 4).map((tech: string) => (
+                <span key={tech} className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest rounded-xl border ${
+                  theme.theme === 'light' ? 'bg-gray-50 border-gray-100 text-gray-500' : 'bg-gray-800 border-white/5 text-gray-400'
+                }`}>
+                  {tech}
+                </span>
+              ))}
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full ${project.status === 'completed' ? 'bg-green-500' : 'bg-blue-500 animate-pulse'}`} />
+                <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">{project.status}</span>
+              </div>
+              <motion.button 
+                whileHover={{ x: 5 }}
+                onClick={() => {
+                  setSelectedProject(project);
+                  setDetailModalOpen(true);
+                }}
+                className="flex items-center gap-2 text-xs font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest cursor-pointer hover:underline z-20"
+              >
+                Details <ExternalLink size={14} />
+              </motion.button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const Projects = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { projects } = useData();
@@ -119,107 +317,19 @@ const Projects = () => {
         {filteredProjects.length > 0 ? (
           <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             <AnimatePresence mode="popLayout">
-              {filteredProjects.map((project, index) => {
-                const ProjectIcon = getProjectIcon(project.category);
-                const isMobileApp = project.category.toLowerCase().includes('mobile');
-                
-                return (
-                  <motion.div
-                    key={project.id || index}
-                    layout
-                    variants={itemVariants}
-                    whileHover={{ y: -5 }}
-                    className={`group relative rounded-2xl p-5 transition-all duration-700 border flex flex-col h-full ${
-                      theme.theme === 'light'
-                        ? 'bg-white border-gray-200 shadow-sm hover:shadow-md'
-                        : 'bg-gray-900 border-white/10 hover:border-blue-500/30 shadow-2xl'
-                    }`}
-                  >
-                    {/* Media Container */}
-                    <div className={`relative rounded-[2rem] overflow-hidden mb-8 transition-all duration-700 ${
-                      isMobileApp ? 'aspect-[9/16] max-w-[240px] mx-auto border-[6px] border-gray-900 shadow-2xl' : 'aspect-video'
-                    }`}>
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center gap-4">
-                        {project.videoUrl && (
-                          <motion.button 
-                            whileHover={{ scale: 1.1 }}
-                            onClick={() => handleViewVideo(project.videoUrl!)}
-                            className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-white"
-                          >
-                            <Play size={24} fill="currentColor" />
-                          </motion.button>
-                        )}
-                        {project.githubUrl && (
-                          <motion.a 
-                            whileHover={{ scale: 1.1 }}
-                            href={project.githubUrl}
-                            target="_blank"
-                            className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-white"
-                          >
-                            <Github size={24} />
-                          </motion.a>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="flex-grow flex flex-col">
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className={`p-3 rounded-xl ${
-                          theme.theme === 'light' ? 'bg-blue-50 text-blue-600' : 'bg-blue-900/30 text-blue-400'
-                        }`}>
-                          <ProjectIcon size={20} />
-                        </div>
-                        <h3 className={`text-2xl font-bold tracking-tight transition-colors duration-300 ${
-                          theme.theme === 'light' ? 'text-gray-900' : 'text-white'
-                        }`}>
-                          {project.title}
-                        </h3>
-                      </div>
-
-                      <p className={`text-base font-medium leading-relaxed mb-8 line-clamp-3 group-hover:line-clamp-none transition-all duration-500 ${
-                        theme.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-                      }`}>
-                        {project.description}
-                      </p>
-
-                      <div className="mt-auto pt-6 border-t border-gray-100 dark:border-white/5 space-y-6">
-                        <div className="flex flex-wrap gap-2">
-                          {project.technologies.slice(0, 4).map((tech) => (
-                            <span key={tech} className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest rounded-xl border ${
-                              theme.theme === 'light' ? 'bg-gray-50 border-gray-100 text-gray-500' : 'bg-gray-800 border-white/5 text-gray-400'
-                            }`}>
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <div className={`w-2 h-2 rounded-full ${project.status === 'completed' ? 'bg-green-500' : 'bg-blue-500 animate-pulse'}`} />
-                            <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">{project.status}</span>
-                          </div>
-                          <motion.button 
-                            whileHover={{ x: 5 }}
-                            onClick={() => {
-                              setSelectedProject(project);
-                              setDetailModalOpen(true);
-                            }}
-                            className="flex items-center gap-2 text-xs font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest cursor-pointer hover:underline"
-                          >
-                            Details <ExternalLink size={14} />
-                          </motion.button>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
+              {filteredProjects.map((project, index) => (
+                <ProjectCard
+                  key={project.id || index}
+                  project={project}
+                  index={index}
+                  theme={theme}
+                  itemVariants={itemVariants}
+                  getProjectIcon={getProjectIcon}
+                  handleViewVideo={handleViewVideo}
+                  setSelectedProject={setSelectedProject}
+                  setDetailModalOpen={setDetailModalOpen}
+                />
+              ))}
             </AnimatePresence>
           </motion.div>
         ) : (
@@ -302,7 +412,8 @@ const Projects = () => {
                     <div className={`md:col-span-5 relative rounded-2xl overflow-hidden border ${
                       theme.theme === 'light' ? 'border-gray-200 bg-gray-50' : 'border-white/10 bg-gray-950'
                     } ${
-                      selectedProject.category.toLowerCase().includes('mobile') 
+                      (selectedProject.category.toLowerCase().includes('mobile') ||
+                       ['project-signbridge', 'project-agriguard', 'project-vaxguard', 'project-runquest', 'project-naheed'].includes(selectedProject.id)) 
                         ? 'aspect-[9/16] max-w-[220px] mx-auto' 
                         : 'aspect-video w-full'
                     }`}>
