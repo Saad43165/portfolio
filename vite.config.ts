@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 // Automatically copy project images from root to public/ on dev/build startup
-const filesToCopy = ['signbridge.jpeg', 'agri.png', 'naheed.png'];
+const filesToCopy = ['signbridge.jpeg', 'agri.png', 'naheed.png', 'vax.png', 'run.png'];
 const publicDir = path.resolve(__dirname, 'public');
 
 if (!fs.existsSync(publicDir)) {

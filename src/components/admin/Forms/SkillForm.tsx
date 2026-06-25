@@ -21,13 +21,12 @@ const SkillForm: React.FC<SkillFormProps> = ({ skill, onClose }) => {
   const [error, setError] = useState<string | null>(null);
 
   const commonCategories = [
-    'Frontend Development',
-    'Backend Development',
-    'Database',
-    'DevOps',
-    'Mobile Development',
-    'Design',
-    'Tools & Others',
+    'Programming Languages',
+    'Frameworks & Libraries',
+    'Backend & Cloud Services',
+    'Database Systems',
+    'Testing & Tools',
+    'UI/UX & Design',
   ];
 
   const handleInputChange = (
