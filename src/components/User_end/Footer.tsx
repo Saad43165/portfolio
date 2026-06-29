@@ -42,7 +42,7 @@ const Footer = () => {
     <footer className={`relative overflow-hidden transition-colors duration-500 border-t ${
       theme.theme === 'light' 
         ? 'bg-white border-gray-100' 
-        : 'bg-gray-950 border-white/5'
+        : 'bg-transparent border-white/5'
     }`}>
       <div className="max-w-7xl mx-auto px-6 pt-16 pb-10 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 mb-16">
@@ -54,10 +54,10 @@ const Footer = () => {
               }`}>
                 {portfolioInfo.name}
               </h3>
-              <p className={`text-base font-medium leading-relaxed max-w-md ${
+              <p className={`text-sm font-medium leading-relaxed max-w-sm ${
                 theme.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
               }`}>
-                {portfolioInfo.roles[0] || 'Software Engineer'} focused on crafting exceptional digital experiences with high performance and elegant design.
+                Building robust, AI-driven mobile & web applications.
               </p>
             </div>
 
@@ -134,7 +134,9 @@ const Footer = () => {
             <div className="space-y-6">
               <motion.a
                 whileHover={{ x: 5 }}
-                href={`mailto:${portfolioInfo.email}`}
+                href={`https://wa.me/${(portfolioInfo.phone || '+923145459961').replace(/[^0-9]/g, '')}?text=${encodeURIComponent("Hello! I'd like to connect with you regarding a project.")}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-3 text-xs font-black uppercase tracking-[0.2em] text-blue-600 bg-blue-50 dark:bg-blue-900/20 px-6 py-4 rounded-2xl w-full"
               >
                 Send Message <ExternalLink size={14} />

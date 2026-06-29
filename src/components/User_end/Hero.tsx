@@ -102,7 +102,7 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className={`min-h-screen flex items-center justify-center relative overflow-hidden transition-colors duration-500 pt-24 lg:pt-32 ${theme.theme === 'light' ? 'bg-[#fcfdfe]' : 'bg-[#020617]'
+    <section id="home" className={`min-h-screen flex items-center justify-center relative overflow-hidden transition-colors duration-500 pt-24 lg:pt-32 ${theme.theme === 'light' ? 'bg-transparent' : 'bg-transparent'
       }`}>
       {/* Dynamic Background Elements */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -152,13 +152,13 @@ const Hero = () => {
               <div className="space-y-1 lg:space-y-0.5">
                 <motion.h1
                   variants={itemVariants}
-                  className={`text-6xl sm:text-7xl lg:text-7xl font-black leading-[0.9] tracking-tighter ${theme.theme === 'light' ? 'text-gray-950' : 'text-white'
+                  className={`text-5xl sm:text-6xl lg:text-6xl font-black leading-[0.9] tracking-tighter ${theme.theme === 'light' ? 'text-gray-950' : 'text-white'
                     }`}
                 >
                   Saad <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600">Ikram</span>
                 </motion.h1>
 
-                <motion.div variants={itemVariants} className="h-1.5 w-32 bg-gradient-to-r from-blue-600 to-transparent rounded-full mx-auto lg:mx-0" />
+                <motion.div variants={itemVariants} className="h-1.5 w-24 bg-gradient-to-r from-blue-600 to-transparent rounded-full mx-auto lg:mx-0" />
               </div>
 
               <motion.div 
@@ -231,60 +231,81 @@ const Hero = () => {
             </motion.div>
           </div>
 
-          {/* Visual Right */}
+          {/* Visual Right: Improved Profile Presentation */}
           <motion.div
             variants={itemVariants}
-            className="flex-1 relative order-1 lg:order-2 mb-8 lg:mb-0"
+            className="flex-1 relative order-1 lg:order-2 mb-12 lg:mb-0 w-full max-w-[240px] sm:max-w-[280px] lg:max-w-[340px] mx-auto"
           >
-            <div className="relative w-full max-w-[200px] sm:max-w-[320px] lg:max-w-[360px] mx-auto">
+            {/* Soft Ambient Glow */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-purple-500/20 rounded-full blur-[80px] lg:blur-[100px] opacity-60 mix-blend-screen" />
 
-              {/* Subtle Elegant Glow */}
-              <div className="absolute inset-0 bg-blue-600/5 rounded-full blur-[80px] lg:blur-[120px] opacity-50" />
+            {/* Premium 3D Floating Frame */}
+            <motion.div
+              whileHover={{
+                y: -12,
+                rotateY: 8,
+                rotateX: -4,
+                scale: 1.02,
+                transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
+              }}
+              className="relative aspect-[4/5] rounded-[2.5rem] sm:rounded-[3rem] p-3 sm:p-4 z-10 transition-all duration-700 mx-auto"
+            >
+              {/* Animated Border Gradient */}
+              <div className={`absolute inset-0 rounded-[2.8rem] sm:rounded-[3.2rem] opacity-70 ${
+                theme.theme === 'light' 
+                  ? 'bg-gradient-to-b from-blue-100 via-transparent to-blue-50' 
+                  : 'bg-gradient-to-b from-white/10 via-transparent to-white/5'
+              }`} />
+              
+              {/* Inner Image Container */}
+              <div className={`relative w-full h-full rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden group shadow-2xl ${
+                theme.theme === 'light' ? 'bg-gray-100 shadow-blue-500/10' : 'bg-gray-900 shadow-black/50'
+              }`}>
+                <motion.img
+                  src={portfolioInfo.profileImage || "/main_image.png"}
+                  alt={portfolioInfo.name}
+                  className="w-full h-full object-cover transition-all duration-1000 transform group-hover:scale-110"
+                  style={{ objectPosition: 'center top' }}
+                />
 
-              {/* Refined 3D Tilt Container */}
-              <motion.div
-                whileHover={{
-                  y: -10,
-                  rotateY: 5,
-                  rotateX: -5,
-                  transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
-                }}
-                className={`relative aspect-square rounded-[3.5rem] sm:rounded-[4.5rem] lg:rounded-[5.5rem] overflow-hidden border-2 p-2.5 z-10 transition-all duration-700 ${theme.theme === 'light'
-                    ? 'border-gray-100 bg-white shadow-[0_20px_50px_-15px_rgba(0,0,0,0.1)]'
-                    : 'border-white/5 bg-white/5 backdrop-blur-3xl shadow-2xl'
-                  }`}
-              >
-                <div className="w-full h-full rounded-[3.2rem] sm:rounded-[4.2rem] lg:rounded-[5.2rem] overflow-hidden relative group bg-gray-50 dark:bg-gray-900/50">
-                  <motion.img
-                    src={portfolioInfo.profileImage || "/main_image.png"}
-                    alt={portfolioInfo.name}
-                    className="w-full h-full object-cover transition-all duration-1000 transform group-hover:scale-105"
-                  />
+                {/* Glassmorphic Overlay on Hover */}
+                <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none ${
+                  theme.theme === 'light'
+                    ? 'bg-gradient-to-t from-white/40 via-transparent to-transparent'
+                    : 'bg-gradient-to-t from-black/60 via-transparent to-transparent'
+                }`} />
+              </div>
+            </motion.div>
 
-                  {/* Subtle Gradient Overlay */}
-                  <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none ${theme.theme === 'light'
-                      ? 'bg-gradient-to-tr from-blue-600/5 to-transparent'
-                      : 'bg-gradient-to-tr from-blue-600/20 to-transparent'
-                    }`} />
-                </div>
-              </motion.div>
+            {/* Floating Badge 1 */}
+            <motion.div
+              variants={itemVariants}
+              className={`absolute -left-6 top-1/4 px-4 py-2.5 rounded-2xl border shadow-xl z-20 flex items-center gap-2.5 backdrop-blur-md ${
+                theme.theme === 'light' ? 'bg-white/90 border-gray-100' : 'bg-gray-950/90 border-white/10'
+              }`}
+            >
+              <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                <Code size={14} className="text-blue-600 dark:text-blue-400" />
+              </div>
+              <div>
+                <p className={`text-[10px] font-black uppercase tracking-widest ${theme.theme === 'light' ? 'text-gray-950' : 'text-white'}`}>Software</p>
+                <p className="text-[9px] font-semibold text-gray-500 uppercase tracking-widest">Engineer</p>
+              </div>
+            </motion.div>
 
-              {/* Minimal Professional Badge */}
-              <motion.div
-                variants={itemVariants}
-                className={`absolute -right-2 -bottom-2 px-6 py-3 rounded-2xl border shadow-xl z-20 hidden sm:flex items-center gap-3 ${theme.theme === 'light'
-                    ? 'bg-white border-gray-100'
-                    : 'bg-gray-950 border-white/10'
-                  }`}
-              >
-                <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${theme.theme === 'light' ? 'text-gray-950' : 'text-white'
-                  }`}>
-                  Full-Stack Architect
-                </span>
-              </motion.div>
+            {/* Floating Badge 2 */}
+            <motion.div
+              variants={itemVariants}
+              className={`absolute -right-6 bottom-1/4 px-4 py-2.5 rounded-2xl border shadow-xl z-20 flex items-center gap-2.5 backdrop-blur-md ${
+                theme.theme === 'light' ? 'bg-white/90 border-gray-100' : 'bg-gray-950/90 border-white/10'
+              }`}
+            >
+              <div className="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)] animate-pulse" />
+              <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${theme.theme === 'light' ? 'text-gray-950' : 'text-white'}`}>
+                Available
+              </span>
+            </motion.div>
 
-            </div>
           </motion.div>
         </div>
       </motion.div>

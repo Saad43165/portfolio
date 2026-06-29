@@ -171,4 +171,4 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-}
+}@keyframes terminalScroll { 0%, 10% { transform: translateY(0); } 40%, 60% { transform: translateY(-20px); } 90%, 100% { transform: translateY(0); } }

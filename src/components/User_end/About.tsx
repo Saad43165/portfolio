@@ -37,7 +37,7 @@ const About = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.15 },
+      transition: { staggerChildren: 0.1 },
     },
   };
 
@@ -47,7 +47,7 @@ const About = () => {
       opacity: 1,
       scale: 1,
       y: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
     },
   };
 
@@ -55,105 +55,44 @@ const About = () => {
     <motion.section
       id="about"
       ref={sectionRef}
-      className={`py-6 sm:py-10 transition-colors duration-500 overflow-hidden relative ${theme.theme === 'light' ? 'bg-gray-50/50' : 'bg-gray-950'}`}
+      className={`py-10 sm:py-16 transition-colors duration-500 overflow-hidden relative ${theme.theme === 'light' ? 'bg-slate-50/50' : 'bg-transparent'}`}
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}
       variants={containerVariants}
     >
-      {/* Subtle Background Accent */}
-      <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] -translate-x-1/2" />
+      {/* Dynamic Background Elements - Cyan Theme */}
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[150px] translate-x-1/3 translate-y-1/3 pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div className="mb-12" variants={itemVariants}>
-          <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
-            <div className="h-[2px] w-8 bg-blue-600 rounded-full" />
-            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600">The Genesis</span>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <motion.div className="mb-10 text-center lg:text-left" variants={itemVariants}>
+          <div className="flex items-center justify-center lg:justify-start gap-2 mb-4">
+            <div className="h-[2px] w-6 bg-blue-600 rounded-full" />
+            <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-600">The Genesis</span>
           </div>
-          <h2 className={`text-3xl sm:text-5xl font-black tracking-tight leading-[1.1] text-center lg:text-left ${
+          <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] ${
               theme.theme === 'light' ? 'text-gray-900' : 'text-white'
             }`}
           >
-            A Glimpse Into <br />
+            A Glimpse Into <br className="hidden lg:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">My Creative Journey</span>
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-20 items-start">
-          <div className="lg:col-span-5 space-y-12 order-2 lg:order-1 w-full">
-            <motion.div className="relative group max-w-[260px] mx-auto lg:mx-0" variants={itemVariants}>
-              <div className="absolute -inset-2 bg-gradient-to-br from-blue-600/30 to-indigo-600/30 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              <motion.div 
-                whileHover={{ rotateY: 5, rotateX: -5, scale: 1.02 }}
-                className={`relative aspect-[5/6] rounded-3xl overflow-hidden border-2 p-1.5 transition-all duration-500 ${
-                  theme.theme === 'light' ? 'bg-white border-blue-200 shadow-2xl' : 'bg-gray-900 border-white/10'
-                }`}
-              >
-                <img
-                  src={aboutData.aboutImage || "/saad_pic.JPG"}
-                  alt="Saad Ikram"
-                  className="w-full h-full object-cover rounded-[1.4rem] transition-all duration-1000 transform group-hover:scale-110"
-                  loading="lazy"
-                />
-                
-                {/* Magical Experience Float */}
-                <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-[10px]">
-                      SI
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-[10px] font-black text-white uppercase tracking-widest">Mastery Level</span>
-                      <span className="text-[9px] font-bold text-blue-300 uppercase tracking-tighter">Elite Developer</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-6">
-              {stats.map((stat) => (
-                <motion.div
-                  key={stat.label}
-                  className={`p-6 rounded-2xl transition-all duration-500 border ${
-                    theme.theme === 'light' 
-                      ? 'bg-white border-gray-100 shadow-lg shadow-gray-200/40 hover:shadow-blue-500/10' 
-                      : 'bg-gray-900 border-white/5 hover:bg-gray-800'
-                  }`}
-                  variants={itemVariants}
-                >
-                  <div className="flex items-center gap-6">
-                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${
-                      theme.theme === 'light' ? 'bg-blue-50 text-blue-600' : 'bg-blue-950 text-blue-400'
-                    }`}>
-                      <stat.Icon size={28} />
-                    </div>
-                    <div>
-                      <div className={`text-3xl font-black tracking-tight leading-none mb-1 ${
-                        theme.theme === 'light' ? 'text-gray-900' : 'text-white'
-                      }`}>
-                        {stat.value}
-                      </div>
-                      <div className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
-                        {stat.label}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          <motion.div className="lg:col-span-7 space-y-6 order-1 lg:order-2" variants={itemVariants}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
+          
+          {/* Main Content Area */}
+          <motion.div className="space-y-6" variants={itemVariants}>
             <div className="space-y-4">
-              <h3 className={`text-2xl sm:text-4xl font-bold leading-tight ${
+              <h3 className={`text-2xl sm:text-3xl font-bold leading-tight ${
                   theme.theme === 'light' ? 'text-gray-900' : 'text-white'
                 }`}
               >
                 {aboutData.heading}
               </h3>
-              <div className="space-y-6">
-                {aboutData.paragraphs.map((para, i) => (
-                  <p key={i} className={`text-lg sm:text-xl leading-relaxed font-medium ${
+              <div className="space-y-4 pr-0 lg:pr-8">
+                {aboutData.paragraphs.slice(0, 1).map((para, i) => (
+                  <p key={i} className={`text-base sm:text-lg leading-relaxed font-medium ${
                       theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
                     }`}
                   >
@@ -163,17 +102,17 @@ const About = () => {
               </div>
             </div>
             
-            <div className="space-y-6">
-              <p className="text-xs font-bold uppercase tracking-[0.4em] text-blue-600">Core Expertise</p>
-              <div className="flex flex-wrap gap-3">
+            <div className="space-y-4 pt-4 border-t border-gray-200 dark:border-white/10">
+              <p className="text-xs font-bold uppercase tracking-[0.3em] text-blue-600">Core Expertise</p>
+              <div className="flex flex-wrap gap-2 sm:gap-3 pr-0 lg:pr-8">
                 {aboutData.highlights.map((highlight) => (
                   <motion.span 
                     key={highlight} 
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    className={`px-6 py-3 rounded-2xl text-xs font-bold tracking-widest uppercase border transition-all ${
+                    whileHover={{ scale: 1.02, y: -1 }}
+                    className={`px-4 py-2 rounded-xl text-xs font-bold tracking-widest uppercase border transition-all ${
                       theme.theme === 'light'
-                        ? 'bg-white border-gray-200 text-gray-700 shadow-sm hover:border-blue-600 hover:text-blue-600'
-                        : 'bg-gray-900 border-white/10 text-gray-300 hover:border-blue-500 hover:text-blue-500'
+                        ? 'bg-white border-blue-100 text-gray-700 shadow-sm hover:border-blue-600 hover:text-blue-600'
+                        : 'bg-gray-900 border-white/10 text-gray-300 shadow-lg hover:border-blue-500 hover:text-blue-500'
                     }`}
                   >
                     {highlight}
@@ -181,18 +120,63 @@ const About = () => {
                 ))}
               </div>
             </div>
+          </motion.div>
 
-            {/* Visual Callout - Compact */}
-            <div className={`p-6 rounded-3xl border-2 border-dashed ${
-              theme.theme === 'light' ? 'border-blue-100 bg-blue-50/30' : 'border-blue-900/30 bg-blue-900/5'
+          {/* Right Column: Stats & Mission Statement */}
+          <div className="space-y-4">
+            
+            {/* Visual Callout - Mission */}
+            <motion.div variants={itemVariants} className={`p-4 sm:p-5 rounded-2xl border-2 border-dashed relative overflow-hidden group ${
+              theme.theme === 'light' ? 'border-blue-200 bg-blue-50/50' : 'border-blue-900/30 bg-blue-900/10'
             }`}>
-                <p className={`text-base font-bold italic ${
-                  theme.theme === 'light' ? 'text-blue-900/70' : 'text-blue-400/70'
+                <div className="absolute -top-4 -right-4 p-4 opacity-5 group-hover:opacity-10 transition-opacity transform group-hover:scale-110">
+                   <Award size={80} className="text-blue-600" />
+                </div>
+                <p className={`text-sm font-bold italic relative z-10 leading-relaxed ${
+                  theme.theme === 'light' ? 'text-blue-900/80' : 'text-blue-400/80'
                 }`}>
                   "{aboutData.missionStatement || "My mission is to translate complex problems into intuitive digital solutions that empower users and scale businesses."}"
                 </p>
+            </motion.div>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              {stats.map((stat) => (
+                <motion.div
+                  key={stat.label}
+                  className={`p-4 rounded-xl transition-all duration-500 border relative overflow-hidden group ${
+                    theme.theme === 'light' 
+                      ? 'bg-white border-gray-100 shadow-sm hover:border-blue-300' 
+                      : 'bg-gray-900 border-white/5 hover:bg-gray-800 hover:border-blue-500/30'
+                  }`}
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.01 }}
+                >
+                  <div className="absolute -right-2 -bottom-2 opacity-5 group-hover:opacity-10 transition-opacity transform group-hover:scale-110">
+                      <stat.Icon size={60} className="text-blue-600" />
+                  </div>
+                  <div className="flex items-center gap-3 relative z-10">
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${
+                      theme.theme === 'light' ? 'bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white' : 'bg-blue-950 text-blue-400 group-hover:bg-blue-600 group-hover:text-white'
+                    }`}>
+                      <stat.Icon size={16} />
+                    </div>
+                    <div>
+                      <div className={`text-xl sm:text-2xl font-black tracking-tight leading-none mb-1 ${
+                        theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+                      }`}>
+                        {stat.value}
+                      </div>
+                      <div className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-500">
+                        {stat.label}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
             </div>
-          </motion.div>
+            
+          </div>
         </div>
       </div>
     </motion.section>

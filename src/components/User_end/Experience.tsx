@@ -1,5 +1,5 @@
 import { useData } from '../../context/DataContext';
-import { Calendar, MapPin, Briefcase } from 'lucide-react';
+import { Briefcase, MapPin, Calendar, ArrowRight } from 'lucide-react';
 import { motion, Variants } from 'framer-motion';
 import { useState, useEffect, useRef, useContext } from 'react';
 import { ThemeContext } from './PortfolioLayout';
@@ -35,19 +35,12 @@ const Experience = () => {
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.2 },
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
-    },
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
   };
 
   return (
@@ -57,124 +50,125 @@ const Experience = () => {
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}
       variants={containerVariants}
-      className={`py-20 sm:py-32 transition-colors duration-500 relative overflow-hidden ${
-        theme.theme === 'light' ? 'bg-[#f8fafc]' : 'bg-[#020617]'
+      className={`py-16 sm:py-24 transition-colors duration-500 relative overflow-hidden ${
+        theme.theme === 'light' ? 'bg-[#fefaf7]/50' : 'bg-transparent'
       }`}
     >
-      {/* Dynamic Background Elements */}
-      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[140px] translate-x-1/3 -translate-y-1/3" />
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-600/5 rounded-full blur-[120px] -translate-x-1/3 translate-y-1/3" />
-
-      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-24 relative z-10">
-        <motion.div className="max-w-3xl mb-16 lg:mb-24" variants={itemVariants}>
-          <div className="flex items-center gap-3 mb-6">
-            <div className="h-[2px] w-12 bg-blue-600 rounded-full" />
-            <span className="text-[12px] font-black uppercase tracking-[0.4em] text-blue-600">The Path to Excellence</span>
+      {/* Dynamic Background Elements - Amber Theme */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-500/5 rounded-full blur-[120px] translate-x-1/4 -translate-y-1/4 pointer-events-none" />
+      <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-orange-600/5 rounded-full blur-[100px] -translate-x-1/3 pointer-events-none" />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <motion.div className="mb-16 text-center lg:text-left" variants={itemVariants}>
+          <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
+            <div className="h-[2px] w-8 bg-blue-600 rounded-full" />
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600">Professional Journey</span>
+            <div className="h-[2px] w-8 bg-blue-600 rounded-full lg:hidden" />
           </div>
-          <h2 className={`text-4xl sm:text-6xl font-black tracking-tighter leading-[0.9] mb-8 ${
-              theme.theme === 'light' ? 'text-gray-950' : 'text-white'
+          <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-none ${
+              theme.theme === 'light' ? 'text-gray-900' : 'text-white'
             }`}
           >
-            Career <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600">Trajectory</span>
+            My <br className="hidden sm:block lg:hidden" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Experience</span>
           </h2>
-          <p className={`text-lg font-medium leading-relaxed max-w-xl ${
-            theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
-          }`}>
-            A timeline of professional growth, technical mastery, and impactful digital solutions across various industries.
-          </p>
         </motion.div>
 
         {experiences.length > 0 ? (
-        <div className="relative">
-          {/* Enhanced Vertical Path */}
-          <div className="absolute left-0 sm:left-10 top-2 bottom-2 w-[2px] bg-gradient-to-b from-blue-600/40 via-purple-500/40 to-indigo-600/40" />
-          
-          <div className="space-y-12 sm:space-y-20 relative">
-            {experiences.map((exp, index) => (
-              <motion.div 
-                key={exp.id || index} 
-                variants={itemVariants}
-                className="relative pl-8 sm:pl-24"
-              >
-                {/* Visual Trajectory Node */}
-                <div className="absolute left-[-5px] sm:left-[35px] top-4 w-3 h-3 bg-white border-2 border-blue-600 rounded-full z-20 shadow-[0_0_15px_rgba(37,99,235,0.4)]" />
-                
-                <div className={`group relative p-6 sm:p-10 rounded-[2.5rem] border transition-all duration-700 ${
-                  theme.theme === 'light' 
-                    ? 'bg-white border-gray-100 shadow-xl shadow-blue-500/5 hover:border-blue-200' 
-                    : 'bg-white/5 border-white/5 backdrop-blur-3xl hover:border-blue-500/20'
-                }`}>
-                  {/* Decorative Gradient Accent */}
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 blur-[100px] rounded-full -mr-32 -mt-32 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  
-                  <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 relative z-10">
-                    <div className="space-y-4">
-                      <div className="flex flex-wrap items-center gap-4">
-                        <div className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider border ${
-                          theme.theme === 'light' 
-                            ? 'bg-blue-50 border-blue-100 text-blue-600' 
-                            : 'bg-blue-500/10 border-blue-500/20 text-blue-400'
-                        }`}>
-                          {formatDate(exp.startDate)} — {formatDate(exp.endDate)}
-                        </div>
-                        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-gray-100/50 dark:bg-white/5 border border-transparent dark:border-white/5">
-                           <MapPin size={12} className="text-blue-500" />
-                           <span className={`text-[10px] font-bold uppercase tracking-widest ${
-                             theme.theme === 'light' ? 'text-gray-800' : 'text-gray-300'
-                           }`}>
-                             {exp.location}
-                           </span>
-                        </div>
-                      </div>
+          <div className="space-y-12 relative">
+            {/* Minimal Line */}
+            <div className="hidden lg:block absolute left-8 top-8 bottom-8 w-px bg-gradient-to-b from-blue-600/50 via-blue-600/20 to-transparent" />
+
+            {experiences.map((exp, index) => {
+              const isCurrent = !exp.endDate;
+              return (
+                <motion.div 
+                  key={exp.id || index} 
+                  variants={itemVariants}
+                  className="relative lg:pl-20 group"
+                >
+                  {/* Timeline Dot */}
+                  <div className={`hidden lg:flex absolute left-[27px] top-8 w-3.5 h-3.5 rounded-full border-[3px] transition-colors z-10 ${
+                    isCurrent 
+                      ? 'bg-white border-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.5)]' 
+                      : theme.theme === 'light' ? 'bg-white border-gray-300' : 'bg-gray-900 border-gray-700'
+                  }`} />
+
+                  <div className={`p-6 sm:p-8 rounded-3xl border transition-all duration-300 ${
+                    theme.theme === 'light' 
+                      ? 'bg-white border-gray-100 shadow-xl shadow-blue-500/5 hover:border-blue-200' 
+                      : 'bg-[#0f172a]/50 border-white/5 shadow-2xl hover:border-blue-500/30'
+                  }`}>
+                    <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
                       
-                      <div className="space-y-2">
-                        <h3 className={`text-2xl sm:text-3xl font-black tracking-tight leading-tight ${
-                          theme.theme === 'light' ? 'text-gray-950' : 'text-white'
-                        }`}>
-                          {exp.title}
-                        </h3>
+                      {/* Left: Meta Info */}
+                      <div className="flex flex-col gap-3 lg:w-64 flex-shrink-0">
                         <div className="flex items-center gap-2">
-                          <Briefcase size={16} className="text-blue-500" />
-                          <span className={`text-base font-bold tracking-wide ${
-                            theme.theme === 'light' ? 'text-blue-700' : 'text-blue-400'
+                          <Calendar size={16} className="text-blue-500" />
+                          <span className={`text-sm font-bold uppercase tracking-widest ${
+                            theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
                           }`}>
-                            {exp.company}
+                            {formatDate(exp.startDate)} - {formatDate(exp.endDate)}
                           </span>
                         </div>
+                        <div className="flex items-center gap-2">
+                          <MapPin size={16} className="text-gray-400" />
+                          <span className={`text-sm font-semibold ${
+                            theme.theme === 'light' ? 'text-gray-500' : 'text-gray-500'
+                          }`}>
+                            {exp.location}
+                          </span>
+                        </div>
+                        {isCurrent && (
+                          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs font-black uppercase tracking-widest w-fit mt-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                            Present
+                          </div>
+                        )}
                       </div>
-                    </div>
 
-                    <div className="lg:max-w-md">
-                       <p className={`text-base font-medium leading-relaxed mb-6 ${
-                         theme.theme === 'light' ? 'text-gray-700' : 'text-gray-400'
-                       }`}>
-                         {exp.description}
-                       </p>
-                       
-                       <div className="flex flex-wrap gap-2">
-                         {exp.technologies.map((tech) => (
-                           <span key={tech} className={`px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.1em] rounded-lg border transition-all ${
-                             theme.theme === 'light' 
-                               ? 'bg-gray-50 border-gray-200 text-gray-700' 
-                               : 'bg-white/5 border-white/5 text-gray-400 hover:border-blue-500/40 hover:text-white'
-                           }`}>
-                             {tech}
-                           </span>
-                         ))}
-                       </div>
+                      {/* Right: Content */}
+                      <div className="flex-1 space-y-4">
+                        <div>
+                          <h3 className={`text-2xl sm:text-3xl font-black tracking-tight mb-2 ${
+                            theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+                          }`}>
+                            {exp.title}
+                          </h3>
+                          <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-bold text-lg">
+                            <Briefcase size={18} />
+                            {exp.company}
+                          </div>
+                        </div>
+
+                        <p className={`text-base leading-relaxed ${
+                          theme.theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+                        }`}>
+                          {exp.description}
+                        </p>
+
+                        <div className="flex flex-wrap gap-2 pt-2">
+                          {exp.technologies.map((tech: string) => (
+                            <span key={tech} className={`px-3 py-1.5 text-xs font-bold rounded-lg border transition-colors ${
+                              theme.theme === 'light' 
+                                ? 'bg-gray-50 border-gray-200 text-gray-700' 
+                                : 'bg-white/5 border-white/5 text-gray-300'
+                            }`}>
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
-        </div>
         ) : (
-          <div className={`text-center py-24 rounded-[3.5rem] border-2 border-dashed ${
-            theme.theme === 'light' ? 'border-gray-200 bg-gray-50' : 'border-white/5 bg-gray-900'
-          }`}>
-            <p className="text-xl font-black text-gray-300 uppercase tracking-widest">Architecting History...</p>
+          <div className="text-center py-20">
+            <Briefcase size={48} className="mx-auto text-gray-300 mb-4" />
+            <p className="text-lg font-bold text-gray-400">Experience loading...</p>
           </div>
         )}
       </div>

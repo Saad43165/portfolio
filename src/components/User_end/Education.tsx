@@ -72,67 +72,67 @@ const Education = () => {
         </motion.div>
 
         {education.length > 0 ? (
-          <div className={`grid gap-6 lg:gap-10 ${
-            education.length === 1 ? 'max-w-4xl mx-auto grid-cols-1 w-full' : 'grid-cols-1 md:grid-cols-2'
+          <div className={`grid gap-5 lg:gap-6 ${
+            education.length === 1 ? 'max-w-3xl mx-auto grid-cols-1 w-full' : 'grid-cols-1 md:grid-cols-2'
           }`}>
             {education.map((edu, index) => (
               <motion.div 
                 key={edu.id || index} 
                 variants={itemVariants}
-                whileHover={{ y: -3, scale: 1.005 }}
-                className={`p-6 sm:p-8 rounded-3xl transition-all duration-500 border group flex flex-col relative overflow-hidden ${
+                whileHover={{ y: -2, scale: 1.005 }}
+                className={`p-5 rounded-2xl transition-all duration-500 border group flex flex-col relative overflow-hidden ${
                   theme.theme === 'light' 
-                    ? 'bg-white border-purple-100 shadow-lg shadow-purple-500/5' 
-                    : 'bg-gray-900 border-white/5 hover:border-purple-500/30 shadow-2xl'
+                    ? 'bg-white border-purple-100 shadow-sm' 
+                    : 'bg-gray-900 border-white/5 hover:border-purple-500/30 shadow-lg'
                 }`}
               >
                 {/* Magical Academic Glow */}
-                <div className="absolute top-0 right-0 w-48 h-48 bg-purple-600/5 blur-[80px] rounded-full -mr-24 -mt-24 group-hover:bg-purple-600/10 transition-all duration-700" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-purple-600/5 blur-[60px] rounded-full -mr-16 -mt-16 group-hover:bg-purple-600/10 transition-all duration-700" />
                 
-                <div className="flex flex-col lg:flex-row justify-between items-start gap-6 mb-8 relative z-10">
-                  <div className="space-y-4">
+                <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-6 relative z-10">
+                  <div className="space-y-3">
                     <div className="flex items-center gap-3">
-                      <div className="px-2.5 py-1 rounded-md bg-purple-500/10 border border-purple-500/20">
-                        <span className="text-[9px] font-black uppercase tracking-[0.1em] text-purple-600 dark:text-purple-400">
+                      <div className="px-2 py-1 rounded bg-purple-500/10 border border-purple-500/20">
+                        <span className="text-[9px] font-black uppercase tracking-wider text-purple-600 dark:text-purple-400">
                           {new Date(edu.startDate).getFullYear()} — {edu.endDate ? new Date(edu.endDate).getFullYear() : 'Present'}
                         </span>
                       </div>
                     </div>
                     
-                    <h3 className={`text-2xl sm:text-3xl font-black leading-tight tracking-tight transition-colors duration-300 ${
+                    <h3 className={`text-xl sm:text-2xl font-black leading-tight tracking-tight transition-colors duration-300 ${
                       theme.theme === 'light' ? 'text-gray-900' : 'text-white'
                     }`}>
                       {edu.degree}
                     </h3>
                     
-                    <div className="flex items-center gap-2 text-sm font-bold text-gray-500 dark:text-gray-400">
-                      <MapPin size={16} className="text-purple-500" />
+                    <div className="flex items-center gap-2 text-xs font-bold text-gray-500 dark:text-gray-400">
+                      <MapPin size={14} className="text-purple-500" />
                       <span className="tracking-tight">{edu.institution}</span>
                     </div>
                   </div>
                   
                   {edu.gpa && (
                     <motion.div 
-                      whileHover={{ scale: 1.05 }}
-                      className={`relative px-6 py-4 rounded-2xl border flex flex-col items-center justify-center shadow-xl ${
+                      whileHover={{ scale: 1.02 }}
+                      className={`relative px-4 py-3 rounded-xl border flex flex-col items-center justify-center shadow-md ${
                         theme.theme === 'light' 
                           ? 'bg-gradient-to-br from-purple-50 to-white border-purple-100' 
                           : 'bg-gradient-to-br from-gray-800 to-gray-950 border-purple-500/20'
                       }`}
                     >
-                      <span className="text-[8px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-[0.2em] mb-1">GPA</span>
-                      <span className={`text-2xl font-black ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                      <span className="text-[8px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-1">GPA</span>
+                      <span className={`text-lg font-black ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                         {edu.gpa}
                       </span>
                     </motion.div>
                   )}
                 </div>
 
-                <div className="space-y-6 flex-grow relative z-10">
-                  <div className={`p-5 rounded-2xl border border-dashed ${
+                <div className="space-y-4 flex-grow relative z-10">
+                  <div className={`p-4 rounded-xl border border-dashed ${
                     theme.theme === 'light' ? 'border-purple-100 bg-purple-50/30' : 'border-white/5 bg-white/5'
                   }`}>
-                    <p className={`text-base font-medium leading-relaxed ${
+                    <p className={`text-sm font-medium leading-relaxed ${
                       theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
                     }`}>
                       {edu.description}

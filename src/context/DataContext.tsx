@@ -53,8 +53,7 @@ const defaultInfo: PortfolioInfo = {
   resumeUrl: '/Saad_Ikram_CV.pdf',
   socialLinks: [
     { platform: 'Github', url: 'https://github.com/saad43165' },
-    { platform: 'Linkedin', url: 'https://www.linkedin.com/in/saad-i-786123406?utm_source=share_via&utm_content=profile&utm_medium=member_android' },
-    { platform: 'Instagram', url: 'https://instagram.com/the__bluesss' },
+    { platform: 'Linkedin', url: 'https://www.linkedin.com/in/saad-i-786123406?utm_source=share_via&utm_content=profile&utm_medium=member_android' }
   ],
   email: 'saadnaz43165@gmail.com',
   location: 'Chakwal, Punjab, Pakistan',
