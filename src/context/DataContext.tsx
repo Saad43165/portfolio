@@ -48,7 +48,7 @@ const defaultAbout: AboutData = {
 
 const defaultInfo: PortfolioInfo = {
   name: 'Saad Ikram',
-  roles: ['Flutter Developer', 'Mobile App Development', 'AI Integration'],
+  roles: ['Software Engineer', 'Full Stack Developer', 'Mobile App Development', 'Website Development', 'Software Quality Assurance & Testing'],
   profileImage: '/main_image.png',
   resumeUrl: '/Saad_Ikram_CV.pdf',
   socialLinks: [

@@ -1,5 +1,5 @@
 import { useData } from '../../context/DataContext';
-import { Calendar, MapPin, Award } from 'lucide-react';
+import { MapPin, Award } from 'lucide-react';
 import { useState, useEffect, useRef, useContext } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { ThemeContext } from './PortfolioLayout';
@@ -52,9 +52,8 @@ const Education = () => {
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}
       variants={containerVariants}
-      className={`py-8 sm:py-16 transition-colors duration-500 relative overflow-hidden ${
-        theme.theme === 'light' ? 'bg-gray-50/50' : 'bg-gray-900/20'
-      }`}
+      className={`py-8 sm:py-16 transition-colors duration-500 relative overflow-hidden ${theme.theme === 'light' ? 'bg-gray-50/50' : 'bg-gray-900/20'
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div className="mb-12" variants={itemVariants}>
@@ -62,8 +61,7 @@ const Education = () => {
             <div className="h-[2px] w-8 bg-purple-600 rounded-full" />
             <span className="text-[10px] font-black uppercase tracking-[0.4em] text-purple-600">Learning Path</span>
           </div>
-          <h2 className={`text-3xl sm:text-5xl font-black tracking-tight leading-[1.1] text-center lg:text-left ${
-              theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+          <h2 className={`text-3xl sm:text-5xl font-black tracking-tight leading-[1.1] text-center lg:text-left ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'
             }`}
           >
             Academic <br />
@@ -72,32 +70,28 @@ const Education = () => {
         </motion.div>
 
         {education.length > 0 ? (
-          <div className={`grid gap-5 lg:gap-6 ${
-            education.length === 1 ? 'max-w-3xl mx-auto grid-cols-1 w-full' : 'grid-cols-1 md:grid-cols-2'
-          }`}>
+          <div className={`grid gap-5 lg:gap-6 ${education.length === 1 ? 'max-w-3xl mx-auto grid-cols-1 w-full' : 'grid-cols-1 md:grid-cols-2'
+            }`}>
             {education.map((edu, index) => (
-              <motion.div 
-                key={edu.id || index} 
+              <motion.div
+                key={edu.id || index}
                 variants={itemVariants}
                 whileHover={{ y: -2, scale: 1.005 }}
-                className={`p-5 rounded-2xl transition-all duration-500 border group flex flex-col relative overflow-hidden ${
-                  theme.theme === 'light' 
-                    ? 'bg-white border-purple-100 shadow-sm' 
+                className={`p-5 rounded-2xl transition-all duration-500 border group flex flex-col relative overflow-hidden ${theme.theme === 'light'
+                    ? 'bg-white border-purple-100 shadow-sm'
                     : 'bg-gray-900 border-white/5 hover:border-purple-500/30 shadow-lg'
-                }`}
+                  }`}
               >
                 {/* Background Watermark Icon */}
-                <div className={`absolute -right-8 -bottom-8 transition-opacity duration-500 pointer-events-none ${
-                  theme.theme === 'light' ? 'text-purple-600 opacity-[0.04] group-hover:opacity-[0.08]' : 'text-purple-200 opacity-[0.02] group-hover:opacity-[0.05]'
-                }`}>
+                <div className={`absolute -right-8 -bottom-8 transition-opacity duration-500 pointer-events-none ${theme.theme === 'light' ? 'text-purple-600 opacity-[0.04] group-hover:opacity-[0.08]' : 'text-purple-200 opacity-[0.02] group-hover:opacity-[0.05]'
+                  }`}>
                   <Award size={160} />
                 </div>
 
                 {/* Magical Academic Glow */}
-                <div className={`absolute top-0 right-0 w-32 h-32 blur-[60px] rounded-full -mr-16 -mt-16 transition-all duration-700 ${
-                  theme.theme === 'light' ? 'bg-purple-500/20 group-hover:bg-purple-500/30' : 'bg-purple-600/5 group-hover:bg-purple-600/10'
-                }`} />
-                
+                <div className={`absolute top-0 right-0 w-32 h-32 blur-[60px] rounded-full -mr-16 -mt-16 transition-all duration-700 ${theme.theme === 'light' ? 'bg-purple-500/20 group-hover:bg-purple-500/30' : 'bg-purple-600/5 group-hover:bg-purple-600/10'
+                  }`} />
+
                 <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-6 relative z-10">
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
@@ -107,27 +101,25 @@ const Education = () => {
                         </span>
                       </div>
                     </div>
-                    
-                    <h3 className={`text-xl sm:text-2xl font-black leading-tight tracking-tight transition-colors duration-300 ${
-                      theme.theme === 'light' ? 'text-gray-900' : 'text-white'
-                    }`}>
+
+                    <h3 className={`text-xl sm:text-2xl font-black leading-tight tracking-tight transition-colors duration-300 ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+                      }`}>
                       {edu.degree}
                     </h3>
-                    
+
                     <div className="flex items-center gap-2 text-xs font-bold text-gray-500 dark:text-gray-400">
                       <MapPin size={14} className="text-purple-500" />
                       <span className="tracking-tight">{edu.institution}</span>
                     </div>
                   </div>
-                  
+
                   {edu.gpa && (
-                    <motion.div 
+                    <motion.div
                       whileHover={{ scale: 1.02 }}
-                      className={`relative px-4 py-3 rounded-xl border flex flex-col items-center justify-center shadow-md ${
-                        theme.theme === 'light' 
-                          ? 'bg-gradient-to-br from-purple-50 to-white border-purple-100' 
+                      className={`relative px-4 py-3 rounded-xl border flex flex-col items-center justify-center shadow-md ${theme.theme === 'light'
+                          ? 'bg-gradient-to-br from-purple-50 to-white border-purple-100'
                           : 'bg-gradient-to-br from-gray-800 to-gray-950 border-purple-500/20'
-                      }`}
+                        }`}
                     >
                       <span className="text-[8px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-1">GPA</span>
                       <span className={`text-lg font-black ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
@@ -138,12 +130,10 @@ const Education = () => {
                 </div>
 
                 <div className="space-y-4 flex-grow relative z-10">
-                  <div className={`p-4 rounded-xl border border-dashed ${
-                    theme.theme === 'light' ? 'border-purple-100 bg-purple-50/30' : 'border-white/5 bg-white/5'
-                  }`}>
-                    <p className={`text-sm font-medium leading-relaxed ${
-                      theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                  <div className={`p-4 rounded-xl border border-dashed ${theme.theme === 'light' ? 'border-purple-100 bg-purple-50/30' : 'border-white/5 bg-white/5'
                     }`}>
+                    <p className={`text-sm font-medium leading-relaxed ${theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                      }`}>
                       {edu.description}
                     </p>
                   </div>
@@ -151,11 +141,10 @@ const Education = () => {
                   {edu.achievements.length > 0 && (
                     <div className="flex flex-wrap gap-2">
                       {edu.achievements.map((achievement, i) => (
-                        <div key={i} className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-bold uppercase tracking-widest border transition-all ${
-                          theme.theme === 'light' 
-                            ? 'bg-white border-gray-100 text-gray-500 hover:border-purple-400 hover:text-purple-600 shadow-sm' 
+                        <div key={i} className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-bold uppercase tracking-widest border transition-all ${theme.theme === 'light'
+                            ? 'bg-white border-gray-100 text-gray-500 hover:border-purple-400 hover:text-purple-600 shadow-sm'
                             : 'bg-gray-800/80 border-white/10 text-gray-400 hover:border-purple-500 hover:text-purple-400'
-                        }`}>
+                          }`}>
                           <Award size={12} className="text-purple-500" />
                           {achievement}
                         </div>
@@ -167,9 +156,8 @@ const Education = () => {
             ))}
           </div>
         ) : (
-          <div className={`text-center py-24 rounded-[3.5rem] border-2 border-dashed ${
-            theme.theme === 'light' ? 'border-gray-100 bg-gray-50' : 'border-white/5 bg-gray-900'
-          }`}>
+          <div className={`text-center py-24 rounded-[3.5rem] border-2 border-dashed ${theme.theme === 'light' ? 'border-gray-100 bg-gray-50' : 'border-white/5 bg-gray-900'
+            }`}>
             <p className="text-xl font-black text-gray-300 uppercase tracking-widest">Archiving Journey...</p>
           </div>
         )}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Github, Linkedin, Download, Mail, Code, Instagram, Twitter, Facebook, Youtube, Globe } from 'lucide-react';
-import { motion, Variants } from 'framer-motion';
+import { motion, Variants, AnimatePresence } from 'framer-motion';
 import { useData } from '../../context/DataContext';
 import { ThemeContext } from './PortfolioLayout';
 import { MagneticButton } from './MagneticButton';
@@ -14,33 +14,20 @@ const Hero = () => {
 
   const titles = portfolioInfo.roles || [
     'Software Engineer',
-    'Android Developer',
-    'Flutter Developer',
-    'Java Developer',
+    'Full Stack Developer',
+    'Mobile App Development',
+    'Website Development',
+    'Software Quality Assurance'
   ];
 
   useEffect(() => {
     if (titles.length === 0) return;
-    const currentTitle = titles[currentIndex];
-    const timeout = setTimeout(() => {
-      if (!isDeleting) {
-        if (displayText.length < currentTitle.length) {
-          setDisplayText(currentTitle.slice(0, displayText.length + 1));
-        } else {
-          setTimeout(() => setIsDeleting(true), 2000);
-        }
-      } else {
-        if (displayText.length > 0) {
-          setDisplayText(displayText.slice(0, -1));
-        } else {
-          setIsDeleting(false);
-          setCurrentIndex((prevIndex) => (prevIndex + 1) % titles.length);
-        }
-      }
-    }, isDeleting ? 50 : 100);
-
-    return () => clearTimeout(timeout);
-  }, [displayText, currentIndex, isDeleting, titles]);
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % titles.length);
+    }, 3000); // Change role every 3 seconds
+    
+    return () => clearInterval(interval);
+  }, [titles.length]);
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -161,7 +148,20 @@ const Hero = () => {
                 <h2 className={`text-2xl sm:text-3xl lg:text-2xl font-bold tracking-tight leading-relaxed ${theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
                   }`}>
                   Crafting Digital Excellence through <br className="hidden sm:block" />
-                  <span className="text-blue-500 font-black italic">{portfolioInfo.roles?.join(' • ') || 'Innovative Solutions'}</span>
+                  <div className="relative h-8 sm:h-10 lg:h-8 overflow-hidden inline-block align-bottom mt-1 w-full max-w-[400px]">
+                    <AnimatePresence mode="popLayout">
+                      <motion.span
+                        key={currentIndex}
+                        initial={{ y: 30, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: -30, opacity: 0 }}
+                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                        className="text-blue-500 font-black italic absolute left-0 whitespace-nowrap"
+                      >
+                        {titles[currentIndex]}
+                      </motion.span>
+                    </AnimatePresence>
+                  </div>
                 </h2>
               </motion.div>
             </div>
@@ -172,12 +172,12 @@ const Hero = () => {
             </motion.p>
 
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 sm:gap-6 pt-2 lg:pt-1">
-              <MagneticButton>
+              <MagneticButton className="w-full sm:w-auto">
                 <motion.button
                   onClick={handleExploreClick}
                   whileHover={{ y: -8, scale: 1.05, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
                   whileTap={{ scale: 0.95 }}
-                  className={`px-10 py-4 sm:px-10 sm:py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 shadow-xl transition-all ${theme.theme === 'light' ? 'bg-gray-950 text-white shadow-gray-200' : 'bg-white text-gray-950 shadow-blue-500/20'
+                  className={`w-full sm:w-auto px-10 py-4 sm:px-10 sm:py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 shadow-xl transition-all ${theme.theme === 'light' ? 'bg-gray-950 text-white shadow-gray-200' : 'bg-white text-gray-950 shadow-blue-500/20'
                     }`}
                 >
                   Explore Works
@@ -185,13 +185,13 @@ const Hero = () => {
                 </motion.button>
               </MagneticButton>
 
-              <MagneticButton>
+              <MagneticButton className="w-full sm:w-auto">
                 <motion.a
                   href={portfolioInfo.resumeUrl}
                   download
                   whileHover={{ y: -8, scale: 1.05, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
                   whileTap={{ scale: 0.95 }}
-                  className={`px-10 py-4 sm:px-10 sm:py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] border flex items-center justify-center gap-3 transition-all ${theme.theme === 'light'
+                  className={`w-full sm:w-auto px-10 py-4 sm:px-10 sm:py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] border flex items-center justify-center gap-3 transition-all ${theme.theme === 'light'
                       ? 'bg-gray-50 border-gray-200 text-gray-900 hover:bg-gray-100 hover:border-gray-300 shadow-md'
                       : 'bg-white/5 border-white/10 text-white hover:bg-white/10 shadow-xl'
                     }`}
