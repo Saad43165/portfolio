@@ -167,13 +167,12 @@ const Hero = () => {
 
               <motion.div 
                 variants={itemVariants}
-                className="min-h-[80px] sm:min-h-[96px] lg:min-h-[80px] flex flex-col justify-end"
+                className="min-h-[60px] sm:min-h-[80px] lg:min-h-[60px] flex flex-col justify-end"
               >
                 <h2 className={`text-2xl sm:text-3xl lg:text-2xl font-bold tracking-tight leading-relaxed ${theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
                   }`}>
                   Crafting Digital Excellence through <br className="hidden sm:block" />
-                  <span className="text-blue-500 font-black italic">{displayText || '\u00A0'}</span>
-                  <span className="animate-pulse inline-block w-1.5 h-8 lg:h-6 bg-blue-500 ml-1 align-middle" />
+                  <span className="text-blue-500 font-black italic">{portfolioInfo.roles?.join(' • ') || 'Innovative Solutions'}</span>
                 </h2>
               </motion.div>
             </div>
@@ -285,7 +284,7 @@ const Hero = () => {
               {/* Clean Integrated Badge - Below Image */}
               <motion.div
                 variants={itemVariants}
-                className={`absolute -bottom-6 left-1/2 -translate-x-1/2 w-max px-4 py-2.5 rounded-full border shadow-xl z-20 flex items-center justify-center gap-3 backdrop-blur-xl ${
+                className={`absolute -bottom-6 left-0 sm:left-1/2 sm:-translate-x-1/2 w-max px-4 py-2.5 rounded-full border shadow-xl z-20 flex items-center justify-center gap-3 backdrop-blur-xl ${
                   theme.theme === 'light' ? 'bg-white/90 border-gray-200' : 'bg-gray-950/80 border-white/10'
                 }`}
               >

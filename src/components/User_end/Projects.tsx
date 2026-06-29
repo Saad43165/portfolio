@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useContext } from 'react';
+import { createPortal } from 'react-dom';
 import { useData } from '../../context/DataContext';
 import { ExternalLink, Github, Zap, Shield, Smartphone, Globe, X, Play, Code as CodeIcon, Cpu, Layers, Calendar, User, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
@@ -357,29 +358,43 @@ const Projects = () => {
         </div>
 
         {/* Mobile Detail Modal */}
-        <AnimatePresence>
+        {createPortal(
+          <AnimatePresence>
           {isMobileModalOpen && selectedProject && (
-            <div className="fixed inset-0 z-[9999] flex flex-col lg:hidden overflow-hidden bg-gray-950">
-              <div className={`flex-shrink-0 flex items-center justify-between p-4 pt-6 sm:pt-4 border-b shadow-md z-10 relative ${
-                theme.theme === 'light' ? 'bg-white border-gray-200' : 'bg-gray-900 border-white/10'
+            <motion.div 
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 50 }}
+              className="fixed inset-0 z-[9999] flex flex-col lg:hidden pt-16 pb-8 px-4 bg-black/80 backdrop-blur-md"
+            >
+              <div className={`flex-1 flex flex-col w-full h-full rounded-[2rem] overflow-hidden shadow-2xl border ${
+                theme.theme === 'light' ? 'bg-white border-gray-200' : 'bg-gray-950 border-white/10'
               }`}>
-                <span className="text-xs font-black uppercase tracking-widest text-blue-500">Back to Projects</span>
-                <button 
-                  onClick={() => setIsMobileModalOpen(false)}
-                  className={`p-3 rounded-xl border ${theme.theme === 'light' ? 'bg-gray-100 border-gray-200 text-gray-900 hover:bg-gray-200' : 'bg-gray-800 border-gray-700 text-white hover:bg-gray-700'} shadow-sm`}
-                >
-                  <X size={24} />
-                </button>
+                {/* Header */}
+                <div className={`flex-shrink-0 flex items-center justify-between p-4 border-b ${
+                  theme.theme === 'light' ? 'bg-gray-50 border-gray-200' : 'bg-gray-900 border-white/10'
+                }`}>
+                  <span className="text-xs font-black uppercase tracking-widest text-blue-500 pl-2">Back to Projects</span>
+                  <button 
+                    onClick={() => setIsMobileModalOpen(false)}
+                    className={`p-3 rounded-xl border ${theme.theme === 'light' ? 'bg-white border-gray-200 text-gray-900 shadow-sm hover:bg-gray-100' : 'bg-gray-800 border-gray-700 text-white shadow-sm hover:bg-gray-700'}`}
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+                {/* Content */}
+                <div className="flex-1 overflow-y-auto">
+                  <ProjectDetailsContent project={selectedProject} />
+                </div>
               </div>
-              <div className={`flex-1 overflow-y-auto relative z-0 ${theme.theme === 'light' ? 'bg-white' : 'bg-gray-950'}`}>
-                <ProjectDetailsContent project={selectedProject} />
-              </div>
-            </div>
+            </motion.div>
           )}
-        </AnimatePresence>
+        </AnimatePresence>,
+        document.body)}
 
         {/* Video Modal (Shared) */}
-        <AnimatePresence>
+        {createPortal(
+          <AnimatePresence>
           {videoModalOpen && selectedProject?.videoUrl && (
             <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
               <motion.div 
@@ -405,7 +420,8 @@ const Projects = () => {
               </motion.div>
             </div>
           )}
-        </AnimatePresence>
+        </AnimatePresence>,
+        document.body)}
 
       </div>
     </motion.section>
