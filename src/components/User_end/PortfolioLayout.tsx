@@ -1,7 +1,7 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useData } from '../../context/DataContext';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useSpring } from 'framer-motion';
 
 // Enhanced lazy loading with prefetching and progress tracking
 type LazyWithPrefetch<T extends React.ComponentType<unknown>> = React.LazyExoticComponent<T> & {
@@ -140,6 +140,22 @@ const MouseGlow = () => {
           ? `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(59, 130, 246, 0.04), transparent 80%)`
           : `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.03) 50%, transparent 80%)`
       }}
+    />
+  );
+};
+
+const ScrollProgressBar = () => {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  return (
+    <motion.div
+      className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 origin-left z-[100]"
+      style={{ scaleX }}
     />
   );
 };
@@ -338,6 +354,7 @@ const PortfolioLayout = () => {
         role="main"
         aria-label="Portfolio website content"
       >
+        <ScrollProgressBar />
         <CustomCursor />
         <MouseGlow />
         <InteractiveBackgroundCanvas />

@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { motion, Variants } from 'framer-motion';
 import { ThemeContext } from './PortfolioLayout';
+import { MagneticButton } from './MagneticButton';
 
 const Contact = () => {
   const { portfolioInfo } = useData();
@@ -146,30 +147,31 @@ const Contact = () => {
           variants={containerVariants}
         >
           {contactOptions.map((item) => (
-            <motion.a
-              key={item.label}
-              href={item.href}
-              target={item.label !== 'Phone' && item.label !== 'Email' ? '_blank' : '_self'}
-              rel="noopener noreferrer"
-              variants={itemVariants}
-              whileHover={{ y: -3, scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className={`flex flex-col items-center p-5 sm:p-6 rounded-2xl border transition-all duration-500 group relative overflow-hidden text-center ${
-                theme.theme === 'light' 
-                  ? 'bg-white border-blue-50 shadow-lg shadow-blue-500/5 hover:shadow-xl' 
-                  : 'bg-gray-900/40 backdrop-blur-xl border-white/5'
-              } ${item.borderColor}`}
-            >
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6 ${item.color} shadow-inner`}>
-                <item.icon size={24} />
-              </div>
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-1">{item.label}</span>
-              <span className={`text-xs sm:text-sm lg:text-xs xl:text-sm font-bold transition-colors w-full px-2 truncate ${
-                theme.theme === 'light' ? 'text-gray-900' : 'text-white'
-              }`} title={item.value}>
-                {item.value}
-              </span>
-            </motion.a>
+            <MagneticButton key={item.label} className="w-full">
+              <motion.a
+                href={item.href}
+                target={item.label !== 'Phone' && item.label !== 'Email' ? '_blank' : '_self'}
+                rel="noopener noreferrer"
+                variants={itemVariants}
+                whileHover={{ y: -3, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`flex flex-col items-center p-5 sm:p-6 rounded-2xl border transition-all duration-500 group relative overflow-hidden text-center w-full ${
+                  theme.theme === 'light' 
+                    ? 'bg-white border-blue-50 shadow-lg shadow-blue-500/5 hover:shadow-xl' 
+                    : 'bg-gray-900/40 backdrop-blur-xl border-white/5'
+                } ${item.borderColor}`}
+              >
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6 ${item.color} shadow-inner`}>
+                  <item.icon size={24} />
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-1">{item.label}</span>
+                <span className={`text-xs sm:text-sm lg:text-xs xl:text-sm font-bold transition-colors w-full px-2 truncate ${
+                  theme.theme === 'light' ? 'text-gray-900' : 'text-white'
+                }`} title={item.value}>
+                  {item.value}
+                </span>
+              </motion.a>
+            </MagneticButton>
           ))}
         </motion.div>
       </div>

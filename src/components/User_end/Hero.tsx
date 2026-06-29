@@ -3,6 +3,7 @@ import { Github, Linkedin, Download, Mail, Code, Instagram, Twitter, Facebook, Y
 import { motion, Variants } from 'framer-motion';
 import { useData } from '../../context/DataContext';
 import { ThemeContext } from './PortfolioLayout';
+import { MagneticButton } from './MagneticButton';
 
 const Hero = () => {
   const { portfolioInfo } = useData();
@@ -106,24 +107,12 @@ const Hero = () => {
       }`}>
       {/* Dynamic Background Elements */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        <div
           className={`absolute -top-[10%] -left-[10%] w-[60%] h-[60%] rounded-full blur-[120px] ${
             theme.theme === 'light' ? 'bg-gradient-to-br from-blue-400/30 to-purple-400/30' : 'bg-gradient-to-br from-blue-500/20 to-purple-500/20'
           }`}
         />
-        <motion.div
-          animate={{
-            scale: [1.2, 1, 1.2],
-            rotate: [0, -90, 0],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+        <div
           className={`absolute -bottom-[10%] -right-[10%] w-[60%] h-[60%] rounded-full blur-[120px] ${
             theme.theme === 'light' ? 'bg-gradient-to-tl from-indigo-400/30 to-cyan-400/30' : 'bg-gradient-to-tl from-indigo-500/20 to-cyan-500/20'
           }`}
@@ -183,30 +172,34 @@ const Hero = () => {
             </motion.p>
 
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 sm:gap-6 pt-2 lg:pt-1">
-              <motion.button
-                onClick={handleExploreClick}
-                whileHover={{ y: -8, scale: 1.05, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
-                whileTap={{ scale: 0.95 }}
-                className={`px-10 py-4 sm:px-10 sm:py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 shadow-xl transition-all ${theme.theme === 'light' ? 'bg-gray-950 text-white shadow-gray-200' : 'bg-white text-gray-950 shadow-blue-500/20'
-                  }`}
-              >
-                Explore Works
-                <Code size={20} />
-              </motion.button>
+              <MagneticButton>
+                <motion.button
+                  onClick={handleExploreClick}
+                  whileHover={{ y: -8, scale: 1.05, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`px-10 py-4 sm:px-10 sm:py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 shadow-xl transition-all ${theme.theme === 'light' ? 'bg-gray-950 text-white shadow-gray-200' : 'bg-white text-gray-950 shadow-blue-500/20'
+                    }`}
+                >
+                  Explore Works
+                  <Code size={20} />
+                </motion.button>
+              </MagneticButton>
 
-              <motion.a
-                href={portfolioInfo.resumeUrl}
-                download
-                whileHover={{ y: -8, scale: 1.05, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
-                whileTap={{ scale: 0.95 }}
-                className={`px-10 py-4 sm:px-10 sm:py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] border flex items-center justify-center gap-3 transition-all ${theme.theme === 'light'
-                    ? 'bg-gray-50 border-gray-200 text-gray-900 hover:bg-gray-100 hover:border-gray-300 shadow-md'
-                    : 'bg-white/5 border-white/10 text-white hover:bg-white/10 shadow-xl'
-                  }`}
-              >
-                <Download size={20} />
-                Download CV
-              </motion.a>
+              <MagneticButton>
+                <motion.a
+                  href={portfolioInfo.resumeUrl}
+                  download
+                  whileHover={{ y: -8, scale: 1.05, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`px-10 py-4 sm:px-10 sm:py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] border flex items-center justify-center gap-3 transition-all ${theme.theme === 'light'
+                      ? 'bg-gray-50 border-gray-200 text-gray-900 hover:bg-gray-100 hover:border-gray-300 shadow-md'
+                      : 'bg-white/5 border-white/10 text-white hover:bg-white/10 shadow-xl'
+                    }`}
+                >
+                  <Download size={20} />
+                  Download CV
+                </motion.a>
+              </MagneticButton>
             </motion.div>
 
             <motion.div variants={itemVariants} className="flex justify-center lg:justify-start gap-8 pt-4 lg:pt-3">
@@ -244,42 +237,44 @@ const Hero = () => {
               <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-purple-500/20 rounded-full blur-[80px] lg:blur-[100px] opacity-60 mix-blend-screen" />
 
               {/* Premium 3D Floating Frame */}
-              <motion.div
-                whileHover={{
-                  y: -12,
-                  rotateY: 8,
-                  rotateX: -4,
-                  scale: 1.02,
-                  transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
-                }}
-                className="relative aspect-[4/5] w-full rounded-[2.5rem] sm:rounded-[3rem] p-3 sm:p-4 z-10 transition-all duration-700"
-              >
-                {/* Animated Border Gradient */}
-                <div className={`absolute inset-0 rounded-[2.8rem] sm:rounded-[3.2rem] opacity-100 border ${
-                  theme.theme === 'light' 
-                    ? 'bg-gradient-to-br from-blue-100 via-transparent to-purple-50 border-blue-200/50 shadow-inner' 
-                    : 'bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10 border-white/10 shadow-inner'
-                }`} />
-                
-                {/* Inner Image Container */}
-                <div className={`relative w-full h-full rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden group shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] ${
-                  theme.theme === 'light' ? 'bg-gray-100 shadow-blue-500/20' : 'bg-[#0f172a] shadow-blue-900/30'
-                }`}>
-                  <motion.img
-                    src={portfolioInfo.profileImage || "/main_image.png"}
-                    alt={portfolioInfo.name}
-                    className="w-full h-full object-cover transition-all duration-1000 transform group-hover:scale-110"
-                    style={{ objectPosition: 'center top' }}
-                  />
-
-                  {/* Glassmorphic Overlay on Hover */}
-                  <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none ${
-                    theme.theme === 'light'
-                      ? 'bg-gradient-to-t from-white/40 via-transparent to-transparent'
-                      : 'bg-gradient-to-t from-black/60 via-transparent to-transparent'
+              <MagneticButton className="w-full">
+                <motion.div
+                  whileHover={{
+                    y: -12,
+                    rotateY: 8,
+                    rotateX: -4,
+                    scale: 1.02,
+                    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
+                  }}
+                  className="relative aspect-[4/5] w-full rounded-[2.5rem] sm:rounded-[3rem] p-3 sm:p-4 z-10 transition-all duration-700"
+                >
+                  {/* Animated Border Gradient */}
+                  <div className={`absolute inset-0 rounded-[2.8rem] sm:rounded-[3.2rem] opacity-100 border ${
+                    theme.theme === 'light' 
+                      ? 'bg-gradient-to-br from-blue-100 via-transparent to-purple-50 border-blue-200/50 shadow-inner' 
+                      : 'bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10 border-white/10 shadow-inner'
                   }`} />
-                </div>
-              </motion.div>
+                  
+                  {/* Inner Image Container */}
+                  <div className={`relative w-full h-full rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden group shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] ${
+                    theme.theme === 'light' ? 'bg-gray-100 shadow-blue-500/20' : 'bg-[#0f172a] shadow-blue-900/30'
+                  }`}>
+                    <motion.img
+                      src={portfolioInfo.profileImage || "/main_image.png"}
+                      alt={portfolioInfo.name}
+                      className="w-full h-full object-cover transition-all duration-1000 transform group-hover:scale-110"
+                      style={{ objectPosition: 'center top' }}
+                    />
+
+                    {/* Glassmorphic Overlay on Hover */}
+                    <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none ${
+                      theme.theme === 'light'
+                        ? 'bg-gradient-to-t from-white/40 via-transparent to-transparent'
+                        : 'bg-gradient-to-t from-black/60 via-transparent to-transparent'
+                    }`} />
+                  </div>
+                </motion.div>
+              </MagneticButton>
 
               {/* Clean Integrated Badge - Below Image */}
               <motion.div
