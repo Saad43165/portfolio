@@ -6,6 +6,8 @@ import { AuthProvider } from './context/AuthContext';
 import AdminRoute from './components/User_end/AdminRoute';
 import PortfolioLayout from './components/User_end/PortfolioLayout';
 
+import { Analytics } from "@vercel/analytics/react";
+
 function App() {
   return (
     <AuthProvider>
@@ -16,6 +18,7 @@ function App() {
             <Route path="/admin/*" element={<AdminRoute />} />
           </Routes>
         </Router>
+        <Analytics />
       </DataProvider>
     </AuthProvider>
   );
