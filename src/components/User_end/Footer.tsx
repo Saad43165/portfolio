@@ -44,6 +44,13 @@ const Footer = () => {
         ? 'bg-white border-gray-100' 
         : 'bg-transparent border-white/5'
     }`}>
+      {/* Dynamic Background Elements - Footer Theme */}
+      <div className={`absolute top-0 right-0 w-[400px] h-[400px] rounded-full blur-[120px] pointer-events-none ${
+        theme.theme === 'light' ? 'bg-blue-400/10' : 'bg-blue-600/5'
+      }`} />
+      <div className={`absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full blur-[140px] pointer-events-none ${
+        theme.theme === 'light' ? 'bg-purple-400/10' : 'bg-purple-600/5'
+      }`} />
       <div className="max-w-7xl mx-auto px-6 pt-16 pb-10 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 mb-16">
           {/* Brand Column */}

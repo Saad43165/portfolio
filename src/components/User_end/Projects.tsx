@@ -236,8 +236,12 @@ const Projects = () => {
       }`}
     >
       {/* Dynamic Background Elements - Rose Theme */}
-      <div className="absolute top-1/3 left-0 w-[550px] h-[550px] bg-rose-500/5 rounded-full blur-[140px] -translate-x-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-[450px] h-[450px] bg-pink-600/5 rounded-full blur-[120px] translate-x-1/4 translate-y-1/4 pointer-events-none" />
+      <div className={`absolute top-1/3 left-0 w-[550px] h-[550px] rounded-full blur-[140px] -translate-x-1/2 pointer-events-none ${
+        theme.theme === 'light' ? 'bg-rose-400/20' : 'bg-rose-500/5'
+      }`} />
+      <div className={`absolute bottom-0 right-0 w-[450px] h-[450px] rounded-full blur-[120px] translate-x-1/4 translate-y-1/4 pointer-events-none ${
+        theme.theme === 'light' ? 'bg-pink-500/20' : 'bg-pink-600/5'
+      }`} />
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header Section */}

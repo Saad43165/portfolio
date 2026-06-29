@@ -86,8 +86,17 @@ const Education = () => {
                     : 'bg-gray-900 border-white/5 hover:border-purple-500/30 shadow-lg'
                 }`}
               >
+                {/* Background Watermark Icon */}
+                <div className={`absolute -right-8 -bottom-8 transition-opacity duration-500 pointer-events-none ${
+                  theme.theme === 'light' ? 'text-purple-600 opacity-[0.04] group-hover:opacity-[0.08]' : 'text-purple-200 opacity-[0.02] group-hover:opacity-[0.05]'
+                }`}>
+                  <Award size={160} />
+                </div>
+
                 {/* Magical Academic Glow */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-purple-600/5 blur-[60px] rounded-full -mr-16 -mt-16 group-hover:bg-purple-600/10 transition-all duration-700" />
+                <div className={`absolute top-0 right-0 w-32 h-32 blur-[60px] rounded-full -mr-16 -mt-16 transition-all duration-700 ${
+                  theme.theme === 'light' ? 'bg-purple-500/20 group-hover:bg-purple-500/30' : 'bg-purple-600/5 group-hover:bg-purple-600/10'
+                }`} />
                 
                 <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-6 relative z-10">
                   <div className="space-y-3">

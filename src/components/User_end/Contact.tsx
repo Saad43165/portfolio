@@ -114,8 +114,12 @@ const Contact = () => {
       }`}
     >
       {/* Dynamic Background Elements - Indigo Theme */}
-      <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-indigo-500/5 rounded-full blur-[140px] -translate-y-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-violet-600/5 rounded-full blur-[120px] translate-y-1/3 pointer-events-none" />
+      <div className={`absolute top-0 right-1/4 w-[600px] h-[600px] rounded-full blur-[140px] -translate-y-1/2 pointer-events-none ${
+        theme.theme === 'light' ? 'bg-indigo-400/20' : 'bg-indigo-500/5'
+      }`} />
+      <div className={`absolute bottom-0 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px] translate-y-1/3 pointer-events-none ${
+        theme.theme === 'light' ? 'bg-violet-400/20' : 'bg-violet-600/5'
+      }`} />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div className="mb-12 text-center" variants={itemVariants}>
           <div className="flex items-center gap-2 mb-4 justify-center">

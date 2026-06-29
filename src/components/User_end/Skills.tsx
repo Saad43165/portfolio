@@ -4,31 +4,80 @@ import { Code, Palette, Database, Smartphone, Zap, CheckCircle2, Cpu, Cloud, Ter
 import { motion, Variants } from 'framer-motion';
 import { ThemeContext } from './PortfolioLayout';
 
+import {
+  SiDart,
+  SiPython,
+  SiTypescript,
+  SiFlutter,
+  SiReact,
+  SiNextdotjs,
+  SiFastapi,
+  SiFirebase,
+  SiSupabase,
+  SiSqlite,
+  SiPostgresql,
+  SiGit,
+  SiTailwindcss,
+  SiFigma
+} from 'react-icons/si';
+
+const getBrandIcon = (skillName: string) => {
+  const name = skillName.toLowerCase();
+  if (name.includes('dart')) return SiDart;
+  if (name.includes('python')) return SiPython;
+  if (name.includes('typescript') || name.includes('javascript')) return SiTypescript;
+  if (name.includes('flutter')) return SiFlutter;
+  if (name.includes('react native') || name.includes('react & next.js')) return SiReact;
+  if (name.includes('next.js')) return SiNextdotjs;
+  if (name.includes('fastapi')) return SiFastapi;
+  if (name.includes('firebase')) return SiFirebase;
+  if (name.includes('supabase')) return SiSupabase;
+  if (name.includes('sqlite')) return SiSqlite;
+  if (name.includes('postgres')) return SiPostgresql;
+  if (name.includes('git')) return SiGit;
+  if (name.includes('tailwind')) return SiTailwindcss;
+  if (name.includes('figma')) return SiFigma;
+  return Code; // Fallback
+};
+
 const SkillCard = ({ skill, index, theme, isVisible }: any) => {
+  const BrandIcon = getBrandIcon(skill.name);
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
       transition={{ duration: 0.5, delay: (index % 4) * 0.1 }}
       whileHover={{ y: -5, transition: { duration: 0.2 } }}
-      className={`p-5 sm:p-6 rounded-3xl border transition-all duration-300 group ${
+      className={`relative p-5 sm:p-6 rounded-3xl border transition-all duration-300 group overflow-hidden ${
         theme.theme === 'light' 
           ? 'bg-white border-gray-100 shadow-xl shadow-blue-500/5 hover:border-blue-200 hover:shadow-blue-500/10' 
           : 'bg-[#0f172a]/50 border-white/5 hover:border-blue-500/30 hover:bg-[#1e293b]/50 shadow-2xl'
       }`}
     >
-      <div className="flex justify-between items-center mb-4">
+      {/* Background Watermark Icon */}
+      <div className={`absolute -right-4 -bottom-4 transition-opacity duration-500 pointer-events-none ${
+        theme.theme === 'light' ? 'text-blue-600 opacity-[0.06] group-hover:opacity-[0.12]' : 'text-white opacity-[0.03] group-hover:opacity-[0.08]'
+      }`}>
+        <BrandIcon size={120} />
+      </div>
+
+      <div className="flex justify-between items-center mb-4 relative z-10">
         <span className={`font-black text-base tracking-tight ${
           theme.theme === 'light' ? 'text-gray-900' : 'text-white'
         }`}>
           {skill.name}
         </span>
-        <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1.5 rounded-full border border-blue-100 dark:border-blue-800/50">
+        <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border ${
+          theme.theme === 'light' 
+            ? 'bg-blue-100 text-blue-700 border-blue-200 shadow-sm' 
+            : 'bg-blue-900/30 text-blue-400 border-blue-800/50'
+        }`}>
           {skill.level}%
         </span>
       </div>
       
-      <div className="space-y-4">
+      <div className="space-y-4 relative z-10">
         <div className="w-full bg-gray-100 dark:bg-gray-800 h-2.5 rounded-full overflow-hidden relative">
           <motion.div 
             initial={{ width: 0 }}
@@ -39,8 +88,10 @@ const SkillCard = ({ skill, index, theme, isVisible }: any) => {
         </div>
         
         <div className="flex items-center justify-between">
-          <div className="flex items-center text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
-            <CheckCircle2 size={14} className="mr-1.5 text-blue-500" />
+          <div className={`flex items-center text-[10px] font-bold uppercase tracking-widest ${
+            theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+          }`}>
+            <CheckCircle2 size={14} className="mr-1.5 text-blue-600 dark:text-blue-500" />
             {skill.yearsOfExperience > 0 ? `${skill.yearsOfExperience}Y Experience` : 'Expertise'}
           </div>
           <Zap size={14} className="text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -113,8 +164,12 @@ const Skills = () => {
       }`}
     >
       {/* Dynamic Background Elements - Emerald Theme */}
-      <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[130px] translate-x-1/3 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-teal-500/5 rounded-full blur-[120px] -translate-x-1/3 translate-y-1/3 pointer-events-none" />
+      <div className={`absolute top-1/4 right-0 w-[600px] h-[600px] rounded-full blur-[130px] translate-x-1/3 pointer-events-none ${
+        theme.theme === 'light' ? 'bg-emerald-400/20' : 'bg-emerald-500/5'
+      }`} />
+      <div className={`absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full blur-[120px] -translate-x-1/3 translate-y-1/3 pointer-events-none ${
+        theme.theme === 'light' ? 'bg-teal-400/20' : 'bg-teal-500/5'
+      }`} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div className="mb-16 text-center lg:text-left" variants={itemVariants}>
           <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">

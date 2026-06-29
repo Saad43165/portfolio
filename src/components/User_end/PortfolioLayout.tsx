@@ -27,120 +27,54 @@ const Education = lazyWithPrefetch(() => import('./Education'));
 const Contact = lazyWithPrefetch(() => import('./Contact'));
 const Footer = lazyWithPrefetch(() => import('./Footer'));
 
-import { TerminalConsole } from './TerminalConsole';
 import { InteractiveBackgroundCanvas } from './InteractiveBackgroundCanvas';
-import { TelemetryDashboard } from './TelemetryDashboard';
 
-// Improved loading component with smooth progress animation
-// Improved loading component with Engineering AI theme and rotating orbits
 const LoadingIndicator = ({ progress }: { progress: number }) => {
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-[#020617] z-[100] overflow-hidden"
+      className="fixed inset-0 flex items-center justify-center bg-[#020617] z-[100]"
       role="status"
       aria-live="polite"
       aria-busy="true"
     >
-      {/* Circuit Pattern Overlay */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-        style={{ backgroundImage: `radial-gradient(#3b82f6 1px, transparent 1px)`, backgroundSize: '30px 30px' }} 
-      />
-
-      {/* Rotating Orbits */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div className="w-full max-w-sm px-10 flex flex-col items-center">
         <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-          className="absolute w-[300px] h-[300px] border border-blue-500/20 rounded-full"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-10 text-center flex flex-col items-center"
         >
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-blue-500 rounded-full shadow-[0_0_10px_#3b82f6]" />
-        </motion.div>
-        
-        <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="absolute w-[450px] h-[450px] border border-purple-500/10 rounded-full"
-        >
-          <div className="absolute bottom-0 right-1/2 translate-x-1/2 translate-y-1/2 w-3 h-3 bg-purple-500 rounded-full shadow-[0_0_15px_#a855f7]" />
+          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-[0.3em] uppercase mb-3">
+            Saad Ikram
+          </h1>
+          <div className="h-px w-12 bg-blue-500/50 mb-3" />
+          <p className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-[0.4em]">
+            Engineering Portfolio
+          </p>
         </motion.div>
 
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute w-[600px] h-[600px] border border-cyan-500/5 rounded-full"
-        >
-          <div className="absolute top-1/4 right-0 -translate-y-1/2 translate-x-1/2 w-1.5 h-1.5 bg-cyan-400 rounded-full shadow-[0_0_8px_#22d3ee]" />
-        </motion.div>
-      </div>
-
-      {/* Pulsing Core Glow */}
-      <motion.div
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.3, 0.5, 0.3],
-        }}
-        transition={{ duration: 4, repeat: Infinity }}
-        className="absolute w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[100px]"
-      />
-
-      <div className="relative z-10 w-full max-w-sm px-8 flex flex-col items-center">
-        <div className="w-full space-y-8">
-          <div className="flex flex-col items-center text-center space-y-4">
-            <motion.div 
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-[10px] font-bold text-blue-400 uppercase tracking-[0.3em]"
-            >
-              System Neural Link
-            </motion.div>
-            
-            <div className="space-y-1">
-              <h2 className="text-3xl font-black text-white tracking-tighter uppercase italic">
-                {progress < 100 ? 'Neural Synthesis' : 'Core Ready'}
-              </h2>
-              <div className="flex items-center justify-center gap-3">
-                <div className="h-px w-8 bg-gradient-to-r from-transparent to-blue-500" />
-                <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.4em]">
-                  {progress < 30 ? 'Matrix Init' : progress < 60 ? 'Syncing Neurons' : 'Finalizing Core'}
-                </p>
-                <div className="h-px w-8 bg-gradient-to-l from-transparent to-blue-500" />
-              </div>
-            </div>
-          </div>
-
-          <div className="relative pt-2">
-            <div className="flex justify-between items-end mb-2">
-              <span className="text-[10px] font-bold text-blue-500 uppercase tracking-widest">Efficiency 0.98</span>
-              <span className="text-4xl font-black text-white tabular-nums tracking-tighter">
-                {Math.floor(progress)}<span className="text-blue-500 text-xl">%</span>
-              </span>
-            </div>
-            
-            <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                transition={{ type: "spring", bounce: 0, duration: 0.5 }}
-                className="h-full bg-gradient-to-r from-blue-600 via-cyan-400 to-purple-600 relative shadow-[0_0_15px_rgba(59,130,246,0.5)]"
-              >
-                <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.3)_50%,transparent_100%)] animate-shimmer" 
-                  style={{ backgroundSize: '200% 100%' }} />
-              </motion.div>
-            </div>
-          </div>
+        {/* Minimalist Premium Progress Bar */}
+        <div className="w-full h-px bg-white/10 rounded-full overflow-hidden relative">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${progress}%` }}
+            transition={{ type: "tween", ease: "easeOut", duration: 0.1 }}
+            className="absolute top-0 left-0 h-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.8)]"
+          />
         </div>
 
-        <motion.div
-          animate={{ opacity: [0.4, 1, 0.4] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="mt-16 flex items-center gap-3 px-4 py-2 rounded-lg bg-white/5 border border-white/10"
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 1 }}
+          className="mt-6 flex justify-between w-full"
         >
-          <div className="flex gap-1">
-            <div className="w-1 h-3 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
-            <div className="w-1 h-3 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-            <div className="w-1 h-3 bg-blue-300 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
-          </div>
-          <span className="text-[9px] font-black text-blue-400 uppercase tracking-[0.2em]">Data Stream Encrypted</span>
+          <span className="text-[9px] text-gray-500 uppercase tracking-[0.2em] font-black">
+            {progress < 100 ? 'Loading Assets...' : 'Ready'}
+          </span>
+          <span className="text-[9px] text-gray-300 uppercase tracking-widest font-black tabular-nums">
+            {Math.floor(progress)}%
+          </span>
         </motion.div>
       </div>
     </div>
@@ -265,16 +199,7 @@ const PortfolioLayout = () => {
     localStorage.setItem('theme', newTheme);
   };
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === '`') {
-        e.preventDefault();
-        setIsConsoleOpen(prev => !prev);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+
 
   useEffect(() => {
     document.documentElement.className = theme;
@@ -417,8 +342,6 @@ const PortfolioLayout = () => {
         <MouseGlow />
         <InteractiveBackgroundCanvas />
         <BackToTop />
-        <TelemetryDashboard onToggleConsole={() => setIsConsoleOpen(prev => !prev)} />
-        <TerminalConsole isOpen={isConsoleOpen} onClose={() => setIsConsoleOpen(false)} />
         {isLoading && <LoadingIndicator progress={displayProgress} />}
 
         <Suspense fallback={null}>

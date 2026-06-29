@@ -61,8 +61,12 @@ const About = () => {
       variants={containerVariants}
     >
       {/* Dynamic Background Elements - Cyan Theme */}
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[150px] translate-x-1/3 translate-y-1/3 pointer-events-none" />
+      <div className={`absolute top-0 left-0 w-[500px] h-[500px] rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 pointer-events-none ${
+        theme.theme === 'light' ? 'bg-cyan-400/20' : 'bg-cyan-500/5'
+      }`} />
+      <div className={`absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full blur-[150px] translate-x-1/3 translate-y-1/3 pointer-events-none ${
+        theme.theme === 'light' ? 'bg-blue-400/20' : 'bg-blue-500/5'
+      }`} />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div className="mb-10 text-center lg:text-left" variants={itemVariants}>

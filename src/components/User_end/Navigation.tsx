@@ -134,10 +134,10 @@ const Navigation = () => {
         initial={{ y: -100, x: '-50%' }}
         animate={{ y: 0, x: '-50%' }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className={`fixed top-4 sm:top-6 left-1/2 z-[80] transition-all duration-500 ease-in-out w-[95%] sm:w-auto max-w-5xl rounded-[2rem] border shadow-2xl backdrop-blur-xl ${
+        className={`fixed top-4 sm:top-6 left-1/2 z-[80] transition-all duration-500 ease-in-out w-[95%] sm:w-auto max-w-5xl rounded-[2rem] border shadow-2xl backdrop-blur-2xl ${
           scrolled || isOpen
-            ? theme.theme === 'light' ? 'bg-white/90 border-gray-200 shadow-blue-500/10' : 'bg-gray-950/90 border-white/10 shadow-black/50'
-            : theme.theme === 'light' ? 'bg-white/70 border-white/50 shadow-sm' : 'bg-gray-950/50 border-white/5'
+            ? theme.theme === 'light' ? 'bg-white/95 border-gray-200 shadow-blue-500/10' : 'bg-[#050b14]/95 border-white/10 shadow-black/50'
+            : theme.theme === 'light' ? 'bg-white/85 border-white/50 shadow-sm' : 'bg-gray-950/70 border-white/10'
         }`}
       >
         <div className="px-4 sm:px-6">

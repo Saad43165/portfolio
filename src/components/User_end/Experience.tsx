@@ -55,8 +55,12 @@ const Experience = () => {
       }`}
     >
       {/* Dynamic Background Elements - Amber Theme */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-500/5 rounded-full blur-[120px] translate-x-1/4 -translate-y-1/4 pointer-events-none" />
-      <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-orange-600/5 rounded-full blur-[100px] -translate-x-1/3 pointer-events-none" />
+      <div className={`absolute top-0 right-0 w-[500px] h-[500px] rounded-full blur-[120px] translate-x-1/4 -translate-y-1/4 pointer-events-none ${
+        theme.theme === 'light' ? 'bg-amber-400/20' : 'bg-amber-500/5'
+      }`} />
+      <div className={`absolute bottom-1/4 left-0 w-[400px] h-[400px] rounded-full blur-[100px] -translate-x-1/3 pointer-events-none ${
+        theme.theme === 'light' ? 'bg-orange-500/20' : 'bg-orange-600/5'
+      }`} />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div className="mb-16 text-center lg:text-left" variants={itemVariants}>
           <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
@@ -93,12 +97,19 @@ const Experience = () => {
                       : theme.theme === 'light' ? 'bg-white border-gray-300' : 'bg-gray-900 border-gray-700'
                   }`} />
 
-                  <div className={`p-6 sm:p-8 rounded-3xl border transition-all duration-300 ${
+                  <div className={`relative p-6 sm:p-8 rounded-3xl border transition-all duration-300 overflow-hidden group ${
                     theme.theme === 'light' 
                       ? 'bg-white border-gray-100 shadow-xl shadow-blue-500/5 hover:border-blue-200' 
                       : 'bg-[#0f172a]/50 border-white/5 shadow-2xl hover:border-blue-500/30'
                   }`}>
-                    <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
+                    {/* Background Watermark Icon */}
+                    <div className={`absolute -right-10 -bottom-10 transition-opacity duration-500 pointer-events-none ${
+                      theme.theme === 'light' ? 'text-blue-600 opacity-[0.04] group-hover:opacity-[0.08]' : 'text-blue-200 opacity-[0.02] group-hover:opacity-[0.05]'
+                    }`}>
+                      <Briefcase size={200} />
+                    </div>
+
+                    <div className="relative z-10 flex flex-col lg:flex-row gap-6 lg:gap-10">
                       
                       {/* Left: Meta Info */}
                       <div className="flex flex-col gap-3 lg:w-64 flex-shrink-0">
