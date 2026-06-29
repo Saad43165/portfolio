@@ -148,7 +148,7 @@ const Hero = () => {
                 <h2 className={`text-2xl sm:text-3xl lg:text-2xl font-bold tracking-tight leading-relaxed ${theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
                   }`}>
                   Crafting Digital Excellence through <br className="hidden sm:block" />
-                  <div className="relative h-8 sm:h-10 lg:h-8 overflow-hidden inline-block align-bottom mt-1 w-full max-w-[400px]">
+                  <div className="relative h-8 sm:h-10 lg:h-8 overflow-hidden block mx-auto lg:mx-0 lg:inline-block align-bottom mt-1 w-full max-w-[400px] text-center lg:text-left">
                     <AnimatePresence mode="popLayout">
                       <motion.span
                         key={currentIndex}
@@ -156,7 +156,7 @@ const Hero = () => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: -30, opacity: 0 }}
                         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-blue-500 font-black italic absolute left-0 whitespace-nowrap"
+                        className="text-blue-500 font-black italic absolute left-0 right-0 lg:right-auto"
                       >
                         {titles[currentIndex]}
                       </motion.span>
@@ -166,9 +166,9 @@ const Hero = () => {
               </motion.div>
             </div>
 
-            <motion.p variants={itemVariants} className={`text-base sm:text-xl lg:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-semibold ${theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+            <motion.p variants={itemVariants} className={`text-base sm:text-xl lg:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-semibold text-center lg:text-left ${theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
               }`}>
-              {portfolioInfo.tagline || "Focused on architecting high-performance Web & Mobile Applications."}
+              Delivering scalable, high-performance software solutions. I specialize in building robust architectures, seamless cross-platform user experiences, and enterprise-grade applications.
             </motion.p>
 
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 sm:gap-6 pt-2 lg:pt-1">
