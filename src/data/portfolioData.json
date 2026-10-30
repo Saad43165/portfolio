@@ -5,12 +5,12 @@
       "title": "SignBridge: Two-Way AI Sign Language Translation",
       "description": "Dual-direction cross-platform mobile translation application bridging communication barriers between the deaf-mute community and the hearing public.",
       "longDescription": "SignBridge is a dual-direction translation mobile application engineered to solve communication barriers between the deaf-mute community and the hearing public. Unlike basic one-way translation systems, SignBridge provides a two-way bridge:\n\n1. Receptive Mode (Sign-to-Text): Translates live camera-captured physical gestures into real-time text and speech.\n2. Expressive Mode (Text-to-Sign): Translates spoken voice or typed sentences into immediate skeletal animations on a rigged 3D avatar.",
-      "image": "/signbridge.jpeg",
+      "image": "/signbridge.webp",
       "technologies": ["Flutter", "Dart", "Google ML Kit", "TensorFlow Lite", "Three.js", "Drift (SQLite)", "TTS & STT"],
       "features": ["Real-time Camera Classification", "Interactive 3D Avatar Animations", "Daily Progress & Gamification", "Bilingual Support (English & Urdu)", "Smart Simulator Panel"],
       "githubUrl": "https://github.com/Saad43165/SignBridge",
       "liveUrl": "",
-      "videoUrl": "", 
+      "videoUrl": "",
       "category": "Mobile Application / AI",
       "status": "completed",
       "startDate": "2025-09-01",
@@ -42,19 +42,19 @@
       "id": "project-agriguard",
       "title": "AgriGuard: AI-Powered Plant Disease Detection (FYP)",
       "description": "Cross-platform mobile app providing offline, real-time plant disease identification for remote farmers.",
-      "longDescription": "Engineered a hybrid deep learning framework using EfficientNetB3 and TFLite, achieving 94.8% classification accuracy within a 3.1 MB model optimised for low-end Android devices. Implemented a 5-part diagnostic system: severity quantification via pixel-ratio analysis, localised remediation guidance, and multimodal API for out-of-distribution (OOD) species detection. Integrated Firebase for cloud-based Advanced AI scan mode, enabling seamless online/offline fallback for farmers with intermittent connectivity.",
-      "image": "/agri.png",
-      "technologies": ["Flutter", "TensorFlow Lite", "EfficientNetB3", "Firebase", "Python", "Dart"],
-      "features": ["Offline AI Detection", "Severity Quantification", "Remediation Guidance", "Cloud Fallback Mode"],
+      "longDescription": "Engineered a hybrid deep learning framework using EfficientNetB3 and TFLite, achieving 94.8% classification accuracy within a 3.1 MB model optimised for low-end Android devices. Implemented a 5-part diagnostic system: severity quantification via pixel-ratio analysis, localised remediation guidance, and multimodal API for out-of-distribution (OOD) species detection. Integrated Firebase for cloud-based Advanced AI scan mode, enabling seamless online/offline fallback for farmers with intermittent connectivity. Added an AgriBot assistant powered by Groq (Llama 3.3) for treatment plans and farming advice, with full Urdu localisation, and moved third-party AI calls (Groq, Plant.id, weather) behind a Firebase Cloud Functions proxy with per-user rate limits so no API keys ship in the app.",
+      "image": "/agri.webp",
+      "technologies": ["Flutter", "TensorFlow Lite", "EfficientNetB3", "Firebase", "Python", "Dart", "Groq (Llama 3.3)", "Cloud Functions"],
+      "features": ["Offline AI Detection", "Severity Quantification", "Remediation Guidance", "Cloud Fallback Mode", "AgriBot AI Advisor", "Urdu Localisation"],
       "githubUrl": "https://github.com/Saad43165/AgriGuard",
       "liveUrl": "",
-      "videoUrl": "", 
+      "videoUrl": "",
       "category": "Mobile Application / AI",
       "status": "completed",
       "startDate": "2025-08-01",
       "endDate": "2026-05-01",
       "createdAt": "2026-01-01T00:00:00.000Z",
-      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-10-30T00:00:00.000Z",
       "role": "Lead Mobile & AI Engineer",
       "platforms": ["Android"],
       "problemsSolved": [
@@ -65,6 +65,36 @@
         {
           "title": "Pixel-Ratio Severity Quantification",
           "description": "Developed custom computer vision algorithms in Python/Dart to calculate pixel-ratio leaf damage areas, delivering precise severity quantification."
+        },
+        {
+          "title": "Securing Third-Party AI Keys",
+          "description": "Moved Groq, Plant.id and weather API calls into Firebase Cloud Functions with per-user rate limiting, keeping secrets server-side and protecting quotas from abuse."
+        }
+      ]
+    },
+    {
+      "id": "project-gitpulse",
+      "title": "GitPulse: AI-Powered GitHub Explorer",
+      "description": "Flutter app for searching and analysing GitHub repositories, code, users and issues, with AI repo summaries.",
+      "longDescription": "Built a production-grade Flutter app covering repository, code, user and issue search, repo comparison, issue triage, tracked repos with change notifications, and a computed repo health score. Integrated Groq-powered AI summaries and developer analysis through a server-side proxy (Cloudflare Worker) so no GitHub or AI keys ship in the app. Uses Riverpod state management, go_router navigation, SQLite for local history and bookmarks, and a GitHub Actions pipeline that builds signed release AABs.",
+      "image": "https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "technologies": ["Flutter", "Dart", "Riverpod", "Groq AI", "GitHub REST API", "SQLite", "Cloudflare Workers", "GitHub Actions"],
+      "features": ["AI Repo Summaries", "Repo Health Score", "Compare & Triage", "Tracked Repo Notifications"],
+      "githubUrl": "https://github.com/Saad43165/GitPulese",
+      "liveUrl": "",
+      "videoUrl": "",
+      "category": "Mobile Application / AI",
+      "status": "in-progress",
+      "startDate": "2026-07-01",
+      "endDate": "",
+      "createdAt": "2026-10-30T00:00:00.000Z",
+      "updatedAt": "2026-10-30T00:00:00.000Z",
+      "role": "Mobile Developer",
+      "platforms": ["Android", "iOS"],
+      "problemsSolved": [
+        {
+          "title": "Keeping API Keys Out of the App",
+          "description": "Routed all GitHub and Groq traffic through a shared server-side proxy so every user gets AI features without supplying their own keys and no secrets ship in the build."
         }
       ]
     },
@@ -78,7 +108,7 @@
       "features": ["AI Prescription Scanner", "Health Trajectory Forecasting", "FDA Interaction Alerts", "Role-Based Access"],
       "githubUrl": "https://github.com/Saad43165/MediVision",
       "liveUrl": "",
-      "videoUrl": "", 
+      "videoUrl": "",
       "category": "Healthcare Application / AI",
       "status": "completed",
       "startDate": "2025-01-01",
@@ -103,12 +133,12 @@
       "title": "VaxGuard: AI-Powered Clinical Decision Support System",
       "description": "High-fidelity cross-platform diagnostic triage and vaccination management app.",
       "longDescription": "Built a high-fidelity cross-platform diagnostic triage and vaccination management app with interactive anatomical mapping UI and multi-language support (English / Urdu). Integrated a WHO 2018 Rabies Protocol-compliant Animal Bite Assessor evaluating bite location and exposure severity, auto-generating personalised Post-Exposure Prophylaxis (PEP) schedules. Built a real-time geospatial Live Outbreak Radar to monitor active disease outbreaks near the user, with push notifications for proximity alerts. Implemented secure local persistence.",
-      "image": "/vax.png",
+      "image": "/vax.webp",
       "technologies": ["Flutter", "Dart", "Provider", "Local Storage", "REST APIs"],
       "features": ["WHO Protocol Compliance", "Interactive Anatomical Mapping", "Live Outbreak Radar", "Multi-language Support"],
       "githubUrl": "https://github.com/Saad43165/Vax-Guard",
       "liveUrl": "",
-      "videoUrl": "", 
+      "videoUrl": "",
       "category": "Healthcare Application",
       "status": "completed",
       "startDate": "2024-01-01",
@@ -133,12 +163,12 @@
       "title": "RunQuest: Gamified Territory Conquest & Fitness App",
       "description": "Gamified fitness app where users track real-world runs to claim virtual territories on a live map.",
       "longDescription": "Architected a gamified fitness app combining geolocation, health metrics, and multiplayer competition. Engineered territory conquest mechanics using Turf.js and React Native Maps — processing live GPS data to calculate closed-loop paths, polygon areas, and competitive takeovers in real time. Built a live multiplayer ecosystem with Firebase: real-time presence tracking, global team-based leaderboards, and a dynamic activity feed. Designed a premium UI with Zustand state management, Expo Reanimated micro-interactions, real-time weather, and a custom in-app music player.",
-      "image": "/run.png",
+      "image": "/run.webp",
       "technologies": ["React Native", "Expo", "TypeScript", "Firebase", "Zustand", "Turf.js"],
       "features": ["Live Map Conquest", "GPS Polygon Calculation", "Multiplayer Leaderboards", "In-App Music Player"],
       "githubUrl": "https://github.com/Saad43165/runquest",
       "liveUrl": "",
-      "videoUrl": "", 
+      "videoUrl": "",
       "category": "Mobile Application / Fitness",
       "status": "completed",
       "startDate": "2023-01-01",
@@ -168,7 +198,7 @@
       "features": ["Infinite-Scroll Pagination", "Async HTTP Handling", "Offline Favourites", "Glassmorphism UI"],
       "githubUrl": "https://github.com/Saad43165",
       "liveUrl": "",
-      "videoUrl": "", 
+      "videoUrl": "",
       "category": "Mobile Application",
       "status": "completed",
       "startDate": "2023-06-01",
@@ -189,12 +219,12 @@
       "title": "Naheed & Sons: Building Excellence, Engineering the Future",
       "description": "Corporate web platform for an established construction firm, showcasing landmark structures, bespoke interiors, and architectural masterworks.",
       "longDescription": "Designed and developed a premium, high-performance corporate web presence for Naheed & Sons, a trusted construction firm since 2001. Built with Next.js for Server-Side Rendering (SSR) and advanced SEO optimization, styled with high-fidelity custom animations and tailwind typography. Features an administrative portal for dynamic project portfolio curation, client testimonial management, and real-time lead capture powered by a secure Supabase backend database.",
-      "image": "/naheed.png",
+      "image": "/naheed.webp",
       "technologies": ["Next.js", "React", "Tailwind CSS", "Supabase", "TypeScript", "Framer Motion"],
       "features": ["Dynamic Project Portfolio", "Admin Portal & Content Manager", "Real-Time Lead Acquisition", "High-Performance SSR & SEO Optimization", "Interactive Construction Calculator"],
       "githubUrl": "https://github.com/Saad43165/naheedandsons",
       "liveUrl": "https://www.naheedandsons.com.pk/",
-      "videoUrl": "", 
+      "videoUrl": "",
       "category": "Web Application",
       "status": "completed",
       "startDate": "2024-03-01",
@@ -373,10 +403,7 @@
       "endDate": "2025-09-01",
       "description": "Developed responsive cross-platform applications in React Native, ensuring seamless UX and functional consistency across Android and iOS. Collaborated in agile development cycles, contributing to component architecture, state management, and API integration. Participated in code reviews and sprint planning, improving delivery quality and team coordination.",
       "technologies": ["React Native", "Agile", "State Management", "API Integration"],
-      "achievements": [
-        "Ensured seamless UX consistency across Android and iOS.",
-        "Improved delivery quality through rigorous code reviews."
-      ],
+      "achievements": ["Ensured seamless UX consistency across Android and iOS.", "Improved delivery quality through rigorous code reviews."],
       "createdAt": "2026-01-01T00:00:00.000Z",
       "updatedAt": "2026-01-01T00:00:00.000Z"
     },
@@ -389,10 +416,7 @@
       "endDate": "2024-08-01",
       "description": "Built Flutter frontend components and integrated third-party APIs to ensure application effectiveness and reliability. Gained hands-on experience with state management patterns and Firebase backend services. Assisted in diagnosing and fixing UI/UX issues, reducing reported bugs by iterating on user feedback.",
       "technologies": ["Flutter", "Firebase", "State Management", "API Integration"],
-      "achievements": [
-        "Reduced reported bugs through iterative user feedback.",
-        "Integrated robust third-party APIs into Flutter components."
-      ],
+      "achievements": ["Reduced reported bugs through iterative user feedback.", "Integrated robust third-party APIs into Flutter components."],
       "createdAt": "2026-01-01T00:00:00.000Z",
       "updatedAt": "2026-01-01T00:00:00.000Z"
     },
@@ -405,10 +429,7 @@
       "endDate": "2023-09-01",
       "description": "Developed professional skills in a corporate environment through diverse technical and collaborative tasks within structured development cycles. Strengthened teamwork and communication skills by contributing to cross-functional team deliverables.",
       "technologies": ["Corporate Collaboration", "Technical Planning"],
-      "achievements": [
-        "Contributed directly to cross-functional team deliverables.",
-        "Adapted to structured corporate development cycles."
-      ],
+      "achievements": ["Contributed directly to cross-functional team deliverables.", "Adapted to structured corporate development cycles."],
       "createdAt": "2026-01-01T00:00:00.000Z",
       "updatedAt": "2026-01-01T00:00:00.000Z"
     }
@@ -456,15 +477,21 @@
   ],
   "about": {
     "heading": "Flutter Developer | Mobile App Development | AI Integration",
-    "paragraphs": [
-      "Software Engineering graduate with 3 internships and a growing portfolio of cross-platform mobile applications. I am a Flutter-first developer with hands-on experience building AI-powered features, Firebase & Supabase backends, and REST API integrations.",
-      "I have also built 3 projects in React Native — I am comfortable with both ecosystems, though Flutter is where I do my best work. Eager to contribute to a professional team and keep growing as a mobile developer."
-    ],
+    "paragraphs": ["Software Engineering graduate with 3 internships and a growing portfolio of cross-platform mobile applications. I am a Flutter-first developer with hands-on experience building AI-powered features, Firebase & Supabase backends, and REST API integrations.", "I have also built 3 projects in React Native — I am comfortable with both ecosystems, though Flutter is where I do my best work. Eager to contribute to a professional team and keep growing as a mobile developer."],
     "highlights": ["Flutter First Developer", "AI Model Integration", "Cross-Platform Ecosystems", "Backend Architecture"],
     "stats": [
-      { "label": "Internships Completed", "value": "3" },
-      { "label": "Mobile Apps Delivered", "value": "6+" },
-      { "label": "Frameworks Mastered", "value": "Flutter & React Native" }
+      {
+        "label": "Internships Completed",
+        "value": "3"
+      },
+      {
+        "label": "Mobile Apps Delivered",
+        "value": "6+"
+      },
+      {
+        "label": "Frameworks Mastered",
+        "value": "Flutter & React Native"
+      }
     ]
   }
 }

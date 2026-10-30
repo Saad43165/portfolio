@@ -260,7 +260,7 @@ const Hero = () => {
                     theme.theme === 'light' ? 'bg-gray-100 shadow-blue-500/20' : 'bg-[#0f172a] shadow-blue-900/30'
                   }`}>
                     <motion.img
-                      src={portfolioInfo.profileImage || "/main_image.png"}
+                      src={portfolioInfo.profileImage || "/main_image.webp"}
                       alt={portfolioInfo.name}
                       className="w-full h-full object-cover transition-all duration-1000 transform group-hover:scale-110"
                       style={{ objectPosition: 'center top' }}
