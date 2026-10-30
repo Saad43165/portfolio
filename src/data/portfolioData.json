@@ -189,32 +189,6 @@
       ]
     },
     {
-      "id": "project-github",
-      "title": "GitHub Repository Explorer",
-      "description": "Mobile app interfacing with the GitHub REST API to search and explore repositories.",
-      "longDescription": "Built a mobile app to search and explore repositories by name, language, or owner with infinite-scroll pagination. Engineered efficient async HTTP handling with dynamic filtering to deliver a responsive, non-blocking data experience even on slow connections. Built a local storage ecosystem using SharedPreferences — persisting search history and a favourites system for offline tracking of bookmarked repositories. Designed a glassmorphism-inspired UI with micro-animations, gradient themes, dark/light mode toggle, and bottomsheet modals.",
-      "image": "https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "technologies": ["Flutter", "Dart", "GitHub REST API", "SharedPreferences", "url_launcher"],
-      "features": ["Infinite-Scroll Pagination", "Async HTTP Handling", "Offline Favourites", "Glassmorphism UI"],
-      "githubUrl": "https://github.com/Saad43165",
-      "liveUrl": "",
-      "videoUrl": "",
-      "category": "Mobile Application",
-      "status": "completed",
-      "startDate": "2023-06-01",
-      "endDate": "2023-09-01",
-      "createdAt": "2023-06-01T00:00:00.000Z",
-      "updatedAt": "2023-06-01T00:00:00.000Z",
-      "role": "Mobile Developer",
-      "platforms": ["Android"],
-      "problemsSolved": [
-        {
-          "title": "Infinite Scroll Page Boundary Race Conditions",
-          "description": "Resolved double-triggering API requests at page boundary limits by implementing a throttle-lock state on the scroll controller listener, reducing redundant payloads to zero."
-        }
-      ]
-    },
-    {
       "id": "project-naheed",
       "title": "Naheed & Sons: Building Excellence, Engineering the Future",
       "description": "Corporate web platform for an established construction firm, showcasing landmark structures, bespoke interiors, and architectural masterworks.",
