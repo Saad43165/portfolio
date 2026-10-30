@@ -13,11 +13,10 @@ const Hero = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const titles = portfolioInfo.roles || [
-    'Software Engineer',
-    'Full Stack Developer',
-    'Mobile App Development',
-    'Website Development',
-    'Software Quality Assurance'
+    'Flutter Developer',
+    'Mobile App Developer',
+    'AI Integration',
+    'React Native Developer'
   ];
 
   useEffect(() => {
@@ -286,7 +285,7 @@ const Hero = () => {
                 <div className="flex items-center gap-2">
                   <Code size={14} className="text-blue-500" />
                   <span className={`text-[9px] sm:text-[10px] font-black uppercase tracking-widest ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                    Software Engineer
+                    Flutter Developer
                   </span>
                 </div>
                 <div className={`w-px h-4 ${theme.theme === 'light' ? 'bg-gray-300' : 'bg-white/20'}`} />

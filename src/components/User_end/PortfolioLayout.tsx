@@ -286,7 +286,7 @@ const PortfolioLayout = () => {
       details: () => {
         console.log('%c[Target Details]', 'color: #8b5cf6; font-weight: bold;');
         console.log('%cName: %cSaad Ikram', labelStyle, valueStyle);
-        console.log('%cRole: %cLead Mobile & AI Developer', labelStyle, valueStyle);
+        console.log('%cRole: %cFlutter Developer', labelStyle, valueStyle);
         console.log('%cLocation: %cChakwal, Punjab, Pakistan', labelStyle, valueStyle);
         console.log('%cStatus: %cReady for Innovation & Core Architect tasks', labelStyle, 'color: #10b981; font-weight: bold;');
         return 'Data retrieval completed.';

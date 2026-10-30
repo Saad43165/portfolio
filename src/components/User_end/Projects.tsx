@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useContext } from 'react';
 import { createPortal } from 'react-dom';
 import { useData } from '../../context/DataContext';
-import { ExternalLink, Github, Zap, Shield, Smartphone, Globe, X, Play, Code as CodeIcon, Cpu, Layers, Calendar, User, ChevronRight } from 'lucide-react';
+import { Download, ExternalLink, Github, Zap, Shield, Smartphone, Globe, X, Play, Code as CodeIcon, Cpu, Layers, Calendar, User, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { ThemeContext } from './PortfolioLayout';
 
@@ -151,6 +151,11 @@ const Projects = () => {
               {project.liveUrl && (
                 <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors bg-blue-600 text-white hover:bg-blue-700 shadow-sm">
                   <Globe size={14} /> Live Project
+                </a>
+              )}
+              {project.apkUrl && (
+                <a href={project.apkUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors bg-green-600 text-white hover:bg-green-700 shadow-sm">
+                  <Download size={14} /> Download APK
                 </a>
               )}
             </div>

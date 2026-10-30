@@ -11,6 +11,7 @@ export interface Project {
   features: string[];
   githubUrl: string;
   liveUrl?: string;
+  apkUrl?: string;
   category: string;
   status: 'planned' | 'in-progress' | 'completed';
   startDate: string;
