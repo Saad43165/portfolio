@@ -174,7 +174,7 @@ export const TerminalConsole: React.FC<TerminalConsoleProps> = ({ isOpen, onClos
           '  Email:    saadnaz43165@gmail.com',
           '  Phone:    +92-314-5459961',
           '  Github:   https://github.com/saad43165',
-          '  LinkedIn: https://linkedin.com/in/saad-i-786123406'
+          '  LinkedIn: https://www.linkedin.com/in/saad-ikram-a38100448'
         ];
         break;
 

@@ -42,18 +42,18 @@ interface DataContextType {
 
 const defaultAbout: AboutData = {
   ...portfolioData.about,
-  aboutImage: '/saad_pic.JPG',
+  aboutImage: '/saad_pic.webp',
   missionStatement: 'My mission is to translate complex problems into intuitive digital solutions that empower users and scale businesses.',
 } as AboutData;
 
 const defaultInfo: PortfolioInfo = {
   name: 'Saad Ikram',
   roles: ['Software Engineering', 'Full Stack Development', 'Mobile App Development', 'Website Development', 'Software Quality Assurance & Testing'],
-  profileImage: '/main_image.png',
+  profileImage: '/main_image.webp',
   resumeUrl: '/Saad_Ikram_CV.pdf',
   socialLinks: [
     { platform: 'Github', url: 'https://github.com/saad43165' },
-    { platform: 'Linkedin', url: 'https://www.linkedin.com/in/saad-i-786123406?utm_source=share_via&utm_content=profile&utm_medium=member_android' }
+    { platform: 'Linkedin', url: 'https://www.linkedin.com/in/saad-ikram-a38100448' }
   ],
   email: 'saadnaz43165@gmail.com',
   location: 'Chakwal, Punjab, Pakistan',
