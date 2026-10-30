@@ -77,7 +77,7 @@
       "title": "GitPulse: AI-Powered GitHub Explorer",
       "description": "Flutter app for searching and analysing GitHub repositories, code, users and issues, with AI repo summaries.",
       "longDescription": "Built a production-grade Flutter app covering repository, code, user and issue search, repo comparison, issue triage, tracked repos with change notifications, and a computed repo health score. Integrated Groq-powered AI summaries and developer analysis through a server-side proxy (Cloudflare Worker) so no GitHub or AI keys ship in the app. Uses Riverpod state management, go_router navigation, SQLite for local history and bookmarks, and a GitHub Actions pipeline that builds signed release AABs.",
-      "image": "https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "image": "/gitpulse.webp",
       "technologies": ["Flutter", "Dart", "Riverpod", "Groq AI", "GitHub REST API", "SQLite", "Cloudflare Workers", "GitHub Actions"],
       "features": ["AI Repo Summaries", "Repo Health Score", "Compare & Triage", "Tracked Repo Notifications"],
       "githubUrl": "https://github.com/Saad43165/GitPulese",
