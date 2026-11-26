@@ -1,168 +1,112 @@
+import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { GraduationCap, MapPin, Award } from 'lucide-react';
 import { useData } from '../../context/DataContext';
-import { MapPin, Award } from 'lucide-react';
-import { useState, useEffect, useRef, useContext } from 'react';
-import { motion, Variants } from 'framer-motion';
-import { ThemeContext } from './PortfolioLayout';
+import { EASE, FadeUp, SplitReveal } from '../motion/kit';
+
+const yr = (d?: string) => (d ? new Date(d).getFullYear() : 'Now');
 
 const Education = () => {
   const { education } = useData();
-  const theme = useContext(ThemeContext);
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sorted = [...education].sort((a, b) => +new Date(b.startDate) - +new Date(a.startDate));
+  const [main, ...rest] = sorted;
+  const barRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(barRef, { once: true, margin: '-10% 0px' });
+  if (!main) return null;
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15 },
-    },
-  };
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, scale: 0.98, y: 10 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
-    },
-  };
+  const start = +new Date(main.startDate);
+  const end = main.endDate ? +new Date(main.endDate) : Date.now();
+  const done = Math.max(0, Math.min(1, (Date.now() - start) / (end - start)));
+  const years = Array.from({ length: (yr(main.endDate) as number) - (yr(main.startDate) as number) + 1 }, (_, i) => (yr(main.startDate) as number) + i);
 
   return (
-    <motion.section
-      id="education"
-      ref={sectionRef}
-      initial="hidden"
-      animate={isVisible ? 'visible' : 'hidden'}
-      variants={containerVariants}
-      className={`py-8 sm:py-16 transition-colors duration-500 relative overflow-hidden ${theme.theme === 'light' ? 'bg-gray-50/50' : 'bg-gray-900/20'
-        }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div className="mb-12" variants={itemVariants}>
-          <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
-            <div className="h-[2px] w-8 bg-purple-600 rounded-full" />
-            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-purple-600">Learning Path</span>
-          </div>
-          <h2 className={`text-3xl sm:text-5xl font-black tracking-tight leading-[1.1] text-center lg:text-left ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'
-            }`}
-          >
-            Academic <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">Foundation</span>
-          </h2>
-        </motion.div>
-
-        {education.length > 0 ? (
-          <div className={`grid gap-5 lg:gap-6 ${education.length === 1 ? 'max-w-3xl mx-auto grid-cols-1 w-full' : 'grid-cols-1 md:grid-cols-2'
-            }`}>
-            {education.map((edu, index) => (
-              <motion.div
-                key={edu.id || index}
-                variants={itemVariants}
-                whileHover={{ y: -2, scale: 1.005 }}
-                className={`p-5 rounded-2xl transition-all duration-500 border group flex flex-col relative overflow-hidden ${theme.theme === 'light'
-                    ? 'bg-white border-purple-100 shadow-sm'
-                    : 'bg-gray-900 border-white/5 hover:border-purple-500/30 shadow-lg'
-                  }`}
-              >
-                {/* Background Watermark Icon */}
-                <div className={`absolute -right-8 -bottom-8 transition-opacity duration-500 pointer-events-none ${theme.theme === 'light' ? 'text-purple-600 opacity-[0.04] group-hover:opacity-[0.08]' : 'text-purple-200 opacity-[0.02] group-hover:opacity-[0.05]'
-                  }`}>
-                  <Award size={160} />
-                </div>
-
-                {/* Magical Academic Glow */}
-                <div className={`absolute top-0 right-0 w-32 h-32 blur-[60px] rounded-full -mr-16 -mt-16 transition-all duration-700 ${theme.theme === 'light' ? 'bg-purple-500/20 group-hover:bg-purple-500/30' : 'bg-purple-600/5 group-hover:bg-purple-600/10'
-                  }`} />
-
-                <div className="flex flex-col lg:flex-row justify-between items-start gap-4 mb-6 relative z-10">
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <div className="px-2 py-1 rounded bg-purple-500/10 border border-purple-500/20">
-                        <span className="text-[9px] font-black uppercase tracking-wider text-purple-600 dark:text-purple-400">
-                          {new Date(edu.startDate).getFullYear()} — {edu.endDate ? new Date(edu.endDate).getFullYear() : 'Present'}
-                        </span>
-                      </div>
-                    </div>
-
-                    <h3 className={`text-xl sm:text-2xl font-black leading-tight tracking-tight transition-colors duration-300 ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'
-                      }`}>
-                      {edu.degree}
-                    </h3>
-
-                    <div className="flex items-center gap-2 text-xs font-bold text-gray-500 dark:text-gray-400">
-                      <MapPin size={14} className="text-purple-500" />
-                      <span className="tracking-tight">{edu.institution}</span>
-                    </div>
-                  </div>
-
-                  {edu.gpa && (
-                    <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      className={`relative px-4 py-3 rounded-xl border flex flex-col items-center justify-center shadow-md ${theme.theme === 'light'
-                          ? 'bg-gradient-to-br from-purple-50 to-white border-purple-100'
-                          : 'bg-gradient-to-br from-gray-800 to-gray-950 border-purple-500/20'
-                        }`}
-                    >
-                      <span className="text-[8px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-1">GPA</span>
-                      <span className={`text-lg font-black ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                        {edu.gpa}
-                      </span>
-                    </motion.div>
-                  )}
-                </div>
-
-                <div className="space-y-4 flex-grow relative z-10">
-                  <div className={`p-4 rounded-xl border border-dashed ${theme.theme === 'light' ? 'border-purple-100 bg-purple-50/30' : 'border-white/5 bg-white/5'
-                    }`}>
-                    <p className={`text-sm font-medium leading-relaxed ${theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
-                      }`}>
-                      {edu.description}
-                    </p>
-                  </div>
-
-                  {edu.achievements.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {edu.achievements.map((achievement, i) => (
-                        <div key={i} className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-bold uppercase tracking-widest border transition-all ${theme.theme === 'light'
-                            ? 'bg-white border-gray-100 text-gray-500 hover:border-purple-400 hover:text-purple-600 shadow-sm'
-                            : 'bg-gray-800/80 border-white/10 text-gray-400 hover:border-purple-500 hover:text-purple-400'
-                          }`}>
-                          <Award size={12} className="text-purple-500" />
-                          {achievement}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        ) : (
-          <div className={`text-center py-24 rounded-[3.5rem] border-2 border-dashed ${theme.theme === 'light' ? 'border-gray-100 bg-gray-50' : 'border-white/5 bg-gray-900'
-            }`}>
-            <p className="text-xl font-black text-gray-300 uppercase tracking-widest">Archiving Journey...</p>
-          </div>
-        )}
+    <div className="relative z-10 mx-auto max-w-[1400px] px-5 py-24 md:px-10 md:py-32">
+      <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <FadeUp>
+            <p className="mb-6 flex items-center gap-3 text-sm font-semibold text-blue-600 dark:text-blue-400">
+              <span className="h-px w-10 bg-current" />
+              Education
+            </p>
+          </FadeUp>
+          <SplitReveal text="Where I learned." className="font-display text-[14vw] font-black leading-[0.92] tracking-[-0.05em] text-slate-950 dark:text-white md:text-[6vw]" />
+        </div>
       </div>
-    </motion.section>
+
+      <div className="grid gap-4 lg:grid-cols-[1.4fr_1fr]">
+        {/* featured degree */}
+        <FadeUp>
+          <article className="relative h-full overflow-hidden rounded-[32px] bg-slate-950 p-7 text-white md:p-10">
+            <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-blue-600/40 blur-[90px]" />
+            <div className="pointer-events-none absolute -bottom-24 -left-10 h-64 w-64 rounded-full bg-purple-600/30 blur-[90px]" />
+            <div className="relative flex h-full flex-col">
+              <div className="flex items-start justify-between gap-4">
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10">
+                  <GraduationCap size={24} />
+                </span>
+                {main.gpa && (
+                  <span className="rounded-full bg-white/10 px-4 py-2 text-sm font-semibold">
+                    CGPA {main.gpa.replace(/\s/g, '')}
+                  </span>
+                )}
+              </div>
+              <h3 className="mt-8 font-display text-4xl font-black leading-[1] tracking-[-0.03em] md:text-6xl">{main.degree}</h3>
+              <p className="mt-4 text-lg text-slate-300">{main.institution}</p>
+              <p className="mt-1 flex items-center gap-1.5 text-sm text-slate-400">
+                <MapPin size={14} /> {main.location}
+              </p>
+              <p className="mt-6 max-w-[56ch] leading-relaxed text-slate-300">{main.description}</p>
+
+              {/* degree timeline */}
+              <div ref={barRef} className="mt-auto pt-10">
+                <div className="relative h-1.5 rounded-full bg-white/10">
+                  <motion.div
+                    className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-blue-500 to-purple-500"
+                    initial={{ width: 0 }}
+                    animate={{ width: inView ? `${done * 100}%` : 0 }}
+                    transition={{ duration: 1.4, ease: EASE }}
+                  />
+                </div>
+                <div className="mt-3 flex justify-between text-xs font-semibold text-slate-400">
+                  {years.map((y) => (
+                    <span key={y}>{y}</span>
+                  ))}
+                </div>
+                {done >= 1 && <p className="mt-4 text-sm font-semibold text-emerald-400">Graduated {new Date(end).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>}
+              </div>
+            </div>
+          </article>
+        </FadeUp>
+
+        {/* earlier schooling */}
+        <div className="grid gap-4">
+          {rest.map((e, i) => (
+            <FadeUp key={e.id} delay={0.1 + i * 0.08}>
+              <article className="group relative h-full overflow-hidden rounded-[28px] border border-slate-200 bg-white/80 p-6 transition-colors duration-500 hover:border-blue-600/50 dark:border-white/10 dark:bg-white/[0.03] md:p-8">
+                <span className="absolute inset-0 origin-left scale-x-0 bg-gradient-to-r from-blue-600/[0.06] to-purple-600/[0.06] transition-transform duration-700 ease-[cubic-bezier(.76,0,.24,1)] group-hover:scale-x-100" />
+                <div className="relative">
+                  <div className="flex items-center justify-between gap-4 text-sm font-semibold">
+                    <span className="text-blue-600 dark:text-blue-400">
+                      {yr(e.startDate)} — {yr(e.endDate)}
+                    </span>
+                    {e.gpa && (
+                      <span className="flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1 text-amber-800 dark:bg-amber-500/15 dark:text-amber-300">
+                        <Award size={14} /> {e.gpa}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="mt-4 font-display text-2xl font-bold tracking-tight text-slate-950 dark:text-white md:text-3xl">{e.degree}</h3>
+                  <p className="mt-1 text-slate-600 dark:text-slate-400">
+                    {e.institution}
+                    {e.location && e.location !== 'Pakistan' ? ` · ${e.location}` : ''}
+                  </p>
+                </div>
+              </article>
+            </FadeUp>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 

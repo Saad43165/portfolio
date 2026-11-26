@@ -41,13 +41,9 @@ const Hero = () => {
       <div className="pointer-events-none absolute inset-0 -z-0">
         <motion.div
           className="absolute -top-40 -left-40 h-[60vw] w-[60vw] rounded-full bg-blue-500/20 blur-[120px] dark:bg-blue-600/20"
-          animate={{ x: [0, 60, 0], y: [0, 40, 0] }}
-          transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
           className="absolute -bottom-40 -right-40 h-[50vw] w-[50vw] rounded-full bg-purple-500/20 blur-[120px] dark:bg-purple-600/15"
-          animate={{ x: [0, -50, 0], y: [0, -30, 0] }}
-          transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
         />
       </div>
 

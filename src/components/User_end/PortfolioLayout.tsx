@@ -37,24 +37,33 @@ const ThemeContext = React.createContext<{ theme: string; toggleTheme: () => voi
 });
 
 const MouseGlow = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const ref = React.useRef<HTMLDivElement>(null);
   const { theme } = React.useContext(ThemeContext);
-
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+    if (!window.matchMedia('(pointer: fine)').matches) return;
+    let raf = 0;
+    const onMove = (e: MouseEvent) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        ref.current?.style.setProperty('--mx', `${e.clientX}px`);
+        ref.current?.style.setProperty('--my', `${e.clientY}px`);
+      });
     };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', onMove, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('mousemove', onMove);
+    };
   }, []);
-
   return (
     <div
-      className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-1000"
+      ref={ref}
+      className="pointer-events-none fixed inset-0 z-0 hidden md:block"
       style={{
-        background: theme === 'light'
-          ? `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(59, 130, 246, 0.04), transparent 80%)`
-          : `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.03) 50%, transparent 80%)`
+        background:
+          theme === 'light'
+            ? 'radial-gradient(600px circle at var(--mx, -999px) var(--my, -999px), rgba(59,130,246,0.05), transparent 80%)'
+            : 'radial-gradient(600px circle at var(--mx, -999px) var(--my, -999px), rgba(99,102,241,0.12), rgba(168,85,247,0.03) 50%, transparent 80%)',
       }}
     />
   );

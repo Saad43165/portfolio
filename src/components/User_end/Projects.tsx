@@ -28,7 +28,8 @@ const fmt = (d?: string) => (d ? new Date(d).toLocaleDateString('en-US', { month
 
 /* ───────── visual: phone frame or cover ───────── */
 
-function Visual({ p, accent, large = false }: { p: Project; accent: string; large?: boolean }) {
+function Visual({ p, accent, large = false, eager = false }: { p: Project; accent: string; large?: boolean; eager?: boolean }) {
+  const live = large;
   return (
     <div
       className="relative flex h-full w-full items-center justify-center overflow-hidden"
@@ -38,8 +39,8 @@ function Visual({ p, accent, large = false }: { p: Project; accent: string; larg
         aria-hidden
         className="absolute aspect-square h-[78%] rounded-full border"
         style={{ borderColor: `${accent}55` }}
-        animate={{ rotate: 360 }}
-        transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+        animate={live ? { rotate: 360 } : undefined}
+        transition={live ? { duration: 28, repeat: Infinity, ease: 'linear' } : undefined}
       >
         <span className="absolute -top-1.5 left-1/2 h-3 w-3 rounded-full" style={{ background: accent }} />
       </motion.div>
@@ -54,15 +55,15 @@ function Visual({ p, accent, large = false }: { p: Project; accent: string; larg
         <motion.div
           className="relative aspect-[9/19] h-[82%] max-h-[620px] rounded-[38px] border border-white/15 bg-black p-[7px] shadow-[0_50px_90px_-25px_rgba(0,0,0,.7)]"
           style={{ rotate: -6 }}
-          animate={{ y: [0, -14, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+          animate={live ? { y: [0, -14, 0] } : undefined}
+          transition={live ? { duration: 6, repeat: Infinity, ease: 'easeInOut' } : undefined}
         >
           <div className="absolute left-1/2 top-[10px] z-10 h-[18px] w-[64px] -translate-x-1/2 rounded-full bg-black" />
-          <img src={p.image} alt={`${shortName(p.title)} app screen`} loading="lazy" className="h-full w-full rounded-[31px] object-cover object-top" />
+          <img src={p.image} alt={`${shortName(p.title)} app screen`} loading={eager || large ? 'eager' : 'lazy'} decoding="async" width={616} height={1280} className="h-full w-full rounded-[31px] object-cover object-top" />
         </motion.div>
       ) : p.image ? (
         <div className="relative h-[72%] w-[80%] overflow-hidden rounded-3xl shadow-2xl">
-          <img src={p.image} alt={shortName(p.title)} loading="lazy" className="h-full w-full object-cover" />
+          <img src={p.image} alt={shortName(p.title)} loading={eager || large ? 'eager' : 'lazy'} decoding="async" className="h-full w-full object-cover" />
           <div className="absolute inset-0" style={{ background: `linear-gradient(160deg, ${accent}55, transparent 60%)` }} />
         </div>
       ) : null}
@@ -72,16 +73,33 @@ function Visual({ p, accent, large = false }: { p: Project; accent: string; larg
 
 /* ───────── stacking card ───────── */
 
+function useDesktop() {
+  const q = '(min-width: 768px)';
+  const [d, setD] = useState(() => typeof window !== 'undefined' && window.matchMedia(q).matches);
+  useEffect(() => {
+    const m = window.matchMedia(q);
+    const on = () => setD(m.matches);
+    m.addEventListener('change', on);
+    return () => m.removeEventListener('change', on);
+  }, []);
+  return d;
+}
+
 function StackCard({ p, i, total, progress, onOpen }: { p: Project; i: number; total: number; progress: MotionValue<number>; onOpen: (p: Project, e: React.MouseEvent) => void }) {
   const accent = accentOf(p, i);
+  const desktop = useDesktop();
   const scale = useTransform(progress, [i / total, 1], [1, 1 - (total - i) * 0.045]);
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'start start'] });
-  const artScale = useTransform(scrollYProgress, [0, 1], [1.3, 1]);
-
   return (
-    <div ref={ref} className="sticky top-0 flex h-[100svh] items-center">
-      <motion.div style={{ scale, top: `calc(6vh + ${i * 22}px)` }} className="relative w-full origin-top">
+    // Desktop: sticky stacking cards. Phones: calm normal-flow list (cards are taller than the screen there).
+    <div className={desktop ? 'sticky top-0 flex h-[100lvh] items-center' : 'py-3'}>
+      <motion.div
+        style={desktop ? { scale, top: `calc(6vh + ${i * 22}px)` } : undefined}
+        initial={desktop ? false : { opacity: 0, y: 40 }}
+        whileInView={desktop ? undefined : { opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-10% 0px' }}
+        transition={{ duration: 0.7, ease: EASE }}
+        className="relative w-full origin-top will-change-transform [backface-visibility:hidden]"
+      >
         <button
           onClick={(e) => onOpen(p, e)}
           data-cursor="view"
@@ -120,9 +138,9 @@ function StackCard({ p, i, total, progress, onOpen }: { p: Project; i: number; t
             </div>
           </div>
           <div className="relative h-[42svh] overflow-hidden md:h-auto md:min-h-[64vh]">
-            <motion.div style={{ scale: artScale }} className="absolute inset-0 transition-transform duration-1000 group-hover:scale-[1.04]">
-              <Visual p={p} accent={accent} />
-            </motion.div>
+            <div className="absolute inset-0 transition-transform duration-1000 ease-[cubic-bezier(.22,1,.36,1)] md:group-hover:scale-[1.04]">
+              <Visual p={p} accent={accent} eager={i < 2} />
+            </div>
           </div>
         </button>
       </motion.div>
@@ -394,7 +412,7 @@ const Projects = () => {
         </FadeUp>
       </div>
 
-      <div ref={stackRef} key={filter} className="relative mt-6">
+      <div ref={stackRef} className="relative mt-6">
         {stacked.map((p, i) => (
           <StackCard key={p.id} p={p} i={i} total={stacked.length} progress={scrollYProgress} onOpen={openProject} />
         ))}

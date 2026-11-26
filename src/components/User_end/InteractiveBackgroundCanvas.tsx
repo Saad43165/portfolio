@@ -18,6 +18,9 @@ export const InteractiveBackgroundCanvas: React.FC = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    // Phones: skip the particle field entirely (it repainted every frame and
+    // re-initialised whenever the address bar resized the viewport → flicker).
+    if (window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -25,10 +28,13 @@ export const InteractiveBackgroundCanvas: React.FC = () => {
     let particles: Particle[] = [];
     const maxParticles = Math.min(window.innerWidth < 768 ? 40 : 100, 120);
 
+    let lastW = 0;
     const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
+      const w = window.innerWidth;
+      canvas.width = w;
       canvas.height = window.innerHeight;
-      initParticles();
+      if (w !== lastW || particles.length === 0) initParticles();
+      lastW = w;
     };
 
     const initParticles = () => {
@@ -119,6 +125,7 @@ export const InteractiveBackgroundCanvas: React.FC = () => {
       }
 
       animationId = requestAnimationFrame(draw);
+      if (document.hidden) { cancelAnimationFrame(animationId); const resume = () => { if (!document.hidden) { document.removeEventListener('visibilitychange', resume); animationId = requestAnimationFrame(draw); } }; document.addEventListener('visibilitychange', resume); }
     };
 
     draw();
