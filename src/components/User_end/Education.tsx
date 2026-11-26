@@ -33,7 +33,7 @@ const Education = () => {
         </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-[1.4fr_1fr]">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] [&>*]:min-w-0">
         {/* featured degree */}
         <FadeUp>
           <article className="relative h-full overflow-hidden rounded-[32px] bg-slate-950 p-7 text-white md:p-10">

@@ -28,7 +28,7 @@ const About = () => {
         className="max-w-[22ch] font-display text-[10vw] font-bold leading-[1.02] tracking-[-0.04em] text-slate-950 dark:text-white md:text-[5.2vw]"
       />
 
-      <div className="mt-24 grid gap-14 md:mt-32 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+      <div className="mt-24 grid grid-cols-1 gap-14 md:mt-32 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-20 [&>*]:min-w-0">
         <div ref={imgRef} className="relative aspect-[4/5] w-full max-w-[520px]">
           <motion.div style={{ clipPath: clip }} className="absolute inset-0 overflow-hidden rounded-[32px] bg-slate-200 dark:bg-slate-800">
             <motion.img

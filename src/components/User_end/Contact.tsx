@@ -44,7 +44,7 @@ const Contact = () => {
         wordClassName={(w) => (w === 'great.' ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600' : undefined)}
       />
 
-      <div className="mt-16 grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+      <div className="mt-16 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-end [&>*]:min-w-0">
         <FadeUp>
           <p className="mb-4 text-slate-500 dark:text-slate-400">Fastest reply by email</p>
           <div className="flex flex-wrap items-center gap-4">

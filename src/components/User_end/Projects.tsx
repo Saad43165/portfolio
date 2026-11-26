@@ -394,8 +394,9 @@ const Projects = () => {
           </FadeUp>
           <SplitReveal text="Things I’ve built." className="font-display text-[14vw] font-black leading-[0.9] tracking-[-0.055em] text-slate-950 dark:text-white md:text-[7.5vw]" />
         </div>
-        <FadeUp delay={0.15}>
-          <div className="flex max-w-full flex-wrap gap-2" role="tablist" aria-label="Filter projects">
+        <FadeUp delay={0.15} className="w-full min-w-0 md:w-auto">
+          <div className="-mx-5 overflow-x-auto px-5 pb-1 [scrollbar-width:none] md:mx-0 md:px-0" data-lenis-prevent>
+          <div className="flex w-max gap-2 md:w-auto md:flex-wrap" role="tablist" aria-label="Filter projects">
             {categories.map((c) => (
               <button
                 key={c}
@@ -405,9 +406,10 @@ const Projects = () => {
                 className={`relative min-h-[44px] rounded-full px-4 text-sm font-semibold transition-colors ${filter === c ? 'text-white' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'}`}
               >
                 {filter === c && <motion.span layoutId="pf" className="absolute inset-0 rounded-full bg-blue-600" transition={{ type: 'spring', stiffness: 400, damping: 32 }} />}
-                <span className="relative">{c}</span>
+                <span className="relative whitespace-nowrap">{c}</span>
               </button>
             ))}
+          </div>
           </div>
         </FadeUp>
       </div>

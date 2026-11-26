@@ -16,7 +16,7 @@ const Experience = () => {
 
   return (
     <div className="relative z-10 mx-auto max-w-[1400px] px-5 py-28 md:px-10 md:py-36">
-      <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-20 [&>*]:min-w-0">
         <div className="lg:sticky lg:top-32 lg:self-start">
           <FadeUp>
             <p className="mb-6 flex items-center gap-3 text-sm font-semibold text-blue-600 dark:text-blue-400">

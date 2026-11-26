@@ -66,7 +66,7 @@ const Skills = () => {
         </defs>
       </svg>
 
-      <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] lg:gap-16 [&>*]:min-w-0">
         {/* left: heading + strongest */}
         <div>
           <FadeUp>

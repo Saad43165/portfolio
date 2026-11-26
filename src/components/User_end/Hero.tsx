@@ -85,7 +85,7 @@ const Hero = () => {
           />
         </motion.h1>
 
-        <div className="mt-6 grid items-end gap-12 md:mt-2 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="mt-6 grid grid-cols-1 items-end gap-12 md:mt-2 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] [&>*]:min-w-0">
           {/* left column */}
           <div className="order-2 lg:order-1 lg:pb-16">
             <motion.div
