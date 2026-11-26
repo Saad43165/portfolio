@@ -1,435 +1,434 @@
-import { useEffect, useRef, useState, useContext } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { AnimatePresence, motion, useScroll, useTransform, type MotionValue } from 'framer-motion';
+import { ArrowUpRight, Github, Globe, X, ArrowRight } from 'lucide-react';
 import { useData } from '../../context/DataContext';
-import { Download, ExternalLink, Github, Zap, Shield, Smartphone, Globe, X, Play, Code as CodeIcon, Cpu, Layers, Calendar, User, ChevronRight } from 'lucide-react';
-import { motion, AnimatePresence, Variants } from 'framer-motion';
-import { ThemeContext } from './PortfolioLayout';
+import type { Project } from '../../types';
+import { EASE, EASE_IO, FadeUp, SplitReveal, lockScroll } from '../motion/kit';
 
-const Projects = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const { projects } = useData();
-  const theme = useContext(ThemeContext);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  
-  const [activeCategory, setActiveCategory] = useState('All');
-  const [selectedProject, setSelectedProject] = useState<any | null>(null);
-  const [videoModalOpen, setVideoModalOpen] = useState(false);
-  
-  // For mobile view modal
-  const [isMobileModalOpen, setIsMobileModalOpen] = useState(false);
+/* ───────── helpers ───────── */
 
-  const categories = ['All', ...new Set(projects.map(p => p.category))];
-  const filteredProjects = activeCategory === 'All' 
-    ? projects 
-    : projects.filter(p => p.category === activeCategory);
+const ACCENTS: Record<string, string> = {
+  'project-signbridge': '#8B5CF6',
+  'project-agriguard': '#22C55E',
+  'project-gitpulse': '#06B6D4',
+  'project-advershield': '#3B82F6',
+  'project-medivision': '#F43F5E',
+  'project-vaxguard': '#F59E0B',
+  'project-runquest': '#14B8A6',
+  'project-naheed': '#EAB308',
+};
+const PALETTE = ['#3B82F6', '#8B5CF6', '#06B6D4', '#F43F5E', '#F59E0B', '#22C55E'];
+const accentOf = (p: Project, i = 0) => ACCENTS[p.id] ?? PALETTE[i % PALETTE.length];
+const shortName = (t: string) => t.split(':')[0].trim();
+const subtitle = (t: string) => (t.includes(':') ? t.split(':').slice(1).join(':').trim() : '');
+const isScreenshot = (src?: string) => !!src && src.startsWith('/');
+const year = (p: Project) => (p.endDate || p.startDate || '').slice(0, 4);
+const fmt = (d?: string) => (d ? new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'Present');
 
-  // Initialize first project as selected on mount or category change
-  useEffect(() => {
-    if (filteredProjects.length > 0) {
-      // Only auto-select if nothing is selected, or if the current selection is filtered out
-      if (!selectedProject || !filteredProjects.find(p => p.id === selectedProject.id)) {
-        setSelectedProject(filteredProjects[0]);
-      }
-    } else {
-      setSelectedProject(null);
-    }
-  }, [activeCategory, projects]);
+/* ───────── visual: phone frame or cover ───────── */
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
+function Visual({ p, accent, large = false }: { p: Project; accent: string; large?: boolean }) {
+  return (
+    <div
+      className="relative flex h-full w-full items-center justify-center overflow-hidden"
+      style={{ background: `radial-gradient(110% 80% at 30% 15%, ${accent}40, transparent 60%), radial-gradient(90% 70% at 90% 100%, ${accent}25, transparent 60%), #0B1020` }}
+    >
+      <motion.div
+        aria-hidden
+        className="absolute aspect-square h-[78%] rounded-full border"
+        style={{ borderColor: `${accent}55` }}
+        animate={{ rotate: 360 }}
+        transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+      >
+        <span className="absolute -top-1.5 left-1/2 h-3 w-3 rounded-full" style={{ background: accent }} />
+      </motion.div>
+      <span
+        aria-hidden
+        className={`pointer-events-none absolute bottom-[-0.14em] left-0 right-0 select-none whitespace-nowrap text-center font-display font-black leading-none tracking-[-0.06em] text-white/[0.05] ${large ? 'text-[22vw]' : 'text-[20vw] md:text-[10vw]'}`}
+      >
+        {shortName(p.title)}
+      </span>
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-    return () => observer.disconnect();
-  }, []);
-
-  const getProjectIcon = (category: string) => {
-    const cat = category.toLowerCase();
-    if (cat.includes('mobile')) return Smartphone;
-    if (cat.includes('web') || cat.includes('full stack')) return Globe;
-    if (cat.includes('frontend')) return Zap;
-    if (cat.includes('backend') || cat.includes('api')) return Shield;
-    return CodeIcon;
-  };
-
-  const handleProjectSelect = (project: any) => {
-    setSelectedProject(project);
-    // On small screens, open the modal
-    if (window.innerWidth < 1024) {
-      setIsMobileModalOpen(true);
-    }
-  };
-
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-  };
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
-  };
-
-  const ProjectDetailsContent = ({ project }: { project: any }) => {
-    if (!project) return null;
-    const isMobileApp = project.category.toLowerCase().includes('mobile') || 
-      ['project-signbridge', 'project-agriguard', 'project-vaxguard', 'project-runquest', 'project-naheed'].includes(project.id);
-
-    return (
-      <div className="flex flex-col h-full w-full overflow-y-auto custom-scrollbar p-5 sm:p-8">
-        
-        {/* Header Block */}
-        <div className="flex flex-col gap-3 mb-8">
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-1 text-[9px] font-black uppercase tracking-widest rounded bg-blue-600/10 text-blue-600 dark:text-blue-400 border border-blue-600/20">
-              {project.category}
-            </span>
-            <span className={`px-2 py-1 text-[9px] font-black uppercase tracking-widest rounded border ${
-              project.status === 'completed' ? 'bg-green-600/10 text-green-600 dark:text-green-400 border-green-600/20' : 'bg-amber-600/10 text-amber-600 dark:text-amber-400 border-amber-600/20'
-            }`}>
-              {project.status}
-            </span>
-          </div>
-          <h3 className={`text-2xl sm:text-3xl font-black tracking-tight leading-tight ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-            {project.title}
-          </h3>
-          
-          <div className="flex flex-wrap gap-4 pt-1">
-            {project.role && (
-              <div className="flex items-center gap-1.5 text-xs">
-                <User size={14} className="text-blue-500" />
-                <span className={theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'}>Role: <strong className={theme.theme === 'light' ? 'text-gray-900' : 'text-white'}>{project.role}</strong></span>
-              </div>
-            )}
-            <div className="flex items-center gap-1.5 text-xs">
-              <Calendar size={14} className="text-blue-500" />
-              <span className={theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'}>Timeline: <strong className={theme.theme === 'light' ? 'text-gray-900' : 'text-white'}>{project.startDate} {project.endDate ? `— ${project.endDate}` : ''}</strong></span>
-            </div>
-          </div>
+      {isScreenshot(p.image) ? (
+        <motion.div
+          className="relative aspect-[9/19] h-[82%] max-h-[620px] rounded-[38px] border border-white/15 bg-black p-[7px] shadow-[0_50px_90px_-25px_rgba(0,0,0,.7)]"
+          style={{ rotate: -6 }}
+          animate={{ y: [0, -14, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <div className="absolute left-1/2 top-[10px] z-10 h-[18px] w-[64px] -translate-x-1/2 rounded-full bg-black" />
+          <img src={p.image} alt={`${shortName(p.title)} app screen`} loading="lazy" className="h-full w-full rounded-[31px] object-cover object-top" />
+        </motion.div>
+      ) : p.image ? (
+        <div className="relative h-[72%] w-[80%] overflow-hidden rounded-3xl shadow-2xl">
+          <img src={p.image} alt={shortName(p.title)} loading="lazy" className="h-full w-full object-cover" />
+          <div className="absolute inset-0" style={{ background: `linear-gradient(160deg, ${accent}55, transparent 60%)` }} />
         </div>
+      ) : null}
+    </div>
+  );
+}
 
-        {/* Content Split: Image & Details */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-          
-          {/* Media Column */}
-          <div className={`md:col-span-5 relative rounded-2xl overflow-hidden border flex items-center justify-center p-4 ${
-            theme.theme === 'light' ? 'bg-gray-50 border-gray-200' : 'bg-gray-950 border-white/10'
-          } ${isMobileApp ? 'aspect-[9/16] max-w-[240px] mx-auto' : 'aspect-video w-full'}`}>
-            <img 
-              src={project.image} 
-              alt={project.title} 
-              className="w-full h-full object-contain drop-shadow-xl"
-            />
-            {project.videoUrl && (
-              <button 
-                onClick={() => setVideoModalOpen(true)}
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-black/50 hover:bg-black/80 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-all shadow-xl"
-              >
-                <Play size={20} fill="currentColor" />
-              </button>
-            )}
-          </div>
+/* ───────── stacking card ───────── */
 
-          {/* Details Column */}
-          <div className="md:col-span-7 space-y-6">
-            
-            {/* Action Links */}
-            <div className="flex flex-wrap gap-2 pb-2">
-              {project.githubUrl && (
-                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200">
-                  <Github size={14} /> Source Code
-                </a>
-              )}
-              {project.liveUrl && (
-                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors bg-blue-600 text-white hover:bg-blue-700 shadow-sm">
-                  <Globe size={14} /> Live Project
-                </a>
-              )}
-              {project.apkUrl && (
-                <a href={project.apkUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors bg-green-600 text-white hover:bg-green-700 shadow-sm">
-                  <Download size={14} /> Download APK
-                </a>
-              )}
+function StackCard({ p, i, total, progress, onOpen }: { p: Project; i: number; total: number; progress: MotionValue<number>; onOpen: (p: Project, e: React.MouseEvent) => void }) {
+  const accent = accentOf(p, i);
+  const scale = useTransform(progress, [i / total, 1], [1, 1 - (total - i) * 0.045]);
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'start start'] });
+  const artScale = useTransform(scrollYProgress, [0, 1], [1.3, 1]);
+
+  return (
+    <div ref={ref} className="sticky top-0 flex h-[100svh] items-center">
+      <motion.div style={{ scale, top: `calc(6vh + ${i * 22}px)` }} className="relative w-full origin-top">
+        <button
+          onClick={(e) => onOpen(p, e)}
+          data-cursor="view"
+          className="group grid w-full overflow-hidden rounded-[32px] border border-slate-200 bg-white text-left shadow-[0_30px_80px_-40px_rgba(15,23,42,.35)] dark:border-white/10 dark:bg-slate-900 md:grid-cols-[1fr_1.05fr]"
+        >
+          <div className="flex flex-col justify-between gap-8 p-7 md:p-12">
+            <div className="flex items-center justify-between text-sm font-semibold text-slate-500 dark:text-slate-400">
+              <span className="flex items-center gap-2">
+                <span className="h-2.5 w-2.5 rounded-full" style={{ background: accent }} />
+                {p.category}
+              </span>
+              <span>{year(p)}</span>
             </div>
-
-            {/* Overview */}
-            <div className="space-y-2">
-              <h4 className="text-xs font-black uppercase tracking-widest text-blue-600 dark:text-blue-400">Project Overview</h4>
-              <p className={`text-sm leading-relaxed whitespace-pre-line font-medium ${
-                theme.theme === 'light' ? 'text-gray-700' : 'text-gray-300'
-              }`}>
-                {project.longDescription || project.description}
-              </p>
+            <div>
+              <h3 className="font-display text-[13vw] font-black leading-[0.9] tracking-[-0.05em] text-slate-950 dark:text-white md:text-[5.2vw]">{shortName(p.title)}</h3>
+              <p className="mt-3 font-display text-xl font-semibold text-slate-700 dark:text-slate-300 md:text-2xl">{subtitle(p.title)}</p>
+              <p className="mt-4 max-w-[46ch] leading-relaxed text-slate-600 dark:text-slate-400">{p.description}</p>
             </div>
-
-            {/* Features Grid */}
-            {project.features && project.features.length > 0 && (
-              <div className="space-y-2">
-                <h4 className="text-xs font-black uppercase tracking-widest text-blue-600 dark:text-blue-400">Key Features</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {project.features.map((feature: string, i: number) => (
-                    <div key={i} className={`flex items-start gap-2 p-2.5 rounded-lg border ${
-                      theme.theme === 'light' ? 'bg-gray-50 border-gray-100' : 'bg-gray-800/40 border-white/5'
-                    }`}>
-                      <Zap size={12} className="text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" />
-                      <span className={`text-xs font-semibold ${theme.theme === 'light' ? 'text-gray-800' : 'text-gray-200'}`}>{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Tech Stack */}
-            <div className="space-y-2">
-              <h4 className="text-xs font-black uppercase tracking-widest text-blue-600 dark:text-blue-400">Tech Stack</h4>
-              <div className="flex flex-wrap gap-1.5">
-                {project.technologies.map((tech: string) => (
-                  <span key={tech} className={`px-2 py-1 text-[9px] font-bold uppercase rounded border ${
-                    theme.theme === 'light' ? 'bg-white border-gray-200 text-gray-700' : 'bg-gray-900 border-white/10 text-gray-300'
-                  }`}>
-                    {tech}
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex flex-wrap gap-2">
+                {p.technologies.slice(0, 4).map((t) => (
+                  <span key={t} className="rounded-full border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 dark:border-white/10 dark:text-slate-300">
+                    {t}
                   </span>
                 ))}
               </div>
+              <span className="inline-flex items-center gap-3 text-sm font-semibold text-slate-900 dark:text-white">
+                Case study
+                <span
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 transition-all duration-500 group-hover:-rotate-45 group-hover:border-transparent group-hover:bg-[var(--a)] group-hover:text-white dark:border-white/15"
+                  style={{ ['--a' as string]: accent }}
+                >
+                  <ArrowRight size={18} />
+                </span>
+              </span>
             </div>
+          </div>
+          <div className="relative h-[42svh] overflow-hidden md:h-auto md:min-h-[64vh]">
+            <motion.div style={{ scale: artScale }} className="absolute inset-0 transition-transform duration-1000 group-hover:scale-[1.04]">
+              <Visual p={p} accent={accent} />
+            </motion.div>
+          </div>
+        </button>
+      </motion.div>
+    </div>
+  );
+}
 
-            {/* Engineering Problems */}
-            {project.problemsSolved && project.problemsSolved.length > 0 && (
-              <div className="space-y-3 pt-2 border-t border-gray-200 dark:border-white/10 mt-6">
-                <h4 className="text-xs font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 flex items-center gap-1.5">
-                  <Cpu size={14} /> Engineering Challenges Solved
-                </h4>
-                <div className="space-y-2">
-                  {project.problemsSolved.map((problem: any, i: number) => (
-                    <div key={i} className={`p-3.5 rounded-xl border transition-all ${
-                      theme.theme === 'light' ? 'bg-blue-50/30 border-blue-100' : 'bg-blue-900/10 border-blue-500/10'
-                    }`}>
-                      <h5 className="text-[11px] font-extrabold text-blue-700 dark:text-blue-400 mb-1 flex items-center gap-1.5">
-                        <span className="w-1 h-1 rounded-full bg-blue-600" /> {problem.title}
-                      </h5>
-                      <p className={`text-xs leading-relaxed ${theme.theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
-                        {problem.description}
-                      </p>
+/* ───────── compact grid card ───────── */
+
+function GridCard({ p, i, onOpen }: { p: Project; i: number; onOpen: (p: Project, e: React.MouseEvent) => void }) {
+  const accent = accentOf(p, i);
+  return (
+    <FadeUp delay={(i % 2) * 0.1}>
+      <button
+        onClick={(e) => onOpen(p, e)}
+        data-cursor="view"
+        className="group block w-full overflow-hidden rounded-[28px] border border-slate-200 bg-white text-left dark:border-white/10 dark:bg-slate-900"
+      >
+        <div className="relative aspect-[4/3] overflow-hidden">
+          <div className="absolute inset-0 transition-transform duration-1000 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-105">
+            <Visual p={p} accent={accent} />
+          </div>
+        </div>
+        <div className="flex items-start justify-between gap-4 p-6 md:p-8">
+          <div>
+            <p className="text-sm font-semibold" style={{ color: accent }}>
+              {p.category} · {year(p)}
+            </p>
+            <h3 className="mt-2 font-display text-3xl font-black tracking-tight text-slate-950 dark:text-white">{shortName(p.title)}</h3>
+            <p className="mt-2 text-slate-600 dark:text-slate-400">{subtitle(p.title)}</p>
+          </div>
+          <span className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-800 transition-all duration-500 group-hover:-rotate-45 group-hover:bg-blue-600 group-hover:text-white dark:border-white/15 dark:text-white">
+            <ArrowUpRight size={18} />
+          </span>
+        </div>
+      </button>
+    </FadeUp>
+  );
+}
+
+/* ───────── full-screen case study ───────── */
+
+function CaseStudy({ p, origin, onClose, onNext, next }: { p: Project; origin: { x: number; y: number }; onClose: () => void; onNext: () => void; next: Project }) {
+  const accent = accentOf(p);
+  const scroller = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    lockScroll(true);
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', onKey);
+    return () => {
+      lockScroll(false);
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [onClose]);
+
+  useEffect(() => {
+    scroller.current?.scrollTo({ top: 0 });
+  }, [p.id]);
+
+  const at = `${origin.x}px ${origin.y}px`;
+  return (
+    <motion.div
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${shortName(p.title)} case study`}
+      className="fixed inset-0 z-[140] bg-white dark:bg-[#020617]"
+      initial={{ clipPath: `circle(0% at ${at})` }}
+      animate={{ clipPath: `circle(150% at ${at})` }}
+      exit={{ clipPath: `circle(0% at ${at})` }}
+      transition={{ duration: 0.9, ease: EASE_IO }}
+    >
+      <div ref={scroller} data-lenis-prevent className="h-full overflow-y-auto overscroll-contain">
+        {/* close */}
+        <div className="sticky top-0 z-10 flex items-center justify-between bg-white/80 px-5 py-4 backdrop-blur dark:bg-[#020617]/80 md:px-10">
+          <span className="flex items-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400">
+            <span className="h-2.5 w-2.5 rounded-full" style={{ background: accent }} />
+            Case study
+          </span>
+          <button
+            onClick={onClose}
+            aria-label="Close case study"
+            className="flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 text-slate-800 transition-all duration-500 hover:rotate-90 hover:bg-slate-950 hover:text-white dark:border-white/15 dark:text-white dark:hover:bg-white dark:hover:text-slate-950"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        <motion.div key={p.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }}>
+          <header className="mx-auto max-w-[1300px] px-5 pb-14 pt-8 md:px-10 md:pt-14">
+            <p className="text-sm font-semibold" style={{ color: accent }}>
+              {p.category}
+            </p>
+            <h2 className="mt-4 overflow-hidden pb-[0.12em] font-display text-[18vw] font-black leading-[0.85] tracking-[-0.06em] text-slate-950 dark:text-white md:text-[11vw]">
+              <motion.span className="inline-block" initial={{ y: '100%' }} animate={{ y: 0 }} transition={{ delay: 0.45, duration: 0.9, ease: EASE }}>
+                {shortName(p.title)}
+              </motion.span>
+            </h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.8, ease: EASE }}
+              className="mt-6 max-w-[28ch] font-display text-3xl font-semibold leading-tight tracking-tight text-slate-800 dark:text-slate-200 md:text-5xl"
+            >
+              {subtitle(p.title) || p.description}
+            </motion.p>
+            <motion.dl
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.75, duration: 0.8, ease: EASE }}
+              className="mt-12 grid grid-cols-2 gap-6 border-t border-slate-200 pt-8 text-sm dark:border-white/10 md:grid-cols-4"
+            >
+              <div>
+                <dt className="text-slate-500">Role</dt>
+                <dd className="mt-1 font-semibold text-slate-900 dark:text-white">{p.role ?? '—'}</dd>
+              </div>
+              <div>
+                <dt className="text-slate-500">Timeline</dt>
+                <dd className="mt-1 font-semibold text-slate-900 dark:text-white">
+                  {fmt(p.startDate)} — {p.status === 'in-progress' ? 'Present' : fmt(p.endDate)}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-slate-500">Platforms</dt>
+                <dd className="mt-1 font-semibold text-slate-900 dark:text-white">{p.platforms?.join(', ') ?? '—'}</dd>
+              </div>
+              <div>
+                <dt className="text-slate-500">Status</dt>
+                <dd className="mt-1 font-semibold capitalize text-slate-900 dark:text-white">{p.status.replace('-', ' ')}</dd>
+              </div>
+            </motion.dl>
+            <div className="mt-8 flex flex-wrap gap-3">
+              {p.githubUrl && (
+                <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[52px] items-center gap-2 rounded-full bg-slate-950 px-6 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 dark:bg-white dark:text-slate-950">
+                  <Github size={18} /> Source code
+                </a>
+              )}
+              {p.liveUrl && (
+                <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[52px] items-center gap-2 rounded-full px-6 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5" style={{ background: accent }}>
+                  <Globe size={18} /> Visit live site
+                </a>
+              )}
+            </div>
+          </header>
+
+          <div className="h-[70svh] md:h-[85svh]">
+            <Visual p={p} accent={accent} large />
+          </div>
+
+          <section className="mx-auto grid max-w-[1300px] gap-10 px-5 py-20 md:grid-cols-[0.8fr_1.2fr] md:px-10 md:py-28">
+            <p className="text-sm font-semibold" style={{ color: accent }}>
+              Overview
+            </p>
+            <div className="space-y-5 text-lg leading-relaxed text-slate-700 dark:text-slate-300">
+              {(p.longDescription || p.description).split('\n').filter(Boolean).map((para, i) => (
+                <p key={i}>{para}</p>
+              ))}
+            </div>
+          </section>
+
+          {p.features.length > 0 && (
+            <section className="mx-auto max-w-[1300px] px-5 pb-20 md:px-10">
+              <h3 className="mb-8 font-display text-4xl font-black tracking-tight text-slate-950 dark:text-white md:text-6xl">Key features</h3>
+              <div className="flex flex-wrap gap-3">
+                {p.features.map((f) => (
+                  <span key={f} className="rounded-full border px-5 py-3 font-display text-lg font-semibold text-slate-800 dark:text-slate-200" style={{ borderColor: `${accent}66` }}>
+                    {f}
+                  </span>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {!!p.problemsSolved?.length && (
+            <section className="border-t border-slate-200 dark:border-white/10">
+              <div className="mx-auto max-w-[1300px] px-5 py-20 md:px-10 md:py-28">
+                <h3 className="mb-12 font-display text-4xl font-black tracking-tight text-slate-950 dark:text-white md:text-6xl">Engineering problems solved</h3>
+                <div className="grid gap-px overflow-hidden rounded-[28px] border border-slate-200 bg-slate-200 dark:border-white/10 dark:bg-white/10 md:grid-cols-2">
+                  {p.problemsSolved.map((ps, i) => (
+                    <div key={ps.title} className="group relative bg-white p-8 dark:bg-[#020617] md:p-10">
+                      <span className="absolute inset-0 origin-left scale-x-0 transition-transform duration-700 ease-[cubic-bezier(.76,0,.24,1)] group-hover:scale-x-100" style={{ background: `${accent}12` }} />
+                      <span className="relative font-display text-sm font-bold" style={{ color: accent }}>
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <h4 className="relative mt-3 font-display text-2xl font-bold tracking-tight text-slate-950 dark:text-white">{ps.title}</h4>
+                      <p className="relative mt-3 leading-relaxed text-slate-600 dark:text-slate-400">{ps.description}</p>
                     </div>
                   ))}
                 </div>
               </div>
-            )}
-            
-          </div>
-        </div>
-      </div>
-    );
-  };
+            </section>
+          )}
 
-  return (
-    <motion.section
-      id="projects"
-      ref={sectionRef}
-      initial="hidden"
-      animate={isVisible ? 'visible' : 'hidden'}
-      variants={containerVariants}
-      className={`py-12 sm:py-20 transition-colors duration-500 relative overflow-hidden ${
-        theme.theme === 'light' ? 'bg-[#fff5f7]/50' : 'bg-transparent'
-      }`}
-    >
-      {/* Dynamic Background Elements - Rose Theme */}
-      <div className={`absolute top-1/3 left-0 w-[550px] h-[550px] rounded-full blur-[140px] -translate-x-1/2 pointer-events-none ${
-        theme.theme === 'light' ? 'bg-rose-400/20' : 'bg-rose-500/5'
-      }`} />
-      <div className={`absolute bottom-0 right-0 w-[450px] h-[450px] rounded-full blur-[120px] translate-x-1/4 translate-y-1/4 pointer-events-none ${
-        theme.theme === 'light' ? 'bg-pink-500/20' : 'bg-pink-600/5'
-      }`} />
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Header Section */}
-        <motion.div className="mb-8" variants={itemVariants}>
-          <div className="flex items-center gap-2 mb-4">
-            <div className="h-[2px] w-6 bg-blue-600 rounded-full" />
-            <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-600">Selected Works</span>
-          </div>
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-            <h2 className={`text-4xl sm:text-5xl font-black tracking-tight leading-none ${
-                theme.theme === 'light' ? 'text-gray-900' : 'text-white'
-              }`}
-            >
-              Digital <br className="hidden sm:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Masterpieces</span>
-            </h2>
-
-            {/* Category Filter */}
+          <section className="mx-auto max-w-[1300px] px-5 pb-20 md:px-10">
+            <p className="mb-5 text-sm font-semibold text-slate-500">Built with</p>
             <div className="flex flex-wrap gap-2">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${
-                    activeCategory === cat 
-                      ? 'bg-blue-600 border-blue-600 text-white shadow-md' 
-                      : theme.theme === 'light'
-                        ? 'bg-gray-50 border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-600'
-                        : 'bg-gray-900 border-white/10 text-gray-400 hover:border-blue-500/50 hover:text-blue-400'
-                  }`}
-                >
-                  {cat}
-                </button>
+              {p.technologies.map((t) => (
+                <span key={t} className="rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700 dark:bg-white/5 dark:text-slate-300">
+                  {t}
+                </span>
               ))}
             </div>
-          </div>
-        </motion.div>
+          </section>
 
-        {/* Dashboard Split Layout */}
-        <div className={`h-[800px] max-h-[85vh] flex flex-col lg:flex-row rounded-3xl border overflow-hidden shadow-2xl ${
-          theme.theme === 'light' ? 'border-gray-200 bg-white' : 'border-white/10 bg-gray-900/50'
-        }`}>
-          
-          {/* Left Column: Project List */}
-          <div className={`w-full lg:w-[400px] flex-shrink-0 flex flex-col h-full border-b lg:border-b-0 lg:border-r ${
-            theme.theme === 'light' ? 'border-gray-200 bg-gray-50/50' : 'border-white/10 bg-gray-900/80'
-          }`}>
-            <div className="p-5 border-b border-inherit">
-              <h3 className={`text-sm font-black uppercase tracking-widest ${theme.theme === 'light' ? 'text-gray-400' : 'text-gray-500'}`}>
-                Project Explorer ({filteredProjects.length})
-              </h3>
-            </div>
-            
-            <div className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar">
-              {filteredProjects.length > 0 ? (
-                filteredProjects.map((project) => {
-                  const Icon = getProjectIcon(project.category);
-                  const isSelected = selectedProject?.id === project.id;
-                  
-                  return (
-                    <button
-                      key={project.id}
-                      onClick={() => handleProjectSelect(project)}
-                      className={`w-full text-left p-4 rounded-2xl transition-all duration-300 flex items-start gap-4 group ${
-                        isSelected 
-                          ? theme.theme === 'light' ? 'bg-white shadow-md border border-blue-100' : 'bg-gray-800 border border-blue-500/30'
-                          : theme.theme === 'light' ? 'hover:bg-white/60 border border-transparent' : 'hover:bg-gray-800/50 border border-transparent'
-                      }`}
-                    >
-                      <div className={`p-2.5 rounded-xl flex-shrink-0 transition-colors ${
-                        isSelected 
-                          ? 'bg-blue-600 text-white'
-                          : theme.theme === 'light' ? 'bg-blue-50 text-blue-600 group-hover:bg-blue-100' : 'bg-gray-700 text-blue-400'
-                      }`}>
-                        <Icon size={18} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className={`text-sm font-bold truncate mb-1 transition-colors ${
-                          isSelected ? (theme.theme === 'light' ? 'text-gray-900' : 'text-white') : (theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400')
-                        }`}>
-                          {project.title}
-                        </h4>
-                        <p className="text-[10px] font-black uppercase tracking-widest text-blue-500 truncate">
-                          {project.category}
-                        </p>
-                      </div>
-                      <div className={`mt-2 transition-transform ${isSelected ? 'translate-x-1 text-blue-500' : 'text-gray-300 dark:text-gray-600 group-hover:text-gray-400'}`}>
-                        <ChevronRight size={16} />
-                      </div>
-                    </button>
-                  );
-                })
-              ) : (
-                <div className="text-center p-8 text-gray-500">
-                  <CodeIcon size={32} className="mx-auto mb-3 opacity-20" />
-                  <p className="text-sm font-bold">No projects found.</p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Right Column: Detailed Preview (Hidden on Mobile) */}
-          <div className="hidden lg:flex flex-1 h-full bg-inherit relative">
-            {selectedProject ? (
-              <ProjectDetailsContent project={selectedProject} />
-            ) : (
-              <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
-                <CodeIcon size={64} className="mb-4 opacity-10" />
-                <p className="text-lg font-bold uppercase tracking-widest">Select a project to view details</p>
+          <button onClick={onNext} data-cursor="view" className="group block w-full border-t border-slate-200 text-left dark:border-white/10">
+            <div className="mx-auto flex max-w-[1300px] flex-wrap items-end justify-between gap-6 px-5 py-20 md:px-10 md:py-28">
+              <div>
+                <p className="mb-3 text-slate-500">Next project</p>
+                <p className="font-display text-[16vw] font-black leading-[0.85] tracking-[-0.06em] text-slate-950 transition-colors duration-500 dark:text-white md:text-[9vw]" style={{ ['--n' as string]: accentOf(next) }}>
+                  <span className="group-hover:text-[var(--n)]">{shortName(next.title)}</span>
+                </p>
               </div>
-            )}
+              <span className="mb-3 flex h-20 w-20 items-center justify-center rounded-full border border-slate-200 text-slate-900 transition-all duration-500 group-hover:-rotate-45 group-hover:bg-blue-600 group-hover:text-white dark:border-white/15 dark:text-white md:h-24 md:w-24">
+                <ArrowRight size={28} />
+              </span>
+            </div>
+          </button>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ───────── section ───────── */
+
+const Projects = () => {
+  const { projects } = useData();
+  const [filter, setFilter] = useState('All');
+  const [open, setOpen] = useState<{ p: Project; x: number; y: number } | null>(null);
+
+  const categories = useMemo(() => ['All', ...Array.from(new Set(projects.map((p) => p.category)))], [projects]);
+  const list = filter === 'All' ? projects : projects.filter((p) => p.category === filter);
+  const stacked = list.slice(0, 4);
+  const rest = list.slice(4);
+
+  const stackRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: stackRef, offset: ['start start', 'end end'] });
+
+  const openProject = (p: Project, e: React.MouseEvent) => setOpen({ p, x: e.clientX, y: e.clientY });
+  const nextOf = (p: Project) => projects[(projects.findIndex((x) => x.id === p.id) + 1) % projects.length];
+
+  return (
+    <div className="relative z-10 mx-auto max-w-[1400px] px-5 pt-28 md:px-10 md:pt-40">
+      <div className="flex flex-wrap items-end justify-between gap-8">
+        <div>
+          <FadeUp>
+            <p className="mb-6 flex items-center gap-3 text-sm font-semibold text-blue-600 dark:text-blue-400">
+              <span className="h-px w-10 bg-current" />
+              Selected work · {projects.length} projects
+            </p>
+          </FadeUp>
+          <SplitReveal text="Things I’ve built." className="font-display text-[14vw] font-black leading-[0.9] tracking-[-0.055em] text-slate-950 dark:text-white md:text-[7.5vw]" />
+        </div>
+        <FadeUp delay={0.15}>
+          <div className="flex max-w-full flex-wrap gap-2" role="tablist" aria-label="Filter projects">
+            {categories.map((c) => (
+              <button
+                key={c}
+                role="tab"
+                aria-selected={filter === c}
+                onClick={() => setFilter(c)}
+                className={`relative min-h-[44px] rounded-full px-4 text-sm font-semibold transition-colors ${filter === c ? 'text-white' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'}`}
+              >
+                {filter === c && <motion.span layoutId="pf" className="absolute inset-0 rounded-full bg-blue-600" transition={{ type: 'spring', stiffness: 400, damping: 32 }} />}
+                <span className="relative">{c}</span>
+              </button>
+            ))}
+          </div>
+        </FadeUp>
+      </div>
+
+      <div ref={stackRef} key={filter} className="relative mt-6">
+        {stacked.map((p, i) => (
+          <StackCard key={p.id} p={p} i={i} total={stacked.length} progress={scrollYProgress} onOpen={openProject} />
+        ))}
+      </div>
+
+      {rest.length > 0 && (
+        <div className="pb-10 pt-16">
+          <FadeUp>
+            <h3 className="mb-10 font-display text-4xl font-black tracking-tight text-slate-950 dark:text-white md:text-6xl">More projects</h3>
+          </FadeUp>
+          <div className="grid gap-6 md:grid-cols-2">
+            {rest.map((p, i) => (
+              <GridCard key={p.id} p={p} i={i + 4} onOpen={openProject} />
+            ))}
           </div>
         </div>
+      )}
 
-        {/* Mobile Detail Modal */}
-        {createPortal(
-          <AnimatePresence>
-          {isMobileModalOpen && selectedProject && (
-            <motion.div 
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 50 }}
-              className="fixed inset-0 z-[9999] flex flex-col lg:hidden pt-16 pb-8 px-4 bg-black/80 backdrop-blur-md"
-            >
-              <div className={`flex-1 flex flex-col w-full h-full rounded-[2rem] overflow-hidden shadow-2xl border ${
-                theme.theme === 'light' ? 'bg-white border-gray-200' : 'bg-gray-950 border-white/10'
-              }`}>
-                {/* Header */}
-                <div className={`flex-shrink-0 flex items-center justify-between p-4 border-b ${
-                  theme.theme === 'light' ? 'bg-gray-50 border-gray-200' : 'bg-gray-900 border-white/10'
-                }`}>
-                  <span className="text-xs font-black uppercase tracking-widest text-blue-500 pl-2">Back to Projects</span>
-                  <button 
-                    onClick={() => setIsMobileModalOpen(false)}
-                    className={`p-3 rounded-xl border ${theme.theme === 'light' ? 'bg-white border-gray-200 text-gray-900 shadow-sm hover:bg-gray-100' : 'bg-gray-800 border-gray-700 text-white shadow-sm hover:bg-gray-700'}`}
-                  >
-                    <X size={20} />
-                  </button>
-                </div>
-                {/* Content */}
-                <div className="flex-1 overflow-y-auto">
-                  <ProjectDetailsContent project={selectedProject} />
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>,
-        document.body)}
-
-        {/* Video Modal (Shared) */}
-        {createPortal(
-          <AnimatePresence>
-          {videoModalOpen && selectedProject?.videoUrl && (
-            <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="absolute inset-0 bg-black/90 backdrop-blur-xl" 
-                onClick={() => setVideoModalOpen(false)}
-              />
-              <motion.div 
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                className="relative w-full max-w-5xl aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-white/10"
-              >
-                <button
-                  onClick={() => setVideoModalOpen(false)}
-                  className="absolute top-4 right-4 z-50 p-3 bg-white/10 hover:bg-white/20 text-white rounded-xl backdrop-blur-md transition-colors"
-                >
-                  <X size={20} />
-                </button>
-                <video src={selectedProject.videoUrl} className="w-full h-full object-contain" controls autoPlay />
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>,
-        document.body)}
-
-      </div>
-    </motion.section>
+      {createPortal(
+      <AnimatePresence>
+        {open && (
+          <CaseStudy
+            key="cs"
+            p={open.p}
+            origin={{ x: open.x, y: open.y }}
+            next={nextOf(open.p)}
+            onNext={() => setOpen((o) => (o ? { ...o, p: nextOf(o.p) } : o))}
+            onClose={() => setOpen(null)}
+          />
+        )}
+      </AnimatePresence>,
+      document.body,
+      )}
+    </div>
   );
 };
 

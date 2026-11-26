@@ -3,6 +3,7 @@ import { Github, Linkedin, Instagram, Twitter, Mail, Layout, User, Briefcase, Gr
 import { motion, AnimatePresence, useScroll, useMotionValueEvent, Variants } from 'framer-motion';
 import { useData } from '../../context/DataContext';
 import { ThemeContext } from './PortfolioLayout';
+import { goToSection } from '../motion/kit';
 
 const Navigation = () => {
   const { portfolioInfo } = useData();
@@ -72,16 +73,8 @@ const Navigation = () => {
   }, []);
 
   const handleNavClick = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      const headerHeight = 80;
-      const target =
-        element.getBoundingClientRect().top +
-        window.scrollY -
-        headerHeight;
-      window.scrollTo({ top: target, behavior: 'smooth' });
-    }
     setIsOpen(false);
+    goToSection(href);
   };
 
   // Prevent scroll when mobile menu is open

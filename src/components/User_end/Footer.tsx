@@ -3,19 +3,13 @@ import { Github, Linkedin, Instagram, Mail, MapPin, Twitter, ExternalLink } from
 import { useData } from '../../context/DataContext';
 import { motion } from 'framer-motion';
 import { ThemeContext } from './PortfolioLayout';
+import { goToSection } from '../motion/kit';
 
 const Footer = () => {
   const { portfolioInfo } = useData();
   const theme = useContext(ThemeContext);
   const year = new Date().getFullYear();
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const headerHeight = 80;
-      const target = element.getBoundingClientRect().top + window.scrollY - headerHeight;
-      window.scrollTo({ top: target, behavior: 'smooth' });
-    }
-  };
+  const scrollToSection = (sectionId: string) => goToSection(sectionId);
 
   const getSocialIcon = (platform: string) => {
     switch (platform.toLowerCase()) {

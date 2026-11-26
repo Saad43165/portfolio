@@ -1,316 +1,286 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { Github, Linkedin, Download, Mail, Code, Instagram, Twitter, Facebook, Youtube, Globe } from 'lucide-react';
-import { motion, Variants, AnimatePresence } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion, useMotionValue, useScroll, useSpring, useTransform } from 'framer-motion';
+import { Download, Github, Linkedin, ArrowDownRight } from 'lucide-react';
 import { useData } from '../../context/DataContext';
-import { ThemeContext } from './PortfolioLayout';
-import { MagneticButton } from './MagneticButton';
+import { EASE, EASE_IO, Magnetic, RollText, SplitReveal, useGo, useReady } from '../motion/kit';
+
+const ORBIT = ['Flutter', 'TFLite', 'Firebase', 'FastAPI', 'Next.js', 'Groq'];
 
 const Hero = () => {
-  const { portfolioInfo } = useData();
-  const theme = useContext(ThemeContext);
-  const [displayText, setDisplayText] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  const titles = portfolioInfo.roles || [
-    'Flutter Developer',
-    'Mobile App Developer',
-    'AI Integration',
-    'React Native Developer'
-  ];
+  const { portfolioInfo, projects } = useData();
+  const ready = useReady();
+  const go = useGo();
+  const ref = useRef<HTMLElement>(null);
+  const [role, setRole] = useState(0);
+  const roles = ['Flutter apps', 'AI features', 'offline-first apps', 'React Native apps', 'Next.js sites'];
 
   useEffect(() => {
-    if (titles.length === 0) return;
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % titles.length);
-    }, 3000); // Change role every 3 seconds
-    
-    return () => clearInterval(interval);
-  }, [titles.length]);
+    const id = setInterval(() => setRole((r) => (r + 1) % roles.length), 2600);
+    return () => clearInterval(id);
+  }, [roles.length]);
 
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.3,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    }
-  };
+  // Scroll choreography
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
+  const nameX = useTransform(scrollYProgress, [0, 1], ['0%', '-18%']);
+  const photoY = useTransform(scrollYProgress, [0, 1], ['0%', '28%']);
+  const photoScale = useTransform(scrollYProgress, [0, 1], [1, 0.86]);
+  const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20, filter: 'blur(10px)' },
-    visible: {
-      opacity: 1,
-      y: 0,
-      filter: 'blur(0px)',
-      transition: {
-        duration: 1,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    }
-  };
+  // Pointer tilt on the portrait
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const rx = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), { stiffness: 120, damping: 14 });
+  const ry = useSpring(useTransform(mx, [-0.5, 0.5], [-10, 10]), { stiffness: 120, damping: 14 });
 
-  const getSocialIcon = (platform: string) => {
-    switch (platform.toLowerCase()) {
-      case 'github': return Github;
-      case 'linkedin': return Linkedin;
-      case 'instagram': return Instagram;
-      case 'twitter': case 'x': return Twitter;
-      case 'facebook': return Facebook;
-      case 'youtube': return Youtube;
-      case 'mail': case 'email': return Mail;
-      default: return Globe;
-    }
-  };
-
-  const getSocialColor = (platform: string) => {
-    switch (platform.toLowerCase()) {
-      case 'github': return '#333';
-      case 'linkedin': return '#0077b5';
-      case 'instagram': return '#e4405f';
-      case 'twitter': case 'x': return '#1da1f2';
-      case 'facebook': return '#1877f2';
-      case 'youtube': return '#ff0000';
-      default: return '#3b82f6';
-    }
-  };
-
-  const handleExploreClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const element = document.querySelector('#projects');
-    if (element) {
-      const headerHeight = 80;
-      const target = element.getBoundingClientRect().top + window.scrollY - headerHeight;
-      window.scrollTo({ top: target, behavior: 'smooth' });
-    }
-  };
+  const [first, ...rest] = (portfolioInfo.name || 'Saad Ikram').split(' ');
+  const shipped = projects.filter((p) => p.status === 'completed').length;
 
   return (
-    <section id="home" className={`min-h-screen flex items-center justify-center relative overflow-hidden transition-colors duration-500 pt-24 lg:pt-32 ${theme.theme === 'light' ? 'bg-transparent' : 'bg-transparent'
-      }`}>
-      {/* Dynamic Background Elements */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div
-          className={`absolute -top-[10%] -left-[10%] w-[60%] h-[60%] rounded-full blur-[120px] ${
-            theme.theme === 'light' ? 'bg-gradient-to-br from-blue-400/30 to-purple-400/30' : 'bg-gradient-to-br from-blue-500/20 to-purple-500/20'
-          }`}
+    <section ref={ref} id="home" className="relative min-h-[100svh] overflow-hidden pt-28 md:pt-32">
+      {/* ambient light */}
+      <div className="pointer-events-none absolute inset-0 -z-0">
+        <motion.div
+          className="absolute -top-40 -left-40 h-[60vw] w-[60vw] rounded-full bg-blue-500/20 blur-[120px] dark:bg-blue-600/20"
+          animate={{ x: [0, 60, 0], y: [0, 40, 0] }}
+          transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
         />
-        <div
-          className={`absolute -bottom-[10%] -right-[10%] w-[60%] h-[60%] rounded-full blur-[120px] ${
-            theme.theme === 'light' ? 'bg-gradient-to-tl from-indigo-400/30 to-cyan-400/30' : 'bg-gradient-to-tl from-indigo-500/20 to-cyan-500/20'
-          }`}
-        />
-        {/* Subtle Grid Pattern */}
-        <div className={`absolute inset-0 opacity-[0.03] ${theme.theme === 'light' ? 'invert' : ''}`}
-          style={{ backgroundImage: `linear-gradient(#3b82f6 1px, transparent 1px), linear-gradient(90deg, #3b82f6 1px, transparent 1px)`, backgroundSize: '40px 40px' }}
+        <motion.div
+          className="absolute -bottom-40 -right-40 h-[50vw] w-[50vw] rounded-full bg-purple-500/20 blur-[120px] dark:bg-purple-600/15"
+          animate={{ x: [0, -50, 0], y: [0, -30, 0] }}
+          transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
         />
       </div>
 
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="relative z-10 px-6 sm:px-12 lg:px-24 max-w-7xl mx-auto w-full lg:-mt-16"
-      >
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-12">
+      <motion.div style={{ opacity: fade }} className="relative z-10 mx-auto max-w-[1400px] px-5 md:px-10">
+        {/* top row */}
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={ready ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="inline-flex items-center gap-3 rounded-full border border-blue-500/25 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 backdrop-blur dark:bg-white/5 dark:text-slate-300"
+          >
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-70" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+            </span>
+            Open to Flutter roles and freelance work
+          </motion.div>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={ready ? { opacity: 1 } : {}}
+            transition={{ delay: 0.3 }}
+            className="hidden text-sm font-medium text-slate-500 dark:text-slate-400 md:block"
+          >
+            {portfolioInfo.location}
+          </motion.p>
+        </div>
 
-          {/* Content Left */}
-          <div className="flex-1 space-y-4 lg:space-y-3 text-center lg:text-left order-2 lg:order-1">
-            <div className="space-y-4 lg:space-y-2">
-              <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-blue-500/20 bg-blue-500/5 backdrop-blur-md">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500"></span>
-                </span>
-                <span className="text-[12px] font-black uppercase tracking-[0.3em] text-blue-500">Available for Innovation</span>
-              </motion.div>
+        {/* giant name */}
+        <motion.h1 style={{ x: nameX }} className="mt-8 whitespace-nowrap font-display font-black leading-[0.82] tracking-[-0.065em] text-slate-950 dark:text-white text-[18vw] md:text-[17.5vw]">
+          <SplitReveal as="span" text={first} onLoad delay={0.05} />
+          <span className="inline-block w-[0.18em]" />
+          <SplitReveal
+            as="span"
+            text={rest.join(' ')}
+            onLoad
+            delay={0.18}
+            wordClassName={() => 'text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600'}
+          />
+        </motion.h1>
 
-              <div className="space-y-1 lg:space-y-0.5">
-                <motion.h1
-                  variants={itemVariants}
-                  className={`text-5xl sm:text-6xl lg:text-6xl font-black leading-[0.9] tracking-tighter ${theme.theme === 'light' ? 'text-gray-950' : 'text-white'
-                    }`}
-                >
-                  Saad <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600">Ikram</span>
-                </motion.h1>
+        <div className="mt-6 grid items-end gap-12 md:mt-2 lg:grid-cols-[1.1fr_0.9fr]">
+          {/* left column */}
+          <div className="order-2 lg:order-1 lg:pb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={ready ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.9, delay: 0.55, ease: EASE }}
+              className="flex flex-wrap items-baseline gap-x-3 font-display text-3xl font-bold tracking-tight text-slate-800 dark:text-slate-200 md:text-5xl"
+            >
+              <span>I build</span>
+              <span className="relative inline-flex h-[1.15em] min-w-[12ch] overflow-hidden align-bottom">
+                <AnimatePresence mode="popLayout" initial={false}>
+                  <motion.span
+                    key={role}
+                    initial={{ y: '100%' }}
+                    animate={{ y: 0 }}
+                    exit={{ y: '-100%' }}
+                    transition={{ duration: 0.6, ease: EASE_IO }}
+                    className="whitespace-nowrap text-blue-600 dark:text-blue-400"
+                  >
+                    {roles[role]}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
+            </motion.div>
 
-                <motion.div variants={itemVariants} className="h-1.5 w-24 bg-gradient-to-r from-blue-600 to-transparent rounded-full mx-auto lg:mx-0" />
-              </div>
-
-              <motion.div 
-                variants={itemVariants}
-                className="min-h-[60px] sm:min-h-[80px] lg:min-h-[60px] flex flex-col justify-end"
-              >
-                <h2 className={`text-2xl sm:text-3xl lg:text-2xl font-bold tracking-tight leading-relaxed ${theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
-                  }`}>
-                  Crafting Digital Excellence through <br className="hidden sm:block" />
-                  <div className="relative h-8 sm:h-10 lg:h-8 overflow-hidden block mx-auto lg:mx-0 lg:inline-block align-bottom mt-1 w-full max-w-[400px] text-center lg:text-left">
-                    <AnimatePresence mode="popLayout">
-                      <motion.span
-                        key={currentIndex}
-                        initial={{ y: 30, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: -30, opacity: 0 }}
-                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-blue-500 font-black italic absolute left-0 right-0 lg:right-auto"
-                      >
-                        {titles[currentIndex]}
-                      </motion.span>
-                    </AnimatePresence>
-                  </div>
-                </h2>
-              </motion.div>
-            </div>
-
-            <motion.p variants={itemVariants} className={`text-base sm:text-xl lg:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-semibold text-center lg:text-left ${theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
-              }`}>
-              Delivering scalable, high-performance software solutions. I specialize in building robust architectures, seamless cross-platform user experiences, and enterprise-grade applications.
+            <motion.p
+              initial={{ opacity: 0, y: 24 }}
+              animate={ready ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.9, delay: 0.7, ease: EASE }}
+              className="mt-6 max-w-[46ch] text-lg leading-relaxed text-slate-600 dark:text-slate-400"
+            >
+              Flutter developer shipping AI-powered mobile apps: on-device TensorFlow Lite models, LLM assistants and Firebase backends that work even when the network doesn’t.
             </motion.p>
 
-            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 sm:gap-6 pt-2 lg:pt-1">
-              <MagneticButton className="w-full sm:w-auto">
-                <motion.button
-                  onClick={handleExploreClick}
-                  whileHover={{ y: -8, scale: 1.05, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`w-full sm:w-auto px-10 py-4 sm:px-10 sm:py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 shadow-xl transition-all ${theme.theme === 'light' ? 'bg-gray-950 text-white shadow-gray-200' : 'bg-white text-gray-950 shadow-blue-500/20'
-                    }`}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={ready ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.9, delay: 0.85, ease: EASE }}
+              className="mt-10 flex flex-wrap items-center gap-3"
+            >
+              <Magnetic>
+                <button
+                  onClick={() => go('projects', 'Work')}
+                  data-cursor="hide"
+                  className="group relative inline-flex min-h-[56px] items-center gap-3 overflow-hidden rounded-full bg-slate-950 px-8 text-[15px] font-semibold text-white dark:bg-white dark:text-slate-950"
                 >
-                  Explore Works
-                  <Code size={20} />
-                </motion.button>
-              </MagneticButton>
-
-              <MagneticButton className="w-full sm:w-auto">
-                <motion.a
+                  <span className="absolute inset-0 translate-y-full rounded-full bg-blue-600 transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-y-0" />
+                  <span className="relative group-hover:text-white">
+                    <RollText>See my work</RollText>
+                  </span>
+                  <ArrowDownRight className="relative transition-transform duration-500 group-hover:-rotate-45 group-hover:text-white" size={18} />
+                </button>
+              </Magnetic>
+              <Magnetic>
+                <a
                   href={portfolioInfo.resumeUrl}
                   download
-                  whileHover={{ y: -8, scale: 1.05, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`w-full sm:w-auto px-10 py-4 sm:px-10 sm:py-5 rounded-2xl text-xs font-black uppercase tracking-[0.2em] border flex items-center justify-center gap-3 transition-all ${theme.theme === 'light'
-                      ? 'bg-gray-50 border-gray-200 text-gray-900 hover:bg-gray-100 hover:border-gray-300 shadow-md'
-                      : 'bg-white/5 border-white/10 text-white hover:bg-white/10 shadow-xl'
-                    }`}
+                  data-cursor="hide"
+                  className="group inline-flex min-h-[56px] items-center gap-3 rounded-full border border-slate-300 px-7 text-[15px] font-semibold text-slate-800 transition-colors hover:border-blue-600 hover:text-blue-600 dark:border-white/15 dark:text-white"
                 >
-                  <Download size={20} />
-                  Download CV
-                </motion.a>
-              </MagneticButton>
+                  <Download size={18} />
+                  <RollText>Download CV</RollText>
+                </a>
+              </Magnetic>
+              <div className="ml-1 flex gap-2">
+                {portfolioInfo.socialLinks.map((s) => {
+                  const Icon = s.platform.toLowerCase() === 'github' ? Github : Linkedin;
+                  return (
+                    <Magnetic key={s.url} strength={0.5}>
+                      <a
+                        href={s.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={s.platform}
+                        className="flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition-colors hover:border-blue-600 hover:bg-blue-600 hover:text-white dark:border-white/10 dark:text-slate-300"
+                      >
+                        <Icon size={18} />
+                      </a>
+                    </Magnetic>
+                  );
+                })}
+              </div>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="flex justify-center lg:justify-start gap-8 pt-4 lg:pt-3">
-              {portfolioInfo.socialLinks.map((social) => {
-                const Icon = getSocialIcon(social.platform);
-                const brandColor = getSocialColor(social.platform);
-                return (
-                  <motion.a
-                    key={social.url}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{
-                      scale: 1.4,
-                      y: -8,
-                      color: brandColor,
-                      transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] }
-                    }}
-                    className={`${theme.theme === 'light' ? 'text-gray-400' : 'text-gray-600'} transition-all`}
-                  >
-                    <Icon size={24} />
-                  </motion.a>
-                );
-              })}
-            </motion.div>
+            {/* quick facts */}
+            <motion.dl
+              initial={{ opacity: 0 }}
+              animate={ready ? { opacity: 1 } : {}}
+              transition={{ delay: 1.1 }}
+              className="mt-14 grid max-w-md grid-cols-3 gap-6 border-t border-slate-200 pt-6 dark:border-white/10"
+            >
+              {[
+                { v: `${projects.length}`, l: 'Apps built' },
+                { v: `${shipped}`, l: 'Shipped' },
+                { v: '3', l: 'Internships' },
+              ].map((s) => (
+                <div key={s.l}>
+                  <dt className="font-display text-4xl font-black tracking-tight text-slate-950 dark:text-white">{s.v}</dt>
+                  <dd className="mt-1 text-sm text-slate-500 dark:text-slate-400">{s.l}</dd>
+                </div>
+              ))}
+            </motion.dl>
           </div>
 
-          {/* Visual Right: Improved Profile Presentation */}
-          <motion.div
-            variants={itemVariants}
-            className="flex-1 relative order-1 lg:order-2 mb-16 lg:mb-0 w-full flex justify-center"
-          >
-            <div className="relative w-full max-w-[240px] sm:max-w-[280px] lg:max-w-[340px]">
-              {/* Soft Ambient Glow */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-purple-500/20 rounded-full blur-[80px] lg:blur-[100px] opacity-60 mix-blend-screen" />
-
-              {/* Premium 3D Floating Frame */}
-              <MagneticButton className="w-full">
+          {/* portrait */}
+          <motion.div style={{ y: photoY, scale: photoScale }} className="order-1 flex justify-center lg:order-2 lg:justify-end">
+            <motion.div
+              className="relative w-[68vw] max-w-[400px] [perspective:1000px]"
+              onPointerMove={(e) => {
+                const r = e.currentTarget.getBoundingClientRect();
+                mx.set((e.clientX - r.left) / r.width - 0.5);
+                my.set((e.clientY - r.top) / r.height - 0.5);
+              }}
+              onPointerLeave={() => {
+                mx.set(0);
+                my.set(0);
+              }}
+            >
+              <motion.div style={{ rotateX: rx, rotateY: ry }} className="relative [transform-style:preserve-3d]">
                 <motion.div
-                  whileHover={{
-                    y: -12,
-                    rotateY: 8,
-                    rotateX: -4,
-                    scale: 1.02,
-                    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
-                  }}
-                  className="relative aspect-[4/5] w-full rounded-[2.5rem] sm:rounded-[3rem] p-3 sm:p-4 z-10 transition-all duration-700"
+                  initial={{ clipPath: 'inset(100% 0% 0% 0% round 36px)' }}
+                  animate={ready ? { clipPath: 'inset(0% 0% 0% 0% round 36px)' } : {}}
+                  transition={{ duration: 1.3, delay: 0.25, ease: EASE_IO }}
+                  className="relative aspect-[4/5] overflow-hidden rounded-[36px] bg-slate-200 shadow-[0_50px_100px_-30px_rgba(37,99,235,.45)] dark:bg-slate-800"
                 >
-                  {/* Animated Border Gradient */}
-                  <div className={`absolute inset-0 rounded-[2.8rem] sm:rounded-[3.2rem] opacity-100 border ${
-                    theme.theme === 'light' 
-                      ? 'bg-gradient-to-br from-blue-100 via-transparent to-purple-50 border-blue-200/50 shadow-inner' 
-                      : 'bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10 border-white/10 shadow-inner'
-                  }`} />
-                  
-                  {/* Inner Image Container */}
-                  <div className={`relative w-full h-full rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden group shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] ${
-                    theme.theme === 'light' ? 'bg-gray-100 shadow-blue-500/20' : 'bg-[#0f172a] shadow-blue-900/30'
-                  }`}>
-                    <motion.img
-                      src={portfolioInfo.profileImage || "/main_image.webp"}
-                      alt={portfolioInfo.name}
-                      className="w-full h-full object-cover transition-all duration-1000 transform group-hover:scale-110"
-                      style={{ objectPosition: 'center top' }}
-                    />
-
-                    {/* Glassmorphic Overlay on Hover */}
-                    <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none ${
-                      theme.theme === 'light'
-                        ? 'bg-gradient-to-t from-white/40 via-transparent to-transparent'
-                        : 'bg-gradient-to-t from-black/60 via-transparent to-transparent'
-                    }`} />
-                  </div>
+                  <motion.img
+                    src={portfolioInfo.profileImage}
+                    alt={portfolioInfo.name}
+                    className="h-full w-full object-cover"
+                    initial={{ scale: 1.4 }}
+                    animate={ready ? { scale: 1 } : {}}
+                    transition={{ duration: 1.8, delay: 0.25, ease: EASE }}
+                    fetchPriority="high"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent" />
                 </motion.div>
-              </MagneticButton>
 
-              {/* Clean Integrated Badge - Below Image */}
-              <motion.div
-                variants={itemVariants}
-                className={`absolute -bottom-6 left-0 sm:left-1/2 sm:-translate-x-1/2 w-max px-4 py-2.5 rounded-full border shadow-xl z-20 flex items-center justify-center gap-3 backdrop-blur-xl ${
-                  theme.theme === 'light' ? 'bg-white/90 border-gray-200' : 'bg-gray-950/80 border-white/10'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <Code size={14} className="text-blue-500" />
-                  <span className={`text-[9px] sm:text-[10px] font-black uppercase tracking-widest ${theme.theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                    Flutter Developer
-                  </span>
-                </div>
-                <div className={`w-px h-4 ${theme.theme === 'light' ? 'bg-gray-300' : 'bg-white/20'}`} />
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)] animate-pulse" />
-                  <span className={`text-[8px] sm:text-[9px] font-black uppercase tracking-widest ${theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
-                    Available
-                  </span>
-                </div>
+                {/* role tag */}
+                <motion.div
+                  style={{ transform: 'translateZ(60px)' }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={ready ? { opacity: 1, y: 0 } : {}}
+                  transition={{ delay: 1.2, duration: 0.7, ease: EASE }}
+                  className="absolute -bottom-5 -left-5 rounded-2xl border border-white/60 bg-white/90 px-5 py-3 shadow-xl backdrop-blur dark:border-white/10 dark:bg-slate-900/90"
+                >
+                  <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">Currently building</p>
+                  <p className="font-display text-lg font-bold text-slate-900 dark:text-white">AI-first Flutter apps</p>
+                </motion.div>
               </motion.div>
-            </div>
+
+              {/* orbiting stack chips */}
+              <motion.div
+                aria-hidden
+                className="pointer-events-none absolute inset-[-14%] hidden md:block"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+              >
+                {ORBIT.map((t, i) => {
+                  const a = (i / ORBIT.length) * Math.PI * 2;
+                  return (
+                    <motion.span
+                      key={t}
+                      className="absolute rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 shadow-md dark:border-white/10 dark:bg-slate-900 dark:text-slate-200"
+                      style={{ left: `${50 + 50 * Math.cos(a)}%`, top: `${50 + 50 * Math.sin(a)}%`, translateX: '-50%', translateY: '-50%' }}
+                      animate={{ rotate: -360 }}
+                      transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+                    >
+                      {t}
+                    </motion.span>
+                  );
+                })}
+              </motion.div>
+            </motion.div>
           </motion.div>
         </div>
       </motion.div>
-      {/* Modern Scroll Indicator - Hidden on mobile to prevent overlap */}
-      <div className="hidden sm:flex absolute bottom-10 left-1/2 -translate-x-1/2 flex-col items-center gap-3 pointer-events-none">
-        <span className={`text-[10px] font-bold uppercase tracking-[0.4em] ${theme.theme === 'light' ? 'text-gray-400' : 'text-gray-600'}`}>Scroll</span>
-        <div className={`w-px h-16 relative overflow-hidden ${theme.theme === 'light' ? 'bg-gray-200' : 'bg-gray-800'}`}>
-          <motion.div
-            animate={{ y: [-64, 64] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-0 left-0 w-full h-1/2 bg-blue-500"
-          />
-        </div>
-      </div>
+
+      {/* scroll cue */}
+      <motion.button
+        onClick={() => go('about')}
+        initial={{ opacity: 0 }}
+        animate={ready ? { opacity: 1 } : {}}
+        transition={{ delay: 1.4 }}
+        aria-label="Scroll to About"
+        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-xs font-semibold text-slate-500 md:flex"
+      >
+        <span className="relative h-10 w-6 rounded-full border border-slate-300 dark:border-white/20">
+          <motion.span className="absolute left-1/2 top-2 h-2 w-1 -translate-x-1/2 rounded-full bg-blue-600" animate={{ y: [0, 12, 0] }} transition={{ duration: 1.6, repeat: Infinity }} />
+        </span>
+        Scroll
+      </motion.button>
     </section>
   );
 };

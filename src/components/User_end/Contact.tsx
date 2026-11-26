@@ -1,181 +1,109 @@
-import { useEffect, useRef, useState, useContext } from 'react';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Mail, Phone, MessageCircle, Linkedin, Github, Copy, Check, ArrowUpRight } from 'lucide-react';
 import { useData } from '../../context/DataContext';
-import {
-  Mail,
-  Phone,
-  Github,
-  Linkedin,
-  MessageCircle
-} from 'lucide-react';
-import { motion, Variants } from 'framer-motion';
-import { ThemeContext } from './PortfolioLayout';
-import { MagneticButton } from './MagneticButton';
+import { FadeUp, Magnetic, SplitReveal } from '../motion/kit';
 
 const Contact = () => {
   const { portfolioInfo } = useData();
-  const theme = useContext(ThemeContext);
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
+  const phone = portfolioInfo.phone ?? '';
+  const wa = phone.replace(/[^0-9]/g, '');
+  const msg = encodeURIComponent("Hi Saad! I'd like to talk about a project.");
+  const social = (name: string) => portfolioInfo.socialLinks.find((s) => s.platform.toLowerCase() === name)?.url;
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(portfolioInfo.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      /* clipboard unavailable */
     }
-
-    return () => observer.disconnect();
-  }, []);
-
-  const getSocialLink = (platform: string) => {
-    return portfolioInfo.socialLinks.find(link => link.platform.toLowerCase() === platform.toLowerCase())?.url || '#';
   };
 
-  const phoneStr = portfolioInfo.phone || '+923145459961';
-  const whatsappNumber = phoneStr.replace(/[^0-9+]/g, '');
-  const whatsappMessage = encodeURIComponent("Hello! I'd like to connect with you regarding a project.");
-
-  const contactOptions = [
-    {
-      icon: MessageCircle,
-      label: 'WhatsApp',
-      value: 'Message Me',
-      href: `https://wa.me/${whatsappNumber.replace('+', '')}?text=${whatsappMessage}`,
-      color: theme.theme === 'light' ? 'bg-green-50 text-green-600' : 'bg-green-900/30 text-green-400',
-      borderColor: 'hover:border-green-500/50'
-    },
-    {
-      icon: Linkedin,
-      label: 'LinkedIn',
-      value: 'Connect with me',
-      href: getSocialLink('linkedin'),
-      color: theme.theme === 'light' ? 'bg-blue-50 text-blue-600' : 'bg-blue-900/30 text-blue-400',
-      borderColor: 'hover:border-blue-500/50'
-    },
-    {
-      icon: Phone,
-      label: 'Phone',
-      value: phoneStr,
-      href: `tel:${phoneStr}`,
-      color: theme.theme === 'light' ? 'bg-purple-50 text-purple-600' : 'bg-purple-900/30 text-purple-400',
-      borderColor: 'hover:border-purple-500/50'
-    },
-    {
-      icon: Github,
-      label: 'GitHub',
-      value: 'View my work',
-      href: getSocialLink('github'),
-      color: theme.theme === 'light' ? 'bg-gray-100 text-gray-800' : 'bg-gray-800 text-white',
-      borderColor: 'hover:border-gray-500/50'
-    },
-    {
-      icon: Mail,
-      label: 'Email',
-      value: portfolioInfo.email,
-      href: `mailto:${portfolioInfo.email}`,
-      color: theme.theme === 'light' ? 'bg-red-50 text-red-600' : 'bg-red-900/30 text-red-400',
-      borderColor: 'hover:border-red-500/50'
-    }
-  ];
-
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 },
-    },
-  };
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, scale: 0.98, y: 10 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-    },
-  };
+  const channels = [
+    { label: 'WhatsApp', value: 'Message me', href: `https://wa.me/${wa}?text=${msg}`, Icon: MessageCircle, color: '#22C55E' },
+    { label: 'LinkedIn', value: 'Connect', href: social('linkedin'), Icon: Linkedin, color: '#0A66C2' },
+    { label: 'GitHub', value: 'View code', href: social('github'), Icon: Github, color: '#64748B' },
+    { label: 'Phone', value: phone, href: `tel:${phone.replace(/[^0-9+]/g, '')}`, Icon: Phone, color: '#8B5CF6' },
+  ].filter((c) => c.href);
 
   return (
-    <motion.section
-      id="contact"
-      ref={sectionRef}
-      initial="hidden"
-      animate={isVisible ? 'visible' : 'hidden'}
-      variants={containerVariants}
-      className={`py-10 sm:py-16 transition-colors duration-500 relative overflow-hidden ${
-        theme.theme === 'light' ? 'bg-[#f8f9ff]/50' : 'bg-transparent'
-      }`}
-    >
-      {/* Dynamic Background Elements - Indigo Theme */}
-      <div className={`absolute top-0 right-1/4 w-[600px] h-[600px] rounded-full blur-[140px] -translate-y-1/2 pointer-events-none ${
-        theme.theme === 'light' ? 'bg-indigo-400/20' : 'bg-indigo-500/5'
-      }`} />
-      <div className={`absolute bottom-0 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px] translate-y-1/3 pointer-events-none ${
-        theme.theme === 'light' ? 'bg-violet-400/20' : 'bg-violet-600/5'
-      }`} />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div className="mb-12 text-center" variants={itemVariants}>
-          <div className="flex items-center gap-2 mb-4 justify-center">
-            <div className="h-[2px] w-6 bg-blue-600 rounded-full" />
-            <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-600">Let's Connect</span>
-            <div className="h-[2px] w-6 bg-blue-600 rounded-full" />
-          </div>
-          <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] mb-4 ${
-              theme.theme === 'light' ? 'text-gray-900' : 'text-white'
-            }`}
-          >
-            Ready to <br className="sm:hidden" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">Forge Something Great?</span>
-          </h2>
-          <p className={`text-base font-medium leading-relaxed max-w-xl mx-auto ${
-            theme.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
-          }`}>
-            Forms are a thing of the past. Reach out directly via your preferred platform and let's start a conversation.
-          </p>
-        </motion.div>
+    <div className="relative z-10 mx-auto max-w-[1400px] px-5 py-28 md:px-10 md:py-40">
+      <FadeUp>
+        <p className="mb-6 flex items-center gap-3 text-sm font-semibold text-blue-600 dark:text-blue-400">
+          <span className="h-px w-10 bg-current" />
+          Contact
+        </p>
+      </FadeUp>
+      <SplitReveal
+        text="Let’s build something great."
+        className="max-w-[12ch] font-display text-[15vw] font-black leading-[0.88] tracking-[-0.06em] text-slate-950 dark:text-white md:text-[8.5vw]"
+        wordClassName={(w) => (w === 'great.' ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600' : undefined)}
+      />
 
-        <motion.div 
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5 justify-center"
-          variants={containerVariants}
-        >
-          {contactOptions.map((item) => (
-            <MagneticButton key={item.label} className="w-full">
-              <motion.a
-                href={item.href}
-                target={item.label !== 'Phone' && item.label !== 'Email' ? '_blank' : '_self'}
-                rel="noopener noreferrer"
-                variants={itemVariants}
-                whileHover={{ y: -3, scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className={`flex flex-col items-center p-5 sm:p-6 rounded-2xl border transition-all duration-500 group relative overflow-hidden text-center w-full ${
-                  theme.theme === 'light' 
-                    ? 'bg-white border-blue-50 shadow-lg shadow-blue-500/5 hover:shadow-xl' 
-                    : 'bg-gray-900/40 backdrop-blur-xl border-white/5'
-                } ${item.borderColor}`}
+      <div className="mt-16 grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+        <FadeUp>
+          <p className="mb-4 text-slate-500 dark:text-slate-400">Fastest reply by email</p>
+          <div className="flex flex-wrap items-center gap-4">
+            <a
+              href={`mailto:${portfolioInfo.email}`}
+              data-cursor="hide"
+              className="group relative break-all font-display text-3xl font-bold tracking-tight text-slate-950 dark:text-white md:text-5xl"
+            >
+              {portfolioInfo.email}
+              <span className="absolute -bottom-2 left-0 h-[3px] w-full origin-left scale-x-0 bg-blue-600 transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-x-100" />
+            </a>
+            <Magnetic strength={0.5}>
+              <button
+                onClick={copy}
+                aria-label="Copy email address"
+                className="flex h-12 items-center gap-2 rounded-full border border-slate-200 px-4 text-sm font-semibold text-slate-700 transition-colors hover:border-blue-600 hover:text-blue-600 dark:border-white/15 dark:text-slate-200"
               >
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6 ${item.color} shadow-inner`}>
-                  <item.icon size={24} />
-                </div>
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-1">{item.label}</span>
-                <span className={`text-xs sm:text-sm lg:text-xs xl:text-sm font-bold transition-colors w-full px-2 truncate ${
-                  theme.theme === 'light' ? 'text-gray-900' : 'text-white'
-                }`} title={item.value}>
-                  {item.value}
+                <motion.span key={String(copied)} initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+                  {copied ? <Check size={16} /> : <Copy size={16} />}
+                </motion.span>
+                {copied ? 'Copied' : 'Copy'}
+              </button>
+            </Magnetic>
+          </div>
+          <a
+            href={`mailto:${portfolioInfo.email}?subject=${encodeURIComponent('Project enquiry')}`}
+            className="group mt-10 inline-flex min-h-[60px] items-center gap-3 overflow-hidden rounded-full bg-blue-600 px-8 text-base font-semibold text-white shadow-xl shadow-blue-600/25"
+          >
+            <Mail size={18} />
+            Start a conversation
+            <ArrowUpRight size={18} className="transition-transform duration-500 group-hover:rotate-45" />
+          </a>
+        </FadeUp>
+
+        <div className="grid grid-cols-2 gap-3">
+          {channels.map((c, i) => (
+            <FadeUp key={c.label} delay={i * 0.07}>
+              <a
+                href={c.href}
+                target={c.href?.startsWith('http') ? '_blank' : undefined}
+                rel="noopener noreferrer"
+                className="group relative flex h-full min-h-[132px] flex-col justify-between overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 transition-colors duration-500 hover:border-transparent dark:border-white/10 dark:bg-white/[0.03]"
+                style={{ ['--c' as string]: c.color }}
+              >
+                <span className="absolute inset-0 translate-y-full bg-[var(--c)] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-y-0" />
+                <span className="relative flex items-center justify-between">
+                  <c.Icon size={22} className="text-[var(--c)] transition-colors duration-300 group-hover:text-white" />
+                  <ArrowUpRight size={18} className="text-slate-400 transition-all duration-500 group-hover:rotate-45 group-hover:text-white" />
                 </span>
-              </motion.a>
-            </MagneticButton>
+                <span className="relative">
+                  <span className="block text-xs font-semibold text-slate-500 transition-colors group-hover:text-white/80 dark:text-slate-400">{c.label}</span>
+                  <span className="mt-1 block break-all font-display text-lg font-bold text-slate-900 transition-colors group-hover:text-white dark:text-white">{c.value}</span>
+                </span>
+              </a>
+            </FadeUp>
           ))}
-        </motion.div>
+        </div>
       </div>
-    </motion.section>
+    </div>
   );
 };
 
