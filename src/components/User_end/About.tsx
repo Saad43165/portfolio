@@ -61,12 +61,20 @@ const About = () => {
           ))}
 
           <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-slate-200 bg-slate-200 dark:border-white/10 dark:bg-white/10 sm:grid-cols-3">
-            {aboutData.stats.map((s, i) => (
-              <FadeUp key={s.label} delay={i * 0.08} className="bg-white p-6 dark:bg-slate-950">
-                <CountUp value={s.value} className="block font-display text-3xl font-black tracking-tight text-slate-950 dark:text-white md:text-4xl" />
-                <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{s.label}</p>
-              </FadeUp>
-            ))}
+            {aboutData.stats.map((s, i) => {
+              const numeric = /^\d/.test(s.value);
+              const lastOdd = aboutData.stats.length % 2 === 1 && i === aboutData.stats.length - 1;
+              return (
+                <FadeUp key={s.label} delay={i * 0.08} className={`bg-white p-6 dark:bg-slate-950 ${lastOdd ? 'col-span-2 sm:col-span-1' : ''}`}>
+                  {numeric ? (
+                    <CountUp value={s.value} className="block font-display text-4xl font-black tracking-tight text-slate-950 dark:text-white md:text-5xl" />
+                  ) : (
+                    <span className="block font-display text-xl font-bold leading-snug tracking-tight text-slate-950 dark:text-white md:text-2xl">{s.value}</span>
+                  )}
+                  <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{s.label}</p>
+                </FadeUp>
+              );
+            })}
           </div>
 
           <div className="mt-8 flex flex-wrap gap-2">
